@@ -14,7 +14,7 @@ class registerController extends Controller
     public function index()
     {
         //
-        return view('register');
+        return view('auth/register');
     }
 
     /**
@@ -37,12 +37,12 @@ class registerController extends Controller
                     'role'=>'client',
                 ]);
 
-                return view('login');
+                return view('auth/login');
             }else{
-                return back()->with("confirmer password");
+                return back()->with("confirmer your password");
             }
         }else{
-            return view('register');
+            return view('auth/register');
         }
     }
 

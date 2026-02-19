@@ -6,7 +6,7 @@ class Validate{
 
      public static function Valider($request){
       
-       $request->validate([
+      return $request->validate([
            'name' => 'required|string|between:3,30',
            'email' => 'required|string',
            'password' => 'required|string',

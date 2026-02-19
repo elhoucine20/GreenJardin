@@ -13,7 +13,7 @@ class LoginController extends Controller
     public function index()
     {
         //
-        return view('login');
+        return view('auth/login');
     }
 
     /**
@@ -21,21 +21,23 @@ class LoginController extends Controller
      */
     public function create(Request $request)
     {
-        //
         $email = $request->email;
         $password = $request->password;
         $credentials = ['email'=> $email, 'password'=>$password];
-        Auth::attempt($credentials);
+        // Auth::attempt($credentials);
         if (Auth::attempt($credentials)) {
             # code...
             if (Auth::user()->role=="admin") {
                 # code...
                 $request->session()->regenerate();
-                return to_route('dashbord-admin');
-            }else {
+                return to_route('Dashbord-Admin');
+            }else if(Auth::user()->role=="client"){
+                $request->session()->regenerate();
+                return "hello this is client  ";
+            } else {
                 # code...
                 // $request->session()->regenerate();
-                return view('login');
+                return view('auth/login');
             }
         }
     }
@@ -51,9 +53,10 @@ class LoginController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show()
     {
         //
+        return  view('admin/admin-dashbord');
     }
 
     /**
@@ -78,5 +81,11 @@ class LoginController extends Controller
     public function destroy(string $id)
     {
         //
+    }
+
+
+    public function LogOut(){
+        Auth::logout();
+        return view('auth/login');
     }
 }

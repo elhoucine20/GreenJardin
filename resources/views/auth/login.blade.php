@@ -328,7 +328,7 @@ button[type="submit"]:disabled {
                 ✓ Inscription réussie ! Vous pouvez maintenant vous connecter.
             </div>
 
-            <form action="{{route('login')}}" method="POST" id="loginForm">
+            <form action="{{route('dashbord-admin')}}" method="POST" id="loginForm">
 
             @csrf
             @method('POST')
