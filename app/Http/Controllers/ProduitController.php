@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Services\Validate;
+use App\Models\Categorie;
 use App\Models\Produit;
 use Illuminate\Http\Request;
 
@@ -13,7 +15,9 @@ class ProduitController extends Controller
     public function index()
     {
         //
-        return view('admin/produits-admin');
+        $categories = Categorie::all();
+        $produits = Produit::all();
+        return view('admin/produits-admin',compact('categories','produits'));
     }
 
     /**
@@ -22,7 +26,7 @@ class ProduitController extends Controller
     public function create()
     {
         //
-        return view('admin/create-produit');
+        // return view('admin/create-produit');
     }
 
     /**
@@ -31,6 +35,16 @@ class ProduitController extends Controller
     public function store(Request $request)
     {
         //
+        $image = null;
+        Validate::validateProduit($request);
+        $data = $request->all();
+        if ($request->hasFile('image')) {
+            # code...
+            $data['image'] = $request->file('image')->store('photos','public');
+            }
+            Produit::create($data);
+            return redirect()->route('produits-admin');
+            dd($request->post(), $image );
     }
 
     /**

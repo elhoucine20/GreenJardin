@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Services\Validate;
 use App\Models\Categorie;
 use Illuminate\Http\Request;
 
@@ -13,7 +14,9 @@ class CategorieController extends Controller
     public function index()
     {
         //
-        return view('admin/category');
+        $categories = Categorie::all();
+        $totalCategories = $categories->count();
+        return view('admin/category',compact('categories','totalCategories'));
     }
 
     /**
@@ -30,6 +33,14 @@ class CategorieController extends Controller
     public function store(Request $request)
     {
         //
+        Validate::ValidateCategorie($request);
+        Categorie::create([
+                'name'=>$request->categorie_name,
+                'icon'=>$request->emoji,
+                'description'=>$request->description,
+            ]);
+            return redirect()->route('category-admin');
+            // dd($request->post());
     }
 
     /**
@@ -51,9 +62,19 @@ class CategorieController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Categorie $categorie)
+    public function update(Request $request, $id)
     {
         //
+        dd($request->post(),$id);
+            Validate::ValidateCategorie($request);
+        //     Categorie::findOrFail($id)->update([
+        //    'name' => $request->categorie_name,
+        //    'icon' => $request->emoji,
+        //    'description' => $request->description,
+        //    ]);
+
+    return redirect()->route('category-admin');
+
     }
 
     /**

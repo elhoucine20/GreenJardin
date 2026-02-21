@@ -1099,7 +1099,7 @@ body {
                 <h2 class="page-title">Gestion des Catégories</h2>
                 <p class="page-subtitle">Organisez et gérez les catégories de votre catalogue</p>
             </div>
-            <button class="btn-primary" id="addCategoryBtn">
+            <button onclick="openAddModal()" class="btn-primary" id="addCategoryBtn">
                 <span class="btn-icon">➕</span>
                 Ajouter une catégorie
             </button>
@@ -1110,7 +1110,7 @@ body {
             <div class="stat-item">
                 <div class="stat-icon">📚</div>
                 <div class="stat-content">
-                    <span class="stat-value" id="totalCategories">6</span>
+                    <span class="stat-value" >{{$totalCategories}}</span>
                     <span class="stat-label">Total catégories</span>
                 </div>
             </div>
@@ -1156,14 +1156,15 @@ body {
         <!-- Categories Grid -->
         <div class="categories-grid" id="categoriesGrid">
             <!-- Category Card 1 -->
+             @foreach($categories as $categorie)
             <div class="category-card" data-id="1" data-status="active">
                 <div class="card-header">
-                    <div class="category-icon">🌱</div>
+                    <div class="category-icon">{{$categorie->icon}}</div>
                     <span class="category-status active">Actif</span>
                 </div>
                 <div class="card-content">
-                    <h3 class="category-name">Graines et Semences</h3>
-                    <p class="category-description">Sélection de graines biologiques et semences certifiées pour potager et jardin d'ornement.</p>
+                    <h3 class="category-name">{{$categorie->name}}</h3>
+                    <p class="category-description">{{$categorie->description}}</p>
                     <div class="category-stats">
                         <div class="stat-badge">
                             <span class="badge-icon">📦</span>
@@ -1172,128 +1173,25 @@ body {
                     </div>
                 </div>
                 <div class="card-actions">
-                    <button class="btn-edit" onclick="editCategory(1)">
+                    <button class="btn-edit" onclick="editCategory({{$categorie}})">
                         <span class="btn-icon">✏️</span>
                         Modifier
                     </button>
-                    <button class="btn-delete" onclick="confirmDelete(1)">
+                    <button class="btn-delete" onclick="confirm()">
                         <span class="btn-icon">🗑️</span>
                         Supprimer
                     </button>
                 </div>
             </div>
 
-            <!-- Category Card 2 -->
-            <div class="category-card" data-id="2" data-status="active">
-                <div class="card-header">
-                    <div class="category-icon">🔨</div>
-                    <span class="category-status active">Actif</span>
-                </div>
-                <div class="card-content">
-                    <h3 class="category-name">Outils de Jardinage</h3>
-                    <p class="category-description">Outils professionnels et ergonomiques pour l'entretien et l'aménagement de votre jardin.</p>
-                    <div class="category-stats">
-                        <div class="stat-badge">
-                            <span class="badge-icon">📦</span>
-                            <span class="badge-text">52 produits</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="card-actions">
-                    <button class="btn-edit" onclick="editCategory(2)">
-                        <span class="btn-icon">✏️</span>
-                        Modifier
-                    </button>
-                    <button class="btn-delete" onclick="confirmDelete(2)">
-                        <span class="btn-icon">🗑️</span>
-                        Supprimer
-                    </button>
-                </div>
-            </div>
 
-            <!-- Category Card 3 -->
-            <div class="category-card" data-id="3" data-status="active">
-                <div class="card-header">
-                    <div class="category-icon">🌾</div>
-                    <span class="category-status active">Actif</span>
-                </div>
-                <div class="card-content">
-                    <h3 class="category-name">Engrais et Fertilisants</h3>
-                    <p class="category-description">Engrais naturels et fertilisants biologiques pour nourrir vos plantes efficacement.</p>
-                    <div class="category-stats">
-                        <div class="stat-badge">
-                            <span class="badge-icon">📦</span>
-                            <span class="badge-text">34 produits</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="card-actions">
-                    <button class="btn-edit" onclick="editCategory(3)">
-                        <span class="btn-icon">✏️</span>
-                        Modifier
-                    </button>
-                    <button class="btn-delete" onclick="confirmDelete(3)">
-                        <span class="btn-icon">🗑️</span>
-                        Supprimer
-                    </button>
-                </div>
-            </div>
+                <!-- Modal for edit categorie  -->
+    <div class="modal-overlay" id="categoryModalEdit">
 
-            <!-- Category Card 4 -->
-            <div class="category-card" data-id="4" data-status="active">
-                <div class="card-header">
-                    <div class="category-icon">🪴</div>
-                    <span class="category-status active">Actif</span>
-                </div>
-                <div class="card-content">
-                    <h3 class="category-name">Pots et Jardinières</h3>
-                    <p class="category-description">Large choix de contenants en terre cuite, céramique et matériaux écologiques.</p>
-                    <div class="category-stats">
-                        <div class="stat-badge">
-                            <span class="badge-icon">📦</span>
-                            <span class="badge-text">45 produits</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="card-actions">
-                    <button class="btn-edit" onclick="editCategory(4)">
-                        <span class="btn-icon">✏️</span>
-                        Modifier
-                    </button>
-                    <button class="btn-delete" onclick="confirmDelete(4)">
-                        <span class="btn-icon">🗑️</span>
-                        Supprimer
-                    </button>
-                </div>
-            </div>
+    </div>
+            @endforeach
 
-            <!-- Category Card 5 -->
-            <div class="category-card" data-id="5" data-status="active">
-                <div class="card-header">
-                    <div class="category-icon">🏡</div>
-                    <span class="category-status active">Actif</span>
-                </div>
-                <div class="card-content">
-                    <h3 class="category-name">Décoration Jardin</h3>
-                    <p class="category-description">Éléments décoratifs et mobilier pour embellir votre espace extérieur.</p>
-                    <div class="category-stats">
-                        <div class="stat-badge">
-                            <span class="badge-icon">📦</span>
-                            <span class="badge-text">28 produits</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="card-actions">
-                    <button class="btn-edit" onclick="editCategory(5)">
-                        <span class="btn-icon">✏️</span>
-                        Modifier
-                    </button>
-                    <button class="btn-delete" onclick="confirmDelete(5)">
-                        <span class="btn-icon">🗑️</span>
-                        Supprimer
-                    </button>
-                </div>
-            </div>
+
 
             <!-- Category Card 6 -->
             <div class="category-card" data-id="6" data-status="inactive">
@@ -1333,18 +1231,20 @@ body {
                 <button class="modal-close" onclick="closeModal()">✕</button>
             </div>
             
-            <form class="category-form" id="categoryForm">
-                <input type="hidden" id="categoryId">
+            <form action="{{route('create-categorie')}}" method="post" class="category-form" id="categoryForm">
+                @csrf
+                @method('POST')
+                <!-- <input type="hidden" id="categoryId"> -->
                 
                 <div class="form-group">
                     <label for="categoryName">Nom de la catégorie *</label>
-                    <input type="text" id="categoryName" required placeholder="Ex: Graines et Semences">
+                    <input id="categoryName" name="categorie_name" type="text"  required placeholder="Ex: Graines et Semences">
                 </div>
 
                 <div class="form-group">
                     <label for="categoryIcon">Icône (emoji) *</label>
                     <div class="icon-selector">
-                        <input type="text" id="categoryIcon" required placeholder="Choisissez un emoji" maxlength="2">
+                        <input name="emoji" type="text" id="categoryIcon" required placeholder="Choisissez un emoji" maxlength="2">
                         <div class="icon-suggestions">
                             <button type="button" class="icon-btn" onclick="selectIcon('🌱')">🌱</button>
                             <button type="button" class="icon-btn" onclick="selectIcon('🔨')">🔨</button>
@@ -1364,16 +1264,16 @@ body {
 
                 <div class="form-group">
                     <label for="categoryDescription">Description *</label>
-                    <textarea id="categoryDescription" rows="4" required placeholder="Décrivez cette catégorie..."></textarea>
+                    <textarea name="description" id="categoryDescription" rows="4" required placeholder="Décrivez cette catégorie..."></textarea>
                 </div>
 
-                <div class="form-group">
+                <!-- <div class="form-group">
                     <label for="categoryStatus">Statut *</label>
                     <select id="categoryStatus" required>
                         <option value="active">Actif</option>
                         <option value="inactive">Inactif</option>
                     </select>
-                </div>
+                </div> -->
 
                 <div class="modal-actions">
                     <button type="button" class="btn-secondary" onclick="closeModal()">Annuler</button>
@@ -1384,6 +1284,9 @@ body {
             </form>
         </div>
     </div>
+
+
+
 
     <!-- Confirmation Modal -->
     <div class="modal-overlay" id="confirmModal">
@@ -1407,246 +1310,81 @@ body {
     <script src="categories-script.js"></script>
 </body>
 <script>
-  // ========================================
-// GESTION DES CATÉGORIES - JARDIN NATUREL
-// JavaScript pour CRUD complet
-// ========================================
-
-// ========================================
-// DONNÉES DES CATÉGORIES
-// ========================================
-let categories = [
-    {
-        id: 1,
-        name: "Graines et Semences",
-        icon: "🌱",
-        description: "Sélection de graines biologiques et semences certifiées pour potager et jardin d'ornement.",
-        productCount: 78,
-        status: "active"
-    },
-    {
-        id: 2,
-        name: "Outils de Jardinage",
-        icon: "🔨",
-        description: "Outils professionnels et ergonomiques pour l'entretien et l'aménagement de votre jardin.",
-        productCount: 52,
-        status: "active"
-    },
-    {
-        id: 3,
-        name: "Engrais et Fertilisants",
-        icon: "🌾",
-        description: "Engrais naturels et fertilisants biologiques pour nourrir vos plantes efficacement.",
-        productCount: 34,
-        status: "active"
-    },
-    {
-        id: 4,
-        name: "Pots et Jardinières",
-        icon: "🪴",
-        description: "Large choix de contenants en terre cuite, céramique et matériaux écologiques.",
-        productCount: 45,
-        status: "active"
-    },
-    {
-        id: 5,
-        name: "Décoration Jardin",
-        icon: "🏡",
-        description: "Éléments décoratifs et mobilier pour embellir votre espace extérieur.",
-        productCount: 28,
-        status: "active"
-    },
-    {
-        id: 6,
-        name: "Arrosage et Irrigation",
-        icon: "💧",
-        description: "Systèmes d'arrosage automatique et équipements pour optimiser la gestion de l'eau.",
-        productCount: 11,
-        status: "inactive"
-    }
-];
-
-// Variable pour stocker l'ID de la catégorie à supprimer
-let categoryToDelete = null;
-
-// ========================================
-// INITIALISATION
-// ========================================
-document.addEventListener('DOMContentLoaded', function() {
-    initializeEventListeners();
-    renderCategories();
-    updateStats();
-});
-
-function initializeEventListeners() {
-    // Bouton Ajouter une catégorie
-    document.getElementById('addCategoryBtn').addEventListener('click', openAddModal);
-    
-    // Formulaire de catégorie
-    document.getElementById('categoryForm').addEventListener('submit', handleFormSubmit);
-    
-    // Recherche
-    document.getElementById('searchInput').addEventListener('input', filterCategories);
-    
-    // Filtres
-    document.getElementById('statusFilter').addEventListener('change', filterCategories);
-    document.getElementById('sortBy').addEventListener('change', filterCategories);
-}
-
-// ========================================
-// RENDU DES CATÉGORIES
-// ========================================
-function renderCategories(categoriesToRender = categories) {
-    const grid = document.getElementById('categoriesGrid');
-    
-    if (categoriesToRender.length === 0) {
-        grid.innerHTML = `
-            <div class="no-results">
-                <div class="no-results-icon">🔍</div>
-                <p class="no-results-text">Aucune catégorie trouvée</p>
-            </div>
-        `;
-        return;
-    }
-    
-    grid.innerHTML = categoriesToRender.map(category => createCategoryCard(category)).join('');
-}
-
-function createCategoryCard(category) {
-    const statusClass = category.status === 'active' ? 'active' : 'inactive';
-    const statusText = category.status === 'active' ? 'Actif' : 'Inactif';
-    
-    return `
-        <div class="category-card" data-id="${category.id}" data-status="${category.status}">
-            <div class="card-header">
-                <div class="category-icon">${category.icon}</div>
-                <span class="category-status ${statusClass}">${statusText}</span>
-            </div>
-            <div class="card-content">
-                <h3 class="category-name">${category.name}</h3>
-                <p class="category-description">${category.description}</p>
-                <div class="category-stats">
-                    <div class="stat-badge">
-                        <span class="badge-icon">📦</span>
-                        <span class="badge-text">${category.productCount} produits</span>
-                    </div>
-                </div>
-            </div>
-            <div class="card-actions">
-                <button class="btn-edit" onclick="editCategory(${category.id})">
-                    <span class="btn-icon">✏️</span>
-                    Modifier
-                </button>
-                <button class="btn-delete" onclick="confirmDelete(${category.id})">
-                    <span class="btn-icon">🗑️</span>
-                    Supprimer
-                </button>
-            </div>
-        </div>
-    `;
-}
-
-// ========================================
-// MISE À JOUR DES STATISTIQUES
-// ========================================
-function updateStats() {
-    const totalCategories = categories.length;
-    const activeCategories = categories.filter(c => c.status === 'active').length;
-    const totalProducts = categories.reduce((sum, c) => sum + c.productCount, 0);
-    
-    document.getElementById('totalCategories').textContent = totalCategories;
-    document.getElementById('activeCategories').textContent = activeCategories;
-    document.getElementById('totalProducts').textContent = totalProducts;
-    document.getElementById('categoryCount').textContent = totalCategories;
-    
-    // Animation des chiffres
-    animateValue('totalCategories', 0, totalCategories, 1000);
-    animateValue('activeCategories', 0, activeCategories, 1000);
-    animateValue('totalProducts', 0, totalProducts, 1000);
-}
-
-function animateValue(id, start, end, duration) {
-    const element = document.getElementById(id);
-    if (!element) return;
-    
-    const range = end - start;
-    const increment = range / (duration / 16);
-    let current = start;
-    
-    const timer = setInterval(() => {
-        current += increment;
-        if ((increment > 0 && current >= end) || (increment < 0 && current <= end)) {
-            current = end;
-            clearInterval(timer);
-        }
-        element.textContent = Math.floor(current);
-    }, 16);
-}
-
-// ========================================
-// FILTRAGE ET RECHERCHE
-// ========================================
-function filterCategories() {
-    const searchTerm = document.getElementById('searchInput').value.toLowerCase();
-    const statusFilter = document.getElementById('statusFilter').value;
-    const sortBy = document.getElementById('sortBy').value;
-    
-    let filtered = categories.filter(category => {
-        const matchesSearch = category.name.toLowerCase().includes(searchTerm) ||
-                            category.description.toLowerCase().includes(searchTerm);
-        const matchesStatus = !statusFilter || category.status === statusFilter;
-        
-        return matchesSearch && matchesStatus;
-    });
-    
-    // Tri
-    filtered.sort((a, b) => {
-        switch(sortBy) {
-            case 'name-asc':
-                return a.name.localeCompare(b.name);
-            case 'name-desc':
-                return b.name.localeCompare(a.name);
-            case 'products-desc':
-                return b.productCount - a.productCount;
-            case 'products-asc':
-                return a.productCount - b.productCount;
-            default:
-                return 0;
-        }
-    });
-    
-    renderCategories(filtered);
-}
 
 // ========================================
 // MODAL - AJOUTER UNE CATÉGORIE
 // ========================================
 function openAddModal() {
-    document.getElementById('modalTitle').textContent = 'Ajouter une catégorie';
-    document.getElementById('submitBtnText').textContent = 'Ajouter la catégorie';
-    document.getElementById('categoryForm').reset();
-    document.getElementById('categoryId').value = '';
-    document.getElementById('categoryStatus').value = 'active';
+    // document.getElementById('categoryForm').reset();
     document.getElementById('categoryModal').classList.add('show');
 }
 
 // ========================================
 // MODAL - MODIFIER UNE CATÉGORIE
 // ========================================
-function editCategory(id) {
-    const category = categories.find(c => c.id === id);
-    if (!category) return;
+function editCategory(categorie) {
+    // if (!category) return;
     
-    document.getElementById('modalTitle').textContent = 'Modifier la catégorie';
-    document.getElementById('submitBtnText').textContent = 'Enregistrer les modifications';
-    
-    document.getElementById('categoryId').value = category.id;
-    document.getElementById('categoryName').value = category.name;
-    document.getElementById('categoryIcon').value = category.icon;
-    document.getElementById('categoryDescription').value = category.description;
-    document.getElementById('categoryStatus').value = category.status;
-    
-    document.getElementById('categoryModal').classList.add('show');
+    // document.getElementById('categoryId').value = category.id;
+    // document.getElementById('categoryNameEdit').value = categorie.name;
+    // document.getElementById('categoryIconEdit').value = categorie.icon;
+    // document.getElementById('categoryDescriptionEdit').value = categorie.description;
+    // document.getElementById('categoryStatus').value = category.status;
+    let Modal = document.getElementById('categoryModalEdit');
+    Modal.innerHTML=`
+            <div class="modal-container">
+            <div class="modal-header">
+                <h3 class="modal-title" id="modalTitle">Modifier la catégorie</h3>
+                <button class="modal-close" onclick="closeModalEdit()">✕</button>
+            </div>
+            
+            <form action="{{route('edit-categorie',${categorie.id}" method="post" class="category-form" id="categoryForm">
+                @csrf
+                @method('PUT')
+                <!-- <input type="hidden" id="categoryId"> -->
+                
+                <div class="form-group">
+                    <label for="categoryNameEdit">Nom de la catégorie *</label>
+                    <input id="categoryNameEdit" value="${categorie.name}" name="categorie_name" type="text"  required placeholder="Ex: Graines et Semences">
+                </div>
+
+                <div class="form-group">
+                    <label for="categoryIconEdit">Icône (emoji) *</label>
+                    <div class="icon-selector">
+                        <input name="emoji" value="${categorie.icon}" type="text" id="categoryIconEdit" required placeholder="Choisissez un emoji" maxlength="2">
+                        <div class="icon-suggestions">
+                            <button type="button" class="icon-btn" onclick="selectIcon('🌱')">🌱</button>
+                            <button type="button" class="icon-btn" onclick="selectIcon('🔨')">🔨</button>
+                            <button type="button" class="icon-btn" onclick="selectIcon('🌾')">🌾</button>
+                            <button type="button" class="icon-btn" onclick="selectIcon('🪴')">🪴</button>
+                            <button type="button" class="icon-btn" onclick="selectIcon('🏡')">🏡</button>
+                            <button type="button" class="icon-btn" onclick="selectIcon('💧')">💧</button>
+                            <button type="button" class="icon-btn" onclick="selectIcon('🌻')">🌻</button>
+                            <button type="button" class="icon-btn" onclick="selectIcon('🌷')">🌷</button>
+                            <button type="button" class="icon-btn" onclick="selectIcon('🌹')">🌹</button>
+                            <button type="button" class="icon-btn" onclick="selectIcon('🍃')">🍃</button>
+                            <button type="button" class="icon-btn" onclick="selectIcon('🌿')">🌿</button>
+                            <button type="button" class="icon-btn" onclick="selectIcon('☘️')">☘️</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="categoryDescriptionEdit">Description *</label>
+                    <textarea name="description" id="categoryDescriptionEdit" rows="4" required placeholder="Décrivez cette catégorie...">${categorie.description}</textarea>
+                </div>
+
+                <div class="modal-actions">
+                    <button type="button" class="btn-secondary" onclick="closeModalEdit()">Annuler</button>
+                    <button type="submit" class="btn-primary">
+                        <span id="submitBtnText">Enregistrer les modifications</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    `
+    Modal.classList.add('show');
+
 }
 
 // ========================================
@@ -1654,6 +1392,9 @@ function editCategory(id) {
 // ========================================
 function closeModal() {
     document.getElementById('categoryModal').classList.remove('show');
+}
+function closeModalEdit() {
+    document.getElementById('categoryModalEdit').classList.remove('show');
 }
 
 // ========================================
@@ -1663,75 +1404,26 @@ function selectIcon(icon) {
     document.getElementById('categoryIcon').value = icon;
 }
 
-// ========================================
-// GESTION DU FORMULAIRE
-// ========================================
-function handleFormSubmit(e) {
-    e.preventDefault();
-    
-    const categoryId = document.getElementById('categoryId').value;
-    const formData = {
-        name: document.getElementById('categoryName').value,
-        icon: document.getElementById('categoryIcon').value,
-        description: document.getElementById('categoryDescription').value,
-        status: document.getElementById('categoryStatus').value
-    };
-    
-    if (categoryId) {
-        // Mise à jour
-        updateCategory(parseInt(categoryId), formData);
-    } else {
-        // Création
-        addCategory(formData);
-    }
-}
-
-// ========================================
-// AJOUTER UNE CATÉGORIE
-// ========================================
-function addCategory(data) {
-    const newCategory = {
-        id: Math.max(...categories.map(c => c.id), 0) + 1,
-        productCount: 0,
-        ...data
-    };
-    
-    categories.push(newCategory);
-    renderCategories();
-    filterCategories(); // Réappliquer les filtres
-    updateStats();
-    closeModal();
-    showToast('Catégorie ajoutée avec succès', 'success');
-}
 
 // ========================================
 // METTRE À JOUR UNE CATÉGORIE
 // ========================================
 function updateCategory(id, data) {
-    const index = categories.findIndex(c => c.id === id);
-    if (index !== -1) {
-        categories[index] = { 
-            ...categories[index], 
-            ...data 
-        };
-        renderCategories();
-        filterCategories(); // Réappliquer les filtres
-        updateStats();
-        closeModal();
-        showToast('Catégorie modifiée avec succès', 'success');
-    }
+
+        closeModalEdit();
+
 }
 
 // ========================================
 // CONFIRMATION DE SUPPRESSION
 // ========================================
 function confirmDelete(id) {
-    categoryToDelete = id;
+    // categoryToDelete = id;
     document.getElementById('confirmModal').classList.add('show');
 }
 
 function closeConfirmModal() {
-    categoryToDelete = null;
+    // categoryToDelete = null;
     document.getElementById('confirmModal').classList.remove('show');
 }
 
@@ -1739,225 +1431,10 @@ function closeConfirmModal() {
 // SUPPRIMER UNE CATÉGORIE
 // ========================================
 function deleteCategory() {
-    if (categoryToDelete !== null) {
-        categories = categories.filter(c => c.id !== categoryToDelete);
-        renderCategories();
-        filterCategories(); // Réappliquer les filtres
-        updateStats();
+
         closeConfirmModal();
-        showToast('Catégorie supprimée avec succès', 'success');
-    }
+
 }
 
-// ========================================
-// NOTIFICATIONS TOAST
-// ========================================
-function showToast(message, type = 'success') {
-    const toast = document.getElementById('toast');
-    const toastMessage = document.getElementById('toastMessage');
-    const toastIcon = document.getElementById('toastIcon');
-    
-    toastMessage.textContent = message;
-    
-    // Icône selon le type
-    if (type === 'success') {
-        toastIcon.textContent = '✓';
-        toast.classList.add('success');
-        toast.classList.remove('error');
-    } else if (type === 'error') {
-        toastIcon.textContent = '✕';
-        toast.classList.add('error');
-        toast.classList.remove('success');
-    }
-    
-    toast.classList.add('show');
-    
-    setTimeout(() => {
-        toast.classList.remove('show');
-    }, 3000);
-}
-
-// ========================================
-// FERMER LES MODALS AU CLIC EXTÉRIEUR
-// ========================================
-document.addEventListener('click', function(e) {
-    const categoryModal = document.getElementById('categoryModal');
-    const confirmModal = document.getElementById('confirmModal');
-    
-    if (e.target === categoryModal) {
-        closeModal();
-    }
-    
-    if (e.target === confirmModal) {
-        closeConfirmModal();
-    }
-});
-
-// ========================================
-// NAVIGATION CLAVIER
-// ========================================
-document.addEventListener('keydown', function(e) {
-    // Échap pour fermer les modals
-    if (e.key === 'Escape') {
-        const categoryModal = document.getElementById('categoryModal');
-        const confirmModal = document.getElementById('confirmModal');
-        
-        if (categoryModal.classList.contains('show')) {
-            closeModal();
-        }
-        
-        if (confirmModal.classList.contains('show')) {
-            closeConfirmModal();
-        }
-    }
-    
-    // Ctrl/Cmd + K pour focus sur la recherche
-    if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
-        e.preventDefault();
-        document.getElementById('searchInput').focus();
-    }
-    
-    // Ctrl/Cmd + N pour ajouter une catégorie
-    if ((e.ctrlKey || e.metaKey) && e.key === 'n') {
-        e.preventDefault();
-        openAddModal();
-    }
-});
-
-// ========================================
-// ANIMATIONS D'ENTRÉE
-// ========================================
-function animateCards() {
-    const cards = document.querySelectorAll('.category-card');
-    cards.forEach((card, index) => {
-        card.style.animation = `fadeIn 0.5s ease-out ${index * 0.05}s both`;
-    });
-}
-
-// Observer pour animer les cartes au scroll
-const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-        if (entry.isIntersecting) {
-            entry.target.style.animation = 'fadeIn 0.5s ease-out';
-        }
-    });
-}, {
-    threshold: 0.1
-});
-
-// Observer toutes les cartes au chargement
-document.addEventListener('DOMContentLoaded', () => {
-    setTimeout(() => {
-        document.querySelectorAll('.category-card').forEach(card => {
-            observer.observe(card);
-        });
-    }, 100);
-});
-
-// ========================================
-// UTILITAIRES
-// ========================================
-
-// Générer un ID unique
-function generateId() {
-    return Math.max(...categories.map(c => c.id), 0) + 1;
-}
-
-// Obtenir le nombre total de produits
-function getTotalProducts() {
-    return categories.reduce((sum, c) => sum + c.productCount, 0);
-}
-
-// Obtenir les catégories actives
-function getActiveCategories() {
-    return categories.filter(c => c.status === 'active');
-}
-
-// Obtenir les catégories inactives
-function getInactiveCategories() {
-    return categories.filter(c => c.status === 'inactive');
-}
-
-// Export des fonctions pour le HTML
-window.editCategory = editCategory;
-window.confirmDelete = confirmDelete;
-window.deleteCategory = deleteCategory;
-window.closeModal = closeModal;
-window.closeConfirmModal = closeConfirmModal;
-window.selectIcon = selectIcon;
-
-// ========================================
-// STATISTIQUES AVANCÉES (optionnel)
-// ========================================
-
-// Catégorie avec le plus de produits
-function getMostPopularCategory() {
-    return categories.reduce((max, c) => c.productCount > max.productCount ? c : max, categories[0]);
-}
-
-// Catégorie avec le moins de produits
-function getLeastPopularCategory() {
-    return categories.reduce((min, c) => c.productCount < min.productCount ? c : min, categories[0]);
-}
-
-// Moyenne de produits par catégorie
-function getAverageProductsPerCategory() {
-    const total = getTotalProducts();
-    return Math.round(total / categories.length);
-}
-
-// ========================================
-// EXPORT DES DONNÉES (optionnel)
-// ========================================
-
-// Export en JSON
-function exportCategoriesJSON() {
-    const dataStr = JSON.stringify(categories, null, 2);
-    const dataUri = 'data:application/json;charset=utf-8,' + encodeURIComponent(dataStr);
-    
-    const exportFileDefaultName = 'categories.json';
-    
-    const linkElement = document.createElement('a');
-    linkElement.setAttribute('href', dataUri);
-    linkElement.setAttribute('download', exportFileDefaultName);
-    linkElement.click();
-}
-
-// Export en CSV
-function exportCategoriesCSV() {
-    const headers = ['ID', 'Nom', 'Icône', 'Description', 'Produits', 'Statut'];
-    const rows = categories.map(c => [
-        c.id,
-        c.name,
-        c.icon,
-        c.description.replace(/,/g, ';'),
-        c.productCount,
-        c.status
-    ]);
-    
-    let csvContent = headers.join(',') + '\n';
-    csvContent += rows.map(row => row.join(',').join('\n'));
-    
-    const dataUri = 'data:text/csv;charset=utf-8,' + encodeURIComponent(csvContent);
-    
-    const linkElement = document.createElement('a');
-    linkElement.setAttribute('href', dataUri);
-    linkElement.setAttribute('download', 'categories.csv');
-    linkElement.click();
-}
-
-// ========================================
-// LOG DE DÉMARRAGE
-// ========================================
-console.log('🌿 Gestion des catégories Jardin Naturel initialisée');
-console.log(`📚 ${categories.length} catégories chargées`);
-console.log(`📦 ${getTotalProducts()} produits au total`);
-console.log(`✅ ${getActiveCategories().length} catégories actives`);
-
-// Afficher les raccourcis clavier
-console.log('\n⌨️ Raccourcis clavier disponibles:');
-console.log('- Ctrl/Cmd + K : Focus sur la recherche');
-console.log('- Ctrl/Cmd + N : Ajouter une catégorie');
-console.log('- Échap : Fermer les modals');
 </script>
 </html>

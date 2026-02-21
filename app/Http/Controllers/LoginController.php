@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Categorie;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -56,7 +57,8 @@ class LoginController extends Controller
     public function show()
     {
         //
-        return  view('admin/admin-dashbord');
+        $categories = Categorie::all();
+        return  view('admin/admin-dashbord',compact('categories'));
     }
 
     /**

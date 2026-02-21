@@ -35,7 +35,9 @@ Route::controller()->middleware(AdminMiddleware::class)->group(function(){
     Route::get('/commandes',[CommandesController::class,'index'])->name('commandes-admin');
     Route::get('/utilisateurs',[UserController::class,'index'])->name('utilisateurs-admin');
     Route::get('/dashbord-admin',[LoginController::class ,'show'])->name('Dashbord-Admin');
-    Route::get('/create-produit',[ProduitController::class,'create'])->name('create-produit');
+    Route::post('/create-produit',[ProduitController::class,'store'])->name('create-produit');
+    Route::post('/create-categorie',[CategorieController::class,'store'])->name('create-categorie');
+    Route::put('/edit-categorie/{id}',[CategorieController::class,'update'])->name('edit-categorie');
     });
 
 

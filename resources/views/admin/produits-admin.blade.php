@@ -1149,24 +1149,28 @@ body {
         <!-- Products Grid -->
         <div class="products-grid" id="productsGrid">
             <!-- Product Card 1 -->
+             @foreach($produits as $produit)
             <div class="product-card" data-id="1" data-category="graines" data-status="active">
                 <div class="product-image">
-                    <img src="https://images.unsplash.com/photo-1530836369250-ef72a3f5cda8?w=400&h=300&fit=crop" alt="Graines de Tomates Bio">
+                    @if($produit->image)
+                    <img src="{{ asset('storage/'.$produit->image) }}" alt="Graines de Tomates Bio">
+                    @endif
                     <span class="product-status active">Actif</span>
                 </div>
                 <div class="product-content">
                     <div class="product-header">
-                        <h3 class="product-name">Graines de Tomates Bio</h3>
-                        <span class="product-category">Graines et semences</span>
+                        <h3 class="product-name">{{$produit->name}}</h3>
+                        <span class="product-category">{{$produit->categorie->name}}</span><br>
+                        <span class="product-category">{{$produit->description}}</span>
                     </div>
                     <div class="product-info">
                         <div class="info-item">
                             <span class="info-label">Prix</span>
-                            <span class="info-value price">4,99€</span>
+                            <span class="info-value price">{{$produit->prix}}€</span>
                         </div>
                         <div class="info-item">
                             <span class="info-label">Stock</span>
-                            <span class="info-value stock high">156 unités</span>
+                            <span class="info-value stock high">{{$produit->stock}} unités</span>
                         </div>
                     </div>
                     <div class="product-actions">
@@ -1181,8 +1185,9 @@ body {
                     </div>
                 </div>
             </div>
+            @endforeach
 
-            <!-- Product Card 2 -->
+            <!-- Product Card 2
             <div class="product-card" data-id="2" data-category="outils" data-status="active">
                 <div class="product-image">
                     <img src="https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=400&h=300&fit=crop" alt="Sécateur Professionnel">
@@ -1214,7 +1219,7 @@ body {
                         </button>
                     </div>
                 </div>
-            </div>
+            </div> -->
 
             <!-- Product Card 3 -->
             <div class="product-card" data-id="3" data-category="engrais" data-status="active">
@@ -1362,54 +1367,60 @@ body {
                 <button class="modal-close" onclick="closeModal()">✕</button>
             </div>
             
-            <form class="product-form" id="productForm">
+            <form action="{{route('create-produit')}}" method="post" class="product-form" id="productForm" enctype="multipart/form-data">
+
+            @csrf
+            @method('POST')
                 <input type="hidden" id="productId">
                 
                 <div class="form-row">
                     <div class="form-group">
                         <label for="productName">Nom du produit *</label>
-                        <input type="text" id="productName" required placeholder="Ex: Graines de Tomates Bio">
+                        <input name="name" type="text" id="productName" required placeholder="Ex: Graines de Tomates Bio">
                     </div>
                 </div>
 
                 <div class="form-row">
                     <div class="form-group">
                         <label for="productCategory">Catégorie *</label>
-                        <select id="productCategory" required>
+                        <select name="categorie_id" id="productCategory" required>
                             <option value="">Sélectionnez une catégorie</option>
-                            <option value="graines">Graines et semences</option>
-                            <option value="outils">Outils de jardinage</option>
+                               @foreach($categories as $categorie)
+                            <option value="{{$categorie->id}}">{{$categorie->name}}</option>
+                            @endforeach
+
+                            <!-- <option value="outils">Outils de jardinage</option>
                             <option value="engrais">Engrais et fertilisants</option>
                             <option value="pots">Pots et jardinières</option>
-                            <option value="decor">Décoration jardin</option>
+                            <option value="decor">Décoration jardin</option> -->
                         </select>
                     </div>
                     
-                    <div class="form-group">
+                    <!-- <div class="form-group">
                         <label for="productStatus">Statut *</label>
                         <select id="productStatus" required>
                             <option value="active">Actif</option>
                             <option value="inactive">Inactif</option>
                         </select>
-                    </div>
+                    </div> -->
                 </div>
 
                 <div class="form-row">
                     <div class="form-group">
                         <label for="productPrice">Prix (€) *</label>
-                        <input type="number" id="productPrice" step="0.01" min="0" required placeholder="Ex: 4.99">
+                        <input name="prix" type="number" id="productPrice" step="0.01" min="0" required placeholder="Ex: 4.99">
                     </div>
                     
                     <div class="form-group">
                         <label for="productStock">Quantité en stock *</label>
-                        <input type="number" id="productStock" min="0" required placeholder="Ex: 100">
+                        <input name="stock" type="number" id="productStock" min="0" required placeholder="Ex: 100">
                     </div>
                 </div>
 
                 <div class="form-row">
                     <div class="form-group full-width">
                         <label for="productDescription">Description</label>
-                        <textarea id="productDescription" rows="4" placeholder="Décrivez le produit..."></textarea>
+                        <textarea name="description" id="productDescription" rows="4" placeholder="Décrivez le produit..."></textarea>
                     </div>
                 </div>
 
@@ -1417,7 +1428,7 @@ body {
                     <div class="form-group full-width">
                         <label for="productImage">Image du produit</label>
                         <div class="file-upload">
-                            <input type="file" id="productImage" accept="image/*">
+                            <input name="image" type="file" id="productImage" accept="image/*">
                             <label for="productImage" class="file-upload-label">
                                 <span class="file-icon">📷</span>
                                 <span class="file-text">Cliquez pour choisir une image</span>
@@ -1428,7 +1439,7 @@ body {
                 </div>
 
                 <div class="modal-actions">
-                    <button type="button" class="btn-secondary" onclick="closeModal()">Annuler</button>
+                    <button type="reset" class="btn-secondary" onclick="closeModal()">Annuler</button>
                     <button type="submit" class="btn-primary">
                         <span id="submitBtnText">Ajouter le produit</span>
                     </button>
@@ -1467,84 +1478,84 @@ body {
 // ========================================
 // DONNÉES DES PRODUITS (Simulation base de données)
 // ========================================
-let products = [
-    {
-        id: 1,
-        name: "Graines de Tomates Bio",
-        category: "graines",
-        categoryName: "Graines et semences",
-        price: 4.99,
-        stock: 156,
-        status: "active",
-        description: "Graines de tomates biologiques certifiées, variété ancienne à haut rendement.",
-        image: "https://images.unsplash.com/photo-1530836369250-ef72a3f5cda8?w=400&h=300&fit=crop"
-    },
-    {
-        id: 2,
-        name: "Sécateur Professionnel",
-        category: "outils",
-        categoryName: "Outils de jardinage",
-        price: 24.90,
-        stock: 45,
-        status: "active",
-        description: "Sécateur ergonomique en acier inoxydable, idéal pour la taille de précision.",
-        image: "https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=400&h=300&fit=crop"
-    },
-    {
-        id: 3,
-        name: "Engrais Naturel Bio",
-        category: "engrais",
-        categoryName: "Engrais et fertilisants",
-        price: 12.50,
-        stock: 89,
-        status: "active",
-        description: "Engrais 100% naturel et biologique pour toutes les plantes.",
-        image: "https://images.unsplash.com/photo-1585320806297-9794b3e4eeae?w=400&h=300&fit=crop"
-    },
-    {
-        id: 4,
-        name: "Pot en Terre Cuite",
-        category: "pots",
-        categoryName: "Pots et jardinières",
-        price: 8.90,
-        stock: 12,
-        status: "active",
-        description: "Pot en terre cuite traditionnelle, drainage optimal.",
-        image: "https://images.unsplash.com/photo-1485955900006-10f4d324d411?w=400&h=300&fit=crop"
-    },
-    {
-        id: 5,
-        name: "Graines de Basilic",
-        category: "graines",
-        categoryName: "Graines et semences",
-        price: 3.50,
-        stock: 8,
-        status: "inactive",
-        description: "Graines de basilic aromatique pour culture en pot ou jardin.",
-        image: "https://images.unsplash.com/photo-1592419044706-39796d40f98c?w=400&h=300&fit=crop"
-    },
-    {
-        id: 6,
-        name: "Nain de Jardin Décoratif",
-        category: "decor",
-        categoryName: "Décoration jardin",
-        price: 15.99,
-        stock: 34,
-        status: "active",
-        description: "Figurine décorative en résine peinte à la main.",
-        image: "https://images.unsplash.com/photo-1585320806297-9794b3e4eeae?w=400&h=300&fit=crop"
-    }
-];
+// let products = [
+//     {
+//         id: 1,
+//         name: "Graines de Tomates Bio",
+//         category: "graines",
+//         categoryName: "Graines et semences",
+//         price: 4.99,
+//         stock: 156,
+//         status: "active",
+//         description: "Graines de tomates biologiques certifiées, variété ancienne à haut rendement.",
+//         image: "https://images.unsplash.com/photo-1530836369250-ef72a3f5cda8?w=400&h=300&fit=crop"
+//     },
+//     {
+//         id: 2,
+//         name: "Sécateur Professionnel",
+//         category: "outils",
+//         categoryName: "Outils de jardinage",
+//         price: 24.90,
+//         stock: 45,
+//         status: "active",
+//         description: "Sécateur ergonomique en acier inoxydable, idéal pour la taille de précision.",
+//         image: "https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=400&h=300&fit=crop"
+//     },
+//     {
+//         id: 3,
+//         name: "Engrais Naturel Bio",
+//         category: "engrais",
+//         categoryName: "Engrais et fertilisants",
+//         price: 12.50,
+//         stock: 89,
+//         status: "active",
+//         description: "Engrais 100% naturel et biologique pour toutes les plantes.",
+//         image: "https://images.unsplash.com/photo-1585320806297-9794b3e4eeae?w=400&h=300&fit=crop"
+//     },
+//     {
+//         id: 4,
+//         name: "Pot en Terre Cuite",
+//         category: "pots",
+//         categoryName: "Pots et jardinières",
+//         price: 8.90,
+//         stock: 12,
+//         status: "active",
+//         description: "Pot en terre cuite traditionnelle, drainage optimal.",
+//         image: "https://images.unsplash.com/photo-1485955900006-10f4d324d411?w=400&h=300&fit=crop"
+//     },
+//     {
+//         id: 5,
+//         name: "Graines de Basilic",
+//         category: "graines",
+//         categoryName: "Graines et semences",
+//         price: 3.50,
+//         stock: 8,
+//         status: "inactive",
+//         description: "Graines de basilic aromatique pour culture en pot ou jardin.",
+//         image: "https://images.unsplash.com/photo-1592419044706-39796d40f98c?w=400&h=300&fit=crop"
+//     },
+//     {
+//         id: 6,
+//         name: "Nain de Jardin Décoratif",
+//         category: "decor",
+//         categoryName: "Décoration jardin",
+//         price: 15.99,
+//         stock: 34,
+//         status: "active",
+//         description: "Figurine décorative en résine peinte à la main.",
+//         image: "https://images.unsplash.com/photo-1585320806297-9794b3e4eeae?w=400&h=300&fit=crop"
+//     }
+// ];
 
 // Variable pour stocker l'ID du produit à supprimer
-let productToDelete = null;
+// let productToDelete = null;
 
 // ========================================
 // INITIALISATION
 // ========================================
 document.addEventListener('DOMContentLoaded', function() {
     initializeEventListeners();
-    renderProducts();
+    // renderProducts();
 });
 
 function initializeEventListeners() {
@@ -1552,131 +1563,131 @@ function initializeEventListeners() {
     document.getElementById('addProductBtn').addEventListener('click', openAddModal);
     
     // Formulaire de produit
-    document.getElementById('productForm').addEventListener('submit', handleFormSubmit);
+    // document.getElementById('productForm').addEventListener('submit', handleFormSubmit);
     
     // Upload d'image
-    document.getElementById('productImage').addEventListener('change', handleImageUpload);
+    // document.getElementById('productImage').addEventListener('change', handleImageUpload);
     
     // Recherche
-    document.getElementById('searchInput').addEventListener('input', filterProducts);
+    // document.getElementById('searchInput').addEventListener('input', filterProducts);
     
     // Filtres
-    document.getElementById('categoryFilter').addEventListener('change', filterProducts);
-    document.getElementById('statusFilter').addEventListener('change', filterProducts);
-    document.getElementById('sortBy').addEventListener('change', filterProducts);
+    // document.getElementById('categoryFilter').addEventListener('change', filterProducts);
+    // document.getElementById('statusFilter').addEventListener('change', filterProducts);
+    // document.getElementById('sortBy').addEventListener('change', filterProducts);
 }
 
 // ========================================
 // RENDU DES PRODUITS
 // ========================================
-function renderProducts(productsToRender = products) {
-    const grid = document.getElementById('productsGrid');
+// function renderProducts(productsToRender = products) {
+//     const grid = document.getElementById('productsGrid');
     
-    if (productsToRender.length === 0) {
-        grid.innerHTML = `
-            <div class="no-results">
-                <div class="no-results-icon">🔍</div>
-                <p class="no-results-text">Aucun produit trouvé</p>
-            </div>
-        `;
-        return;
-    }
+//     if (productsToRender.length === 0) {
+//         grid.innerHTML = `
+//             <div class="no-results">
+//                 <div class="no-results-icon">🔍</div>
+//                 <p class="no-results-text">Aucun produit trouvé</p>
+//             </div>
+//         `;
+//         return;
+//     }
     
-    grid.innerHTML = productsToRender.map(product => createProductCard(product)).join('');
-}
+//     // grid.innerHTML = productsToRender.map(product => createProductCard(product)).join('');
+// }
 
-function createProductCard(product) {
-    const stockClass = product.stock > 50 ? 'high' : product.stock > 20 ? 'medium' : 'low';
-    const statusClass = product.status === 'active' ? 'active' : 'inactive';
-    const statusText = product.status === 'active' ? 'Actif' : 'Inactif';
+// function createProductCard(product) {
+//     const stockClass = product.stock > 50 ? 'high' : product.stock > 20 ? 'medium' : 'low';
+//     const statusClass = product.status === 'active' ? 'active' : 'inactive';
+//     const statusText = product.status === 'active' ? 'Actif' : 'Inactif';
     
-    return `
-        <div class="product-card" data-id="${product.id}" data-category="${product.category}" data-status="${product.status}">
-            <div class="product-image">
-                <img src="${product.image}" alt="${product.name}">
-                <span class="product-status ${statusClass}">${statusText}</span>
-            </div>
-            <div class="product-content">
-                <div class="product-header">
-                    <h3 class="product-name">${product.name}</h3>
-                    <span class="product-category">${product.categoryName}</span>
-                </div>
-                <div class="product-info">
-                    <div class="info-item">
-                        <span class="info-label">Prix</span>
-                        <span class="info-value price">${product.price.toFixed(2)}€</span>
-                    </div>
-                    <div class="info-item">
-                        <span class="info-label">Stock</span>
-                        <span class="info-value stock ${stockClass}">${product.stock} unités</span>
-                    </div>
-                </div>
-                <div class="product-actions">
-                    <button class="btn-edit" onclick="editProduct(${product.id})">
-                        <span class="btn-icon">✏️</span>
-                        Modifier
-                    </button>
-                    <button class="btn-delete" onclick="confirmDelete(${product.id})">
-                        <span class="btn-icon">🗑️</span>
-                        Supprimer
-                    </button>
-                </div>
-            </div>
-        </div>
-    `;
-}
+//     return `
+//         <div class="product-card" data-id="${product.id}" data-category="${product.category}" data-status="${product.status}">
+//             <div class="product-image">
+//                 <img src="${product.image}" alt="${product.name}">
+//                 <span class="product-status ${statusClass}">${statusText}</span>
+//             </div>
+//             <div class="product-content">
+//                 <div class="product-header">
+//                     <h3 class="product-name">${product.name}</h3>
+//                     <span class="product-category">${product.categoryName}</span>
+//                 </div>
+//                 <div class="product-info">
+//                     <div class="info-item">
+//                         <span class="info-label">Prix</span>
+//                         <span class="info-value price">${product.price.toFixed(2)}€</span>
+//                     </div>
+//                     <div class="info-item">
+//                         <span class="info-label">Stock</span>
+//                         <span class="info-value stock ${stockClass}">${product.stock} unités</span>
+//                     </div>
+//                 </div>
+//                 <div class="product-actions">
+//                     <button class="btn-edit" onclick="editProduct(${product.id})">
+//                         <span class="btn-icon">✏️</span>
+//                         Modifier
+//                     </button>
+//                     <button class="btn-delete" onclick="confirmDelete(${product.id})">
+//                         <span class="btn-icon">🗑️</span>
+//                         Supprimer
+//                     </button>
+//                 </div>
+//             </div>
+//         </div>
+//     `;
+// }
 
 // ========================================
 // FILTRAGE ET RECHERCHE
 // ========================================
-function filterProducts() {
-    const searchTerm = document.getElementById('searchInput').value.toLowerCase();
-    const categoryFilter = document.getElementById('categoryFilter').value;
-    const statusFilter = document.getElementById('statusFilter').value;
-    const sortBy = document.getElementById('sortBy').value;
+// function filterProducts() {
+//     const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+//     const categoryFilter = document.getElementById('categoryFilter').value;
+//     const statusFilter = document.getElementById('statusFilter').value;
+//     const sortBy = document.getElementById('sortBy').value;
     
-    let filtered = products.filter(product => {
-        const matchesSearch = product.name.toLowerCase().includes(searchTerm) ||
-                            product.categoryName.toLowerCase().includes(searchTerm);
-        const matchesCategory = !categoryFilter || product.category === categoryFilter;
-        const matchesStatus = !statusFilter || product.status === statusFilter;
+//     let filtered = products.filter(product => {
+//         const matchesSearch = product.name.toLowerCase().includes(searchTerm) ||
+//                             product.categoryName.toLowerCase().includes(searchTerm);
+//         const matchesCategory = !categoryFilter || product.category === categoryFilter;
+//         const matchesStatus = !statusFilter || product.status === statusFilter;
         
-        return matchesSearch && matchesCategory && matchesStatus;
-    });
+//         return matchesSearch && matchesCategory && matchesStatus;
+//     });
     
-    // Tri
-    filtered.sort((a, b) => {
-        switch(sortBy) {
-            case 'name-asc':
-                return a.name.localeCompare(b.name);
-            case 'name-desc':
-                return b.name.localeCompare(a.name);
-            case 'price-asc':
-                return a.price - b.price;
-            case 'price-desc':
-                return b.price - a.price;
-            case 'stock-asc':
-                return a.stock - b.stock;
-            case 'stock-desc':
-                return b.stock - a.stock;
-            default:
-                return 0;
-        }
-    });
+//     // Tri
+//     filtered.sort((a, b) => {
+//         switch(sortBy) {
+//             case 'name-asc':
+//                 return a.name.localeCompare(b.name);
+//             case 'name-desc':
+//                 return b.name.localeCompare(a.name);
+//             case 'price-asc':
+//                 return a.price - b.price;
+//             case 'price-desc':
+//                 return b.price - a.price;
+//             case 'stock-asc':
+//                 return a.stock - b.stock;
+//             case 'stock-desc':
+//                 return b.stock - a.stock;
+//             default:
+//                 return 0;
+//         }
+//     });
     
-    renderProducts(filtered);
-}
+//     renderProducts(filtered);
+// }
 
 // ========================================
 // MODAL - AJOUTER UN PRODUIT
 // ========================================
 function openAddModal() {
-    document.getElementById('modalTitle').textContent = 'Ajouter un produit';
-    document.getElementById('submitBtnText').textContent = 'Ajouter le produit';
-    document.getElementById('productForm').reset();
-    document.getElementById('productId').value = '';
-    document.getElementById('imagePreview').classList.remove('show');
-    document.getElementById('imagePreview').innerHTML = '';
+    // document.getElementById('modalTitle').textContent = 'Ajouter un produit';
+    // document.getElementById('submitBtnText').textContent = 'Ajouter le produit';
+    // document.getElementById('productForm').reset();
+    // document.getElementById('productId').value = '';
+    // document.getElementById('imagePreview').classList.remove('show');
+    // document.getElementById('imagePreview').innerHTML = '';
     document.getElementById('productModal').classList.add('show');
 }
 
@@ -1684,24 +1695,24 @@ function openAddModal() {
 // MODAL - MODIFIER UN PRODUIT
 // ========================================
 function editProduct(id) {
-    const product = products.find(p => p.id === id);
-    if (!product) return;
+//     const product = products.find(p => p.id === id);
+//     if (!product) return;
     
-    document.getElementById('modalTitle').textContent = 'Modifier le produit';
-    document.getElementById('submitBtnText').textContent = 'Enregistrer les modifications';
+//     document.getElementById('modalTitle').textContent = 'Modifier le produit';
+//     document.getElementById('submitBtnText').textContent = 'Enregistrer les modifications';
     
-    document.getElementById('productId').value = product.id;
-    document.getElementById('productName').value = product.name;
-    document.getElementById('productCategory').value = product.category;
-    document.getElementById('productPrice').value = product.price;
-    document.getElementById('productStock').value = product.stock;
-    document.getElementById('productStatus').value = product.status;
-    document.getElementById('productDescription').value = product.description || '';
+//     // document.getElementById('productId').value = product.id;
+//     document.getElementById('productName').value = product.name;
+//     document.getElementById('productCategory').value = product.category;
+//     document.getElementById('productPrice').value = product.price;
+//     document.getElementById('productStock').value = product.stock;
+//     document.getElementById('productStatus').value = product.status;
+//     document.getElementById('productDescription').value = product.description || '';
     
-    // Afficher l'aperçu de l'image
-    const preview = document.getElementById('imagePreview');
-    preview.innerHTML = `<img src="${product.image}" alt="${product.name}">`;
-    preview.classList.add('show');
+//     // Afficher l'aperçu de l'image
+//     // const preview = document.getElementById('imagePreview');
+//     // preview.innerHTML = `<img src="${product.image}" alt="${product.name}">`;
+//     // preview.classList.add('show');
     
     document.getElementById('productModal').classList.add('show');
 }
@@ -1715,87 +1726,87 @@ function closeModal() {
 
 // ========================================
 // GESTION DU FORMULAIRE
-// ========================================
-function handleFormSubmit(e) {
-    e.preventDefault();
+// // ========================================
+// function handleFormSubmit(e) {
+//     e.preventDefault();
     
-    const formData = {
-        name: document.getElementById('productName').value,
-        category: document.getElementById('productCategory').value,
-        categoryName: getCategoryName(document.getElementById('productCategory').value),
-        price: parseFloat(document.getElementById('productPrice').value),
-        stock: parseInt(document.getElementById('productStock').value),
-        status: document.getElementById('productStatus').value,
-        description: document.getElementById('productDescription').value,
-        image: getImageUrl()
-    };
+//     const formData = {
+//         name: document.getElementById('productName').value,
+//         category: document.getElementById('productCategory').value,
+//         categoryName: getCategoryName(document.getElementById('productCategory').value),
+//         price: parseFloat(document.getElementById('productPrice').value),
+//         stock: parseInt(document.getElementById('productStock').value),
+//         status: document.getElementById('productStatus').value,
+//         description: document.getElementById('productDescription').value,
+//         image: getImageUrl()
+//     };
     
-    const productId = document.getElementById('productId').value;
+//     // const productId = document.getElementById('productId').value;
     
-    if (productId) {
-        // Mise à jour
-        updateProduct(parseInt(productId), formData);
-    } else {
-        // Création
-        addProduct(formData);
-    }
-}
+//     // if (productId) {
+//     //     // Mise à jour
+//     //     updateProduct(parseInt(productId), formData);
+//     // } else {
+//     //     // Création
+//     //     addProduct(formData);
+//     // }
+// }
 
-function getCategoryName(categoryValue) {
-    const categories = {
-        'graines': 'Graines et semences',
-        'outils': 'Outils de jardinage',
-        'engrais': 'Engrais et fertilisants',
-        'pots': 'Pots et jardinières',
-        'decor': 'Décoration jardin'
-    };
-    return categories[categoryValue] || categoryValue;
-}
+// function getCategoryName(categoryValue) {
+//     const categories = {
+//         'graines': 'Graines et semences',
+//         'outils': 'Outils de jardinage',
+//         'engrais': 'Engrais et fertilisants',
+//         'pots': 'Pots et jardinières',
+//         'decor': 'Décoration jardin'
+//     };
+//     return categories[categoryValue] || categoryValue;
+// }
 
-function getImageUrl() {
-    const preview = document.getElementById('imagePreview');
-    const img = preview.querySelector('img');
-    return img ? img.src : 'https://images.unsplash.com/photo-1585320806297-9794b3e4eeae?w=400&h=300&fit=crop';
-}
+// function getImageUrl() {
+//     // const preview = document.getElementById('imagePreview');
+//     const img = preview.querySelector('img');
+//     return img ? img.src : 'https://images.unsplash.com/photo-1585320806297-9794b3e4eeae?w=400&h=300&fit=crop';
+// }
 
 // ========================================
 // AJOUTER UN PRODUIT
 // ========================================
-function addProduct(data) {
-    const newProduct = {
-        id: Math.max(...products.map(p => p.id)) + 1,
-        ...data
-    };
+// function addProduct(data) {
+//     const newProduct = {
+//         id: Math.max(...products.map(p => p.id)) + 1,
+//         ...data
+//     };
     
-    products.push(newProduct);
-    renderProducts();
-    filterProducts(); // Réappliquer les filtres
-    closeModal();
-    showToast('Produit ajouté avec succès', 'success');
+//     products.push(newProduct);
+//     renderProducts();
+//     // filterProducts(); // Réappliquer les filtres
+//     closeModal();
+//     showToast('Produit ajouté avec succès', 'success');
     
-    // Mettre à jour le badge
-    updateProductBadge();
-}
+//     // Mettre à jour le badge
+//     updateProductBadge();
+// }
 
 // ========================================
 // METTRE À JOUR UN PRODUIT
 // ========================================
-function updateProduct(id, data) {
-    const index = products.findIndex(p => p.id === id);
-    if (index !== -1) {
-        products[index] = { ...products[index], ...data };
-        renderProducts();
-        filterProducts(); // Réappliquer les filtres
-        closeModal();
-        showToast('Produit modifié avec succès', 'success');
-    }
-}
+// function updateProduct(id, data) {
+//     const index = products.findIndex(p => p.id === id);
+//     if (index !== -1) {
+//         products[index] = { ...products[index], ...data };
+//         renderProducts();
+//         // filterProducts(); // Réappliquer les filtres
+//         closeModal();
+//         showToast('Produit modifié avec succès', 'success');
+//     }
+// }
 
 // ========================================
 // CONFIRMATION DE SUPPRESSION
 // ========================================
 function confirmDelete(id) {
-    productToDelete = id;
+//     productToDelete = id;
     document.getElementById('confirmModal').classList.add('show');
 }
 
@@ -1807,185 +1818,185 @@ function closeConfirmModal() {
 // ========================================
 // SUPPRIMER UN PRODUIT
 // ========================================
-function deleteProduct() {
-    if (productToDelete !== null) {
-        products = products.filter(p => p.id !== productToDelete);
-        renderProducts();
-        filterProducts(); // Réappliquer les filtres
-        closeConfirmModal();
-        showToast('Produit supprimé avec succès', 'success');
+// function deleteProduct() {
+//     if (productToDelete !== null) {
+//         products = products.filter(p => p.id !== productToDelete);
+//         renderProducts();
+//         filterProducts(); // Réappliquer les filtres
+//         closeConfirmModal();
+//         showToast('Produit supprimé avec succès', 'success');
         
-        // Mettre à jour le badge
-        updateProductBadge();
-    }
-}
+//         // Mettre à jour le badge
+//         updateProductBadge();
+//     }
+// }
 
 // ========================================
 // GESTION DE L'UPLOAD D'IMAGE
 // ========================================
-function handleImageUpload(e) {
-    const file = e.target.files[0];
-    if (!file) return;
+// function handleImageUpload(e) {
+//     const file = e.target.files[0];
+//     if (!file) return;
     
-    // Vérifier le type de fichier
-    if (!file.type.startsWith('image/')) {
-        showToast('Veuillez sélectionner une image valide', 'error');
-        return;
-    }
+//     // Vérifier le type de fichier
+//     if (!file.type.startsWith('image/')) {
+//         showToast('Veuillez sélectionner une image valide', 'error');
+//         return;
+//     }
     
-    // Vérifier la taille (max 5MB)
-    if (file.size > 5 * 1024 * 1024) {
-        showToast('L\'image ne doit pas dépasser 5MB', 'error');
-        return;
-    }
+//     // Vérifier la taille (max 5MB)
+//     if (file.size > 5 * 1024 * 1024) {
+//         showToast('L\'image ne doit pas dépasser 5MB', 'error');
+//         return;
+//     }
     
-    const reader = new FileReader();
-    reader.onload = function(event) {
-        const preview = document.getElementById('imagePreview');
-        preview.innerHTML = `<img src="${event.target.result}" alt="Aperçu">`;
-        preview.classList.add('show');
-    };
-    reader.readAsDataURL(file);
-}
+//     const reader = new FileReader();
+//     reader.onload = function(event) {
+//         // const preview = document.getElementById('imagePreview');
+//         preview.innerHTML = `<img src="${event.target.result}" alt="Aperçu">`;
+//         preview.classList.add('show');
+//     };
+//     reader.readAsDataURL(file);
+// }
 
 // ========================================
 // NOTIFICATIONS TOAST
 // ========================================
-function showToast(message, type = 'success') {
-    const toast = document.getElementById('toast');
-    const toastMessage = document.getElementById('toastMessage');
-    const toastIcon = document.getElementById('toastIcon');
+// function showToast(message, type = 'success') {
+//     const toast = document.getElementById('toast');
+//     const toastMessage = document.getElementById('toastMessage');
+//     const toastIcon = document.getElementById('toastIcon');
     
-    toastMessage.textContent = message;
+//     toastMessage.textContent = message;
     
-    // Icône selon le type
-    if (type === 'success') {
-        toastIcon.textContent = '✓';
-        toast.classList.add('success');
-        toast.classList.remove('error');
-    } else if (type === 'error') {
-        toastIcon.textContent = '✕';
-        toast.classList.add('error');
-        toast.classList.remove('success');
-    }
+//     // Icône selon le type
+//     if (type === 'success') {
+//         toastIcon.textContent = '✓';
+//         toast.classList.add('success');
+//         toast.classList.remove('error');
+//     } else if (type === 'error') {
+//         toastIcon.textContent = '✕';
+//         toast.classList.add('error');
+//         toast.classList.remove('success');
+//     }
     
-    toast.classList.add('show');
+//     toast.classList.add('show');
     
-    setTimeout(() => {
-        toast.classList.remove('show');
-    }, 3000);
-}
+//     setTimeout(() => {
+//         toast.classList.remove('show');
+//     }, 3000);
+// }
 
 // ========================================
 // METTRE À JOUR LE BADGE DE PRODUITS
 // ========================================
-function updateProductBadge() {
-    const badge = document.querySelector('.nav-item.active .nav-badge');
-    if (badge) {
-        badge.textContent = products.length;
-    }
-}
+// function updateProductBadge() {
+//     const badge = document.querySelector('.nav-item.active .nav-badge');
+//     if (badge) {
+//         badge.textContent = products.length;
+//     }
+// }
 
 // ========================================
 // FERMER LES MODALS AU CLIC EXTÉRIEUR
 // ========================================
-document.addEventListener('click', function(e) {
-    const productModal = document.getElementById('productModal');
-    const confirmModal = document.getElementById('confirmModal');
+// document.addEventListener('click', function(e) {
+//     const productModal = document.getElementById('productModal');
+//     const confirmModal = document.getElementById('confirmModal');
     
-    if (e.target === productModal) {
-        closeModal();
-    }
+//     if (e.target === productModal) {
+//         closeModal();
+//     }
     
-    if (e.target === confirmModal) {
-        closeConfirmModal();
-    }
-});
+//     if (e.target === confirmModal) {
+//         closeConfirmModal();
+//     }
+// });
 
 // ========================================
 // NAVIGATION CLAVIER
 // ========================================
-document.addEventListener('keydown', function(e) {
-    // Échap pour fermer les modals
-    if (e.key === 'Escape') {
-        const productModal = document.getElementById('productModal');
-        const confirmModal = document.getElementById('confirmModal');
+// document.addEventListener('keydown', function(e) {
+//     // Échap pour fermer les modals
+//     if (e.key === 'Escape') {
+//         const productModal = document.getElementById('productModal');
+//         const confirmModal = document.getElementById('confirmModal');
         
-        if (productModal.classList.contains('show')) {
-            closeModal();
-        }
+//         if (productModal.classList.contains('show')) {
+//             closeModal();
+//         }
         
-        if (confirmModal.classList.contains('show')) {
-            closeConfirmModal();
-        }
-    }
+//         if (confirmModal.classList.contains('show')) {
+//             closeConfirmModal();
+//         }
+//     }
     
-    // Ctrl/Cmd + K pour focus sur la recherche
-    if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
-        e.preventDefault();
-        document.getElementById('searchInput').focus();
-    }
-});
+//     // Ctrl/Cmd + K pour focus sur la recherche
+//     if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+//         e.preventDefault();
+//         document.getElementById('searchInput').focus();
+//     }
+// });
 
 // ========================================
 // ANIMATIONS D'ENTRÉE
 // ========================================
-function animateCards() {
-    const cards = document.querySelectorAll('.product-card');
-    cards.forEach((card, index) => {
-        card.style.animation = `fadeIn 0.5s ease-out ${index * 0.05}s both`;
-    });
-}
+// function animateCards() {
+//     const cards = document.querySelectorAll('.product-card');
+//     cards.forEach((card, index) => {
+//         card.style.animation = `fadeIn 0.5s ease-out ${index * 0.05}s both`;
+//     });
+// // }
 
-// Observer pour animer les cartes au scroll
-const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-        if (entry.isIntersecting) {
-            entry.target.style.animation = 'fadeIn 0.5s ease-out';
-        }
-    });
-}, {
-    threshold: 0.1
-});
+// // Observer pour animer les cartes au scroll
+// const observer = new IntersectionObserver((entries) => {
+//     entries.forEach(entry => {
+//         if (entry.isIntersecting) {
+//             entry.target.style.animation = 'fadeIn 0.5s ease-out';
+//         }
+//     });
+// }, {
+//     threshold: 0.1
+// });
 
 // Observer toutes les cartes au chargement
-document.addEventListener('DOMContentLoaded', () => {
-    setTimeout(() => {
-        document.querySelectorAll('.product-card').forEach(card => {
-            observer.observe(card);
-        });
-    }, 100);
-});
+// document.addEventListener('DOMContentLoaded', () => {
+//     setTimeout(() => {
+//         document.querySelectorAll('.product-card').forEach(card => {
+//             observer.observe(card);
+//         });
+//     }, 100);
+// });
 
 // ========================================
 // UTILITAIRES
 // ========================================
 
 // Formater le prix
-function formatPrice(price) {
-    return price.toFixed(2) + '€';
-}
+// function formatPrice(price) {
+//     return price.toFixed(2) + '€';
+// }
 
 // Obtenir la classe de couleur pour le stock
-function getStockClass(stock) {
-    if (stock > 50) return 'high';
-    if (stock > 20) return 'medium';
-    return 'low';
-}
+// function getStockClass(stock) {
+//     if (stock > 50) return 'high';
+//     if (stock > 20) return 'medium';
+//     return 'low';
+// }
 
 // Générer un ID unique
-function generateId() {
-    return Math.max(...products.map(p => p.id), 0) + 1;
-}
+// function generateId() {
+//     return Math.max(...products.map(p => p.id), 0) + 1;
+// }
 
 // Export des fonctions pour le HTML
-window.editProduct = editProduct;
+// window.editProduct = editProduct;
 window.confirmDelete = confirmDelete;
-window.deleteProduct = deleteProduct;
-window.closeModal = closeModal;
+// window.deleteProduct = deleteProduct;
+// window.closeModal = closeModal;
 window.closeConfirmModal = closeConfirmModal;
 
-console.log('🌿 Gestion des produits Jardin Naturel initialisée');
-console.log(`📦 ${products.length} produits chargés`);
+// console.log('🌿 Gestion des produits Jardin Naturel initialisée');
+// console.log(`📦 ${products.length} produits chargés`);
 </script>
 </html>

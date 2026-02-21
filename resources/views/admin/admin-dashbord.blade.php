@@ -13,6 +13,238 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <style>
+
+      /* MODAL
+   ======================================== */
+.modal-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(4px);
+    z-index: 2000;
+    align-items: center;
+    justify-content: center;
+    padding: var(--spacing-lg);
+    animation: fadeIn 0.2s ease-out;
+}
+
+.modal-overlay.show {
+    display: flex;
+}
+
+.modal-container {
+    background: var(--color-white);
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-xl);
+    max-width: 600px;
+    width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+    animation: slideUp 0.3s ease-out;
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--spacing-xl);
+    border-bottom: 1px solid var(--color-gray-200);
+}
+
+.modal-title {
+    font-size: 22px;
+    font-weight: var(--font-weight-bold);
+    color: var(--color-gray-900);
+}
+
+.modal-close {
+    width: 36px;
+    height: 36px;
+    border: none;
+    background: var(--color-gray-100);
+    color: var(--color-gray-600);
+    font-size: 20px;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+}
+
+.modal-close:hover {
+    background: var(--color-gray-200);
+    color: var(--color-gray-800);
+}
+
+/* ========================================
+   PRODUCT FORM
+   ======================================== */
+.product-form {
+    padding: var(--spacing-xl);
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--spacing-lg);
+    margin-bottom: var(--spacing-lg);
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-xs);
+}
+
+.form-group.full-width {
+    grid-column: 1 / -1;
+}
+
+.form-group label {
+    font-size: 14px;
+    font-weight: var(--font-weight-medium);
+    color: var(--color-gray-700);
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    padding: var(--spacing-sm) var(--spacing-md);
+    border: 1px solid var(--color-gray-200);
+    border-radius: var(--radius-sm);
+    font-family: var(--font-family);
+    font-size: 14px;
+    background: var(--color-white);
+    transition: all var(--transition-base);
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px var(--color-primary-soft);
+}
+
+.form-group textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+/* File Upload */
+.file-upload {
+    position: relative;
+}
+
+.file-upload input[type="file"] {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.file-upload-label {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-sm);
+    padding: var(--spacing-lg);
+    border: 2px dashed var(--color-gray-300);
+    border-radius: var(--radius-md);
+    background: var(--color-gray-50);
+    cursor: pointer;
+    transition: all var(--transition-base);
+}
+
+.file-upload-label:hover {
+    border-color: var(--color-primary);
+    background: var(--color-primary-soft);
+}
+
+.file-icon {
+    font-size: 24px;
+}
+
+.file-text {
+    font-size: 14px;
+    color: var(--color-gray-600);
+}
+
+.image-preview {
+    margin-top: var(--spacing-md);
+    display: none;
+}
+
+.image-preview.show {
+    display: block;
+}
+
+.image-preview img {
+    width: 100%;
+    max-height: 200px;
+    object-fit: cover;
+    border-radius: var(--radius-md);
+}
+
+.modal-actions {
+    display: flex;
+    gap: var(--spacing-md);
+    padding-top: var(--spacing-lg);
+    border-top: 1px solid var(--color-gray-200);
+}
+
+.modal-actions button {
+    flex: 1;
+}
+/* ========================================
+   CONFIRMATION MODAL
+   ======================================== */
+.confirm-modal {
+    max-width: 450px;
+    text-align: center;
+}
+
+.confirm-modal .modal-header {
+    border-bottom: none;
+    padding-bottom: 0;
+    justify-content: flex-end;
+}
+
+.confirm-icon {
+    font-size: 64px;
+    margin: var(--spacing-lg) 0;
+}
+
+.confirm-title {
+    font-size: 22px;
+    font-weight: var(--font-weight-bold);
+    color: var(--color-gray-900);
+    margin-bottom: var(--spacing-md);
+}
+
+.confirm-message {
+    color: var(--color-gray-600);
+    font-size: 15px;
+    line-height: 1.6;
+    margin-bottom: var(--spacing-xl);
+    padding: 0 var(--spacing-xl);
+}
+
+
+
     /* ========================================
        VARIABLES & PALETTE DE COULEURS NATURELLE
        ======================================== */
@@ -1230,7 +1462,9 @@
             </div>
             <div class="header-actions">
                 <button class="btn-secondary">Exporter</button>
-                <a href="{{route('create-produit')}}"> <button class="btn-primary">+ Nouveau produit</button></a>
+                <a href="{{route('create-produit')}}"> 
+                    </a>
+                    <button id="addProductBtn" class="btn-primary">+ Nouveau produit</button>
                
             </div>
         </div>
@@ -1469,9 +1703,137 @@
             </div>
         </section>
     </main>
+      <div class="modal-overlay" id="productModal">
+        <div class="modal-container">
+            <div class="modal-header">
+                <h3 class="modal-title" id="modalTitle">Ajouter un produit</h3>
+                <button class="modal-close" onclick="closeModal()">✕</button>
+            </div>
+            
+            <form action="{{route('create-produit')}}" method="post" class="product-form" id="productForm" enctype="multipart/form-data">
+
+            @csrf
+            @method('POST')
+                <input type="hidden" id="productId">
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="productName">Nom du produit *</label>
+                        <input name="name" type="text" id="productName" required placeholder="Ex: Graines de Tomates Bio">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="productCategory">Catégorie *</label>
+                        <select name="categorie_id" id="productCategory" required>
+                            <option value="">Sélectionnez une catégorie</option>
+                               @foreach($categories as $categorie)
+                            <option value="{{$categorie->id}}">{{$categorie->name}}</option>
+                            @endforeach
+
+                            <!-- <option value="outils">Outils de jardinage</option>
+                            <option value="engrais">Engrais et fertilisants</option>
+                            <option value="pots">Pots et jardinières</option>
+                            <option value="decor">Décoration jardin</option> -->
+                        </select>
+                    </div>
+                    
+                    <!-- <div class="form-group">
+                        <label for="productStatus">Statut *</label>
+                        <select id="productStatus" required>
+                            <option value="active">Actif</option>
+                            <option value="inactive">Inactif</option>
+                        </select>
+                    </div> -->
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="productPrice">Prix (€) *</label>
+                        <input name="prix" type="number" id="productPrice" step="0.01" min="0" required placeholder="Ex: 4.99">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="productStock">Quantité en stock *</label>
+                        <input name="stock" type="number" id="productStock" min="0" required placeholder="Ex: 100">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group full-width">
+                        <label for="productDescription">Description</label>
+                        <textarea name="description" id="productDescription" rows="4" placeholder="Décrivez le produit..."></textarea>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group full-width">
+                        <label for="productImage">Image du produit</label>
+                        <div class="file-upload">
+                            <input name="image" type="file" id="productImage" accept="image/*">
+                            <label for="productImage" class="file-upload-label">
+                                <span class="file-icon">📷</span>
+                                <span class="file-text">Cliquez pour choisir une image</span>
+                            </label>
+                            <div class="image-preview" id="imagePreview"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-actions">
+                    <button type="reset" class="btn-secondary" onclick="closeModal()">Annuler</button>
+                    <button type="submit" class="btn-primary">
+                        <span id="submitBtnText">Ajouter le produit</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
 
     <script src="script.js"></script>
 </body>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+    initializeEventListeners();
+});
+
+function initializeEventListeners() {
+    // Bouton Ajouter un produit
+    document.getElementById('addProductBtn').addEventListener('click', openAddModal);
+    }
+
+    function openAddModal() {
+    document.getElementById('productModal').classList.add('show');
+}
+
+function editProduct(id) {    
+    document.getElementById('productModal').classList.add('show');
+}
+
+function closeModal() {
+    document.getElementById('productModal').classList.remove('show');
+}
+
+// ========================================
+// CONFIRMATION DE SUPPRESSION
+// ========================================
+function confirmDelete(id) {
+//     productToDelete = id;
+    document.getElementById('confirmModal').classList.add('show');
+}
+
+function closeConfirmModal() {
+    productToDelete = null;
+    document.getElementById('confirmModal').classList.remove('show');
+}
+
+
+window.confirmDelete = confirmDelete;
+// window.deleteProduct = deleteProduct;
+// window.closeModal = closeModal;
+window.closeConfirmModal = closeConfirmModal;
+</script>
 <!-- <script>
     // ========================================
    // DASHBOARD ADMIN - JARDIN NATUREL
