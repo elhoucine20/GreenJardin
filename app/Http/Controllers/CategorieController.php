@@ -65,14 +65,15 @@ class CategorieController extends Controller
     public function update(Request $request, $id)
     {
         //
-        dd($request->post(),$id);
-            Validate::ValidateCategorie($request);
-        //     Categorie::findOrFail($id)->update([
-        //    'name' => $request->categorie_name,
-        //    'icon' => $request->emoji,
-        //    'description' => $request->description,
-        //    ]);
-
+        Validate::ValidateCategorie($request);
+        $categorie = Categorie::findOrFail($id);
+        $categorie->update([
+            'name' => $request->categorie_name,
+            'icon' => $request->emoji,
+            'description' => $request->description,
+            ]);
+            
+            // dd($request->post(),$id);
     return redirect()->route('category-admin');
 
     }
@@ -80,8 +81,10 @@ class CategorieController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Categorie $categorie)
+    public function destroy($id)
     {
-        //
+        // dd($categorie);
+        Categorie::destroy($id);
+        return redirect()->route('category-admin');
     }
 }

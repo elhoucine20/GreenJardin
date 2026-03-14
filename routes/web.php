@@ -35,11 +35,15 @@ Route::controller()->middleware(AdminMiddleware::class)->group(function(){
     Route::get('/commandes',[CommandesController::class,'index'])->name('commandes-admin');
     Route::get('/utilisateurs',[UserController::class,'index'])->name('utilisateurs-admin');
     Route::get('/dashbord-admin',[LoginController::class ,'show'])->name('Dashbord-Admin');
-    Route::post('/create-produit',[ProduitController::class,'store'])->name('create-produit');
-    Route::post('/create-categorie',[CategorieController::class,'store'])->name('create-categorie');
-    Route::put('/edit-categorie/{id}',[CategorieController::class,'update'])->name('edit-categorie');
-    });
 
+    Route::post('/create-produit',[ProduitController::class,'store'])->name('create-produit');
+    Route::put('/edit-produit/{request}',[ProduitController::class,'update'])->name('edit-produit');
+    Route::delete('/delete-produit/{request}',[ProduitController::class,'destroy'])->name('delete-produit');
+
+    Route::post('/create-categorie',[CategorieController::class,'store'])->name('create-categorie');
+    Route::put('/edit-categorie/{request}',[CategorieController::class,'update'])->name('edit-categorie');
+    Route::delete('/delete-categorie/{request}',[CategorieController::class,'destroy'])->name('delete-categorie');
+    });
 
 
 

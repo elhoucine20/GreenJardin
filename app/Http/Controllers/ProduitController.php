@@ -44,7 +44,7 @@ class ProduitController extends Controller
             }
             Produit::create($data);
             return redirect()->route('produits-admin');
-            dd($request->post(), $image );
+            // dd($request->post(), $image );
     }
 
     /**
@@ -66,17 +66,29 @@ class ProduitController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Produit $produit)
+    public function update(Request $request, $id)
     {
         //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Produit $produit)
-    {
-        //
+        // dd($request->post(),$id);
+        $produit = Produit::findOrFail($id);
+        $produit->update([
+            'name'=>$request->name,
+            'prix'=>$request->prix,
+            'description'=>$request->description,
+            'stock'=>$request->stock,
+            'categorie_id'=>$request->categorie_id,
+        ]);
+        return redirect()->route('produits-admin');
+        }
+        
+        /**
+         * Remove the specified resource from storage.
+        */
+        public function destroy($id)
+        {
+            //
+            Produit::destroy($id);
+            return redirect()->route('produits-admin');
     }
 
 }
