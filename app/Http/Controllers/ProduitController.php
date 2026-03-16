@@ -43,7 +43,7 @@ class ProduitController extends Controller
             $data['image'] = $request->file('image')->store('photos','public');
             }
             Produit::create($data);
-            return redirect()->route('produits-admin');
+            return redirect()->route('produits.index');
             // dd($request->post(), $image );
     }
 
@@ -78,7 +78,7 @@ class ProduitController extends Controller
             'stock'=>$request->stock,
             'categorie_id'=>$request->categorie_id,
         ]);
-        return redirect()->route('produits-admin');
+        return redirect()->route('produits.index');
         }
         
         /**
@@ -88,7 +88,7 @@ class ProduitController extends Controller
         {
             //
             Produit::destroy($id);
-            return redirect()->route('produits-admin');
+            return redirect()->route('produits.index');
     }
 
 }

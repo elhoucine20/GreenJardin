@@ -19,6 +19,7 @@ Route::get('/', function () {
 // authentification
 Route::get('/inscription', [registerController::class, 'index'])->name('inscrire');
 Route::post('/login', [registerController::class, 'create'])->name('login');
+
 Route::get('/login', [LoginController::class, 'index'])->name('login');
 Route::post('/dashbord-admin',[LoginController::class ,'create'])->name('dashbord-admin');
 Route::post('/dashbord-client',[LoginController::class ,'create'])->name('dashbord-client');
@@ -30,19 +31,17 @@ Route::post('/logout',[LoginController::class ,'LogOut'])->name('logout');
 
 // admin
 Route::controller()->middleware(AdminMiddleware::class)->group(function(){
-    Route::get('/produits-admin',[ProduitController::class,'index'])->name('produits-admin');
-    Route::get('/categories',[CategorieController::class,'index'])->name('category-admin');
-    Route::get('/commandes',[CommandesController::class,'index'])->name('commandes-admin');
+
+    Route::resource('produits',ProduitController::class);
+    Route::resource('categories',CategorieController::class);
+
+
+
     Route::get('/utilisateurs',[UserController::class,'index'])->name('utilisateurs-admin');
     Route::get('/dashbord-admin',[LoginController::class ,'show'])->name('Dashbord-Admin');
-
-    Route::post('/create-produit',[ProduitController::class,'store'])->name('create-produit');
-    Route::put('/edit-produit/{request}',[ProduitController::class,'update'])->name('edit-produit');
-    Route::delete('/delete-produit/{request}',[ProduitController::class,'destroy'])->name('delete-produit');
-
-    Route::post('/create-categorie',[CategorieController::class,'store'])->name('create-categorie');
-    Route::put('/edit-categorie/{request}',[CategorieController::class,'update'])->name('edit-categorie');
-    Route::delete('/delete-categorie/{request}',[CategorieController::class,'destroy'])->name('delete-categorie');
+    
+    
+    Route::resource('/commandes',CommandesController::class);
     });
 
 

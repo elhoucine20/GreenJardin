@@ -6,46 +6,8 @@
 
 @section('main-content')
     <!-- Sidebar -->
-    <aside class="sidebar" id="sidebar">
+    <!-- <x-sidebar /> -->
 
-        <nav class="sidebar-nav">
-            <a href="{{route('Dashbord-Admin')}}" class="nav-item active">
-                <span class="nav-icon">📊</span>
-                <span class="nav-text">Tableau de bord</span>
-            </a>
-            <a href="{{route('category-admin')}}" class="nav-item">
-                <span class="nav-icon">🏷️</span>
-                <span class="nav-text">Catégories</span>
-                <span class="nav-badge">48</span>
-            </a>
-            <a href="{{route('produits-admin')}}" class="nav-item">
-                <span class="nav-icon">🌱</span>
-                <span class="nav-text">Produits</span>
-                <span class="nav-badge">48</span>
-            </a>
-            <a href="{{route('commandes-admin')}}" class="nav-item">
-                <span class="nav-icon">📦</span>
-                <span class="nav-text">Commandes</span>
-                <span class="nav-badge">12</span>
-            </a>
-            <a href="{{route('utilisateurs-admin')}}" class="nav-item">
-                <span class="nav-icon">👥</span>
-                <span class="nav-text">Utilisateurs</span>
-            </a>
-            <a href="#" class="nav-item">
-                <span class="nav-icon">💬</span>
-                <span class="nav-text">Avis clients</span>
-            </a>
-            <a href="#" class="nav-item">
-                <span class="nav-icon">📈</span>
-                <span class="nav-text">Statistiques</span>
-            </a>
-            <a href="#" class="nav-item">
-                <span class="nav-icon">⚙️</span>
-                <span class="nav-text">Paramètres</span>
-            </a>
-        </nav>
-    </aside>
 
     <!-- Main Content -->
     <main class="main-content">
@@ -56,7 +18,7 @@
             </div>
             <div class="header-actions">
                 <button class="btn-secondary">Exporter</button>
-                <a href="{{route('create-produit')}}">
+                <a href="{{route('produits.store')}}">
                 </a>
                 <button id="addProductBtn" class="btn-primary">+ Nouveau produit</button>
 
@@ -304,7 +266,7 @@
                 <button class="modal-close" onclick="closeModal()">✕</button>
             </div>
 
-            <form action="{{route('create-produit')}}" method="post" class="product-form" id="productForm" enctype="multipart/form-data">
+            <form action="{{route('produits.store')}}" method="post" class="product-form" id="productForm" enctype="multipart/form-data">
 
                 @csrf
                 @method('POST')

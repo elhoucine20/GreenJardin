@@ -840,47 +840,6 @@
     }
 
     /* ========================================
-   TOAST NOTIFICATION
-   ======================================== */
-    .toast {
-        position: fixed;
-        bottom: var(--spacing-xl);
-        right: var(--spacing-xl);
-        background: var(--color-gray-900);
-        color: var(--color-white);
-        padding: var(--spacing-md) var(--spacing-lg);
-        border-radius: var(--radius-md);
-        box-shadow: var(--shadow-xl);
-        display: flex;
-        align-items: center;
-        gap: var(--spacing-md);
-        z-index: 3000;
-        transform: translateY(200%);
-        transition: transform var(--transition-base);
-    }
-
-    .toast.show {
-        transform: translateY(0);
-    }
-
-    .toast.success {
-        background: var(--color-success);
-    }
-
-    .toast.error {
-        background: var(--color-danger);
-    }
-
-    .toast-icon {
-        font-size: 20px;
-    }
-
-    .toast-message {
-        font-size: 14px;
-        font-weight: var(--font-weight-medium);
-    }
-
-    /* ========================================
    RESPONSIVE
    ======================================== */
 
@@ -946,12 +905,6 @@
 
         .navbar {
             padding: 0 var(--spacing-md);
-        }
-
-        .toast {
-            right: var(--spacing-md);
-            left: var(--spacing-md);
-            bottom: var(--spacing-md);
         }
     }
 
