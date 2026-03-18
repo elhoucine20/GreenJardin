@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Categorie;
+use App\Models\Produit;
 use Illuminate\Http\Request;
 
 class ClientController extends Controller
@@ -12,6 +14,9 @@ class ClientController extends Controller
     public function index()
     {
         //
+        $produits = Produit::all();
+        $categories = Categorie::all();
+        return view('client/client-dashbord',compact('produits','categories'));
     }
 
     /**

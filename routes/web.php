@@ -21,28 +21,30 @@ Route::get('/inscription', [registerController::class, 'index'])->name('inscrire
 Route::post('/login', [registerController::class, 'create'])->name('login');
 
 Route::get('/login', [LoginController::class, 'index'])->name('login');
-Route::post('/dashbord-admin',[LoginController::class ,'create'])->name('dashbord-admin');
-Route::post('/dashbord-client',[LoginController::class ,'create'])->name('dashbord-client');
-Route::post('/logout',[LoginController::class ,'LogOut'])->name('logout');
+Route::post('/dashbord-admin', [LoginController::class, 'create'])->name('dashbord-admin');
+Route::post('/dashbord-client', [LoginController::class, 'create'])->name('dashbord-client');
+Route::post('/logout', [LoginController::class, 'LogOut'])->name('logout');
 
 
 
 
 
 // admin
-Route::controller()->middleware(AdminMiddleware::class)->group(function(){
+Route::controller()->middleware(AdminMiddleware::class)->group(function () {
 
-    Route::resource('produits',ProduitController::class);
-    Route::resource('categories',CategorieController::class);
+    Route::resource('produits', ProduitController::class);
+    Route::resource('categories', CategorieController::class);
+
+    Route::get('/utilisateurs', [UserController::class, 'index'])->name('utilisateurs-admin');
+    Route::get('/dashbord-admin', [LoginController::class, 'show'])->name('Dashbord-Admin');
 
 
+    Route::resource('/commandes', CommandesController::class);
+});
 
-    Route::get('/utilisateurs',[UserController::class,'index'])->name('utilisateurs-admin');
-    Route::get('/dashbord-admin',[LoginController::class ,'show'])->name('Dashbord-Admin');
+
+//client  
+Route::controller()->middleware(ClientMiddleware::class)->group(function () {
+    Route::get('dashbord', [ClientController::class, 'index'])->name('dashbord');
     
-    
-    Route::resource('/commandes',CommandesController::class);
-    });
-
-
-
+});
