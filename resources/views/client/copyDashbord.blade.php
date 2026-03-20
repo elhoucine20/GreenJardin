@@ -10,6 +10,8 @@
     
     <!-- Bootstrap Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.min.css">
+    <!-- <link rel="stylesheet" href="{{asset('css/admin_dashbord.css')}}"> -->
+
     
     <style>
         /* ========================================
@@ -998,6 +1000,8 @@
     <!-- Toast Notification Container -->
     <div class="toast-container" id="toastContainer"></div>
 
+
+</body>
     <!-- Bootstrap 5 JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
@@ -1229,6 +1233,4 @@
         console.log('- Smooth scrolling');
         console.log('- Toast notifications');
     </script>
-
-</body>
 </html>

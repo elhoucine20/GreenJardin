@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\CategorieController;
 use App\Http\Controllers\ClientController;
+use App\Http\Controllers\ClientPages;
+use App\Http\Controllers\ClientProduits;
 use App\Http\Controllers\CommandesController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\ProduitController;
@@ -46,5 +48,11 @@ Route::controller()->middleware(AdminMiddleware::class)->group(function () {
 //client  
 Route::controller()->middleware(ClientMiddleware::class)->group(function () {
     Route::get('dashbord', [ClientController::class, 'index'])->name('dashbord');
+    Route::get('produitss', [ClientPages::class, 'produits'])->name('produitss');
+    Route::get('commandess', [ClientPages::class, 'commandes'])->name('commandess');
+    Route::get('favorites', [ClientPages::class, 'favorites'])->name('favorites');
+    Route::get('paiment', [ClientPages::class, 'paiments'])->name('paiments');
+    Route::get('panier', [ClientPages::class, 'paniers'])->name('paniers');
+    Route::get('checkout', [ClientPages::class, 'checkout'])->name('checkout');
     
 });
