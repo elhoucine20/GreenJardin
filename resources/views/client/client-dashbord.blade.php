@@ -52,36 +52,19 @@
         <div class="container">
             <h2 class="section-title">Browse Categories</h2>
             <div class="row">
+                @foreach($categories as $categorie)
                 <div class="col-lg-4 col-md-6">
                     <div class="category-card" onclick="filterCategory('plant')">
-                        <img src="https://images.unsplash.com/photo-1466781783364-36c955e42a7f?w=600&h=400&fit=crop"
+                        <!-- <img src="https://images.unsplash.com/photo-1466781783364-36c955e42a7f?w=600&h=400&fit=crop"
                             alt="Plants"
-                            class="category-image">
+                            class="category-image"> -->
+                            <div  >{{$categorie->icon}}</div>
                         <div class="category-body">
-                            <h3>Plants</h3>
+                            <h3>{{$categorie->name}}</h3>
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-4 col-md-6">
-                    <div class="category-card" onclick="filterCategory('seed')">
-                        <img src="https://images.unsplash.com/photo-1464226184884-fa280b87c399?w=600&h=400&fit=crop"
-                            alt="Seeds"
-                            class="category-image">
-                        <div class="category-body">
-                            <h3>Seeds</h3>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-6">
-                    <div class="category-card" onclick="filterCategory('tool')">
-                        <img src="https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=600&h=400&fit=crop"
-                            alt="Tools"
-                            class="category-image">
-                        <div class="category-body">
-                            <h3>Tools</h3>
-                        </div>
-                    </div>
-                </div>
+                @endforeach
             </div>
         </div>
     </section>
@@ -94,17 +77,18 @@
             <h2 class="section-title">Featured Products</h2>
             <div class="row" id="productsContainer">
                 <!-- Product 1: Rose Plant -->
+                 @foreach($produits as $produit)
                 <div class="col-lg-4 col-md-6 product-item" data-name="Rose Plant" data-category="plant">
                     <div class="product-card">
                         <div class="product-image-wrapper">
-                            <img src="https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=600&h=400&fit=crop"
+                            <img src="{{ asset('storage/'.$produit->image) }}"
                                 alt="Rose Plant"
                                 class="product-image">
-                            <span class="product-badge">Best Seller</span>
+                            <span class="product-badge">{{$produit->categorie->name}}</span>
                         </div>
                         <div class="product-body">
-                            <h4>Rose Plant</h4>
-                            <p>Beautiful red rose perfect for your garden. Hardy and fragrant blooms all season long.</p>
+                            <h4>{{$produit->name}}</h4>
+                            <p>{{$produit->description}}</p>
                             <div class="product-buttons">
                                 <button class="btn btn-view" onclick="viewDetails('Rose Plant')">
                                     <i class="bi bi-eye"></i> View Details
@@ -116,126 +100,7 @@
                         </div>
                     </div>
                 </div>
-
-                <!-- Product 2: Tomato Seeds -->
-                <div class="col-lg-4 col-md-6 product-item" data-name="Tomato Seeds" data-category="seed">
-                    <div class="product-card">
-                        <div class="product-image-wrapper">
-                            <img src="https://images.unsplash.com/photo-1592841200221-a6898f307baa?w=600&h=400&fit=crop"
-                                alt="Tomato Seeds"
-                                class="product-image">
-                            <span class="product-badge">Organic</span>
-                        </div>
-                        <div class="product-body">
-                            <h4>Tomato Seeds</h4>
-                            <p>Organic tomato seeds for healthy homegrown produce. High germination rate guaranteed.</p>
-                            <div class="product-buttons">
-                                <button class="btn btn-view" onclick="viewDetails('Tomato Seeds')">
-                                    <i class="bi bi-eye"></i> View Details
-                                </button>
-                                <button class="btn btn-cart" onclick="addToCart('Tomato Seeds')">
-                                    <i class="bi bi-cart-plus"></i> Add to Cart
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Product 3: Garden Shovel -->
-                <div class="col-lg-4 col-md-6 product-item" data-name="Garden Shovel" data-category="tool">
-                    <div class="product-card">
-                        <div class="product-image-wrapper">
-                            <img src="https://images.unsplash.com/photo-1617576683096-00fc8eecb3af?w=600&h=400&fit=crop"
-                                alt="Garden Shovel"
-                                class="product-image">
-                            <span class="product-badge">Premium</span>
-                        </div>
-                        <div class="product-body">
-                            <h4>Garden Shovel</h4>
-                            <p>Durable steel shovel with ergonomic handle. Perfect for digging and planting tasks.</p>
-                            <div class="product-buttons">
-                                <button class="btn btn-view" onclick="viewDetails('Garden Shovel')">
-                                    <i class="bi bi-eye"></i> View Details
-                                </button>
-                                <button class="btn btn-cart" onclick="addToCart('Garden Shovel')">
-                                    <i class="bi bi-cart-plus"></i> Add to Cart
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Product 4: Lavender Plant -->
-                <div class="col-lg-4 col-md-6 product-item" data-name="Lavender Plant" data-category="plant">
-                    <div class="product-card">
-                        <div class="product-image-wrapper">
-                            <img src="https://images.unsplash.com/photo-1499002238440-d264edd596ec?w=600&h=400&fit=crop"
-                                alt="Lavender Plant"
-                                class="product-image">
-                            <span class="product-badge">Aromatic</span>
-                        </div>
-                        <div class="product-body">
-                            <h4>Lavender Plant</h4>
-                            <p>Fragrant lavender plant that attracts bees and butterflies. Low maintenance beauty.</p>
-                            <div class="product-buttons">
-                                <button class="btn btn-view" onclick="viewDetails('Lavender Plant')">
-                                    <i class="bi bi-eye"></i> View Details
-                                </button>
-                                <button class="btn btn-cart" onclick="addToCart('Lavender Plant')">
-                                    <i class="bi bi-cart-plus"></i> Add to Cart
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Product 5: Sunflower Seeds -->
-                <div class="col-lg-4 col-md-6 product-item" data-name="Sunflower Seeds" data-category="seed">
-                    <div class="product-card">
-                        <div class="product-image-wrapper">
-                            <img src="https://images.unsplash.com/photo-1597848212624-e530501dfcda?w=600&h=400&fit=crop"
-                                alt="Sunflower Seeds"
-                                class="product-image">
-                            <span class="product-badge">Popular</span>
-                        </div>
-                        <div class="product-body">
-                            <h4>Sunflower Seeds</h4>
-                            <p>Grow stunning sunflowers up to 8 feet tall. Bright and cheerful garden addition.</p>
-                            <div class="product-buttons">
-                                <button class="btn btn-view" onclick="viewDetails('Sunflower Seeds')">
-                                    <i class="bi bi-eye"></i> View Details
-                                </button>
-                                <button class="btn btn-cart" onclick="addToCart('Sunflower Seeds')">
-                                    <i class="bi bi-cart-plus"></i> Add to Cart
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Product 6: Watering Can -->
-                <div class="col-lg-4 col-md-6 product-item" data-name="Watering Can" data-category="tool">
-                    <div class="product-card">
-                        <div class="product-image-wrapper">
-                            <img src="https://images.unsplash.com/photo-1563636619-e9143da7973b?w=600&h=400&fit=crop"
-                                alt="Watering Can"
-                                class="product-image">
-                            <span class="product-badge">Essential</span>
-                        </div>
-                        <div class="product-body">
-                            <h4>Watering Can</h4>
-                            <p>Large capacity watering can with comfortable grip. Perfect for daily plant care.</p>
-                            <div class="product-buttons">
-                                <button class="btn btn-view" onclick="viewDetails('Watering Can')">
-                                    <i class="bi bi-eye"></i> View Details
-                                </button>
-                                <button class="btn btn-cart" onclick="addToCart('Watering Can')">
-                                    <i class="bi bi-cart-plus"></i> Add to Cart
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                @endforeach
             </div>
 
             <!-- No Results Message -->
@@ -250,8 +115,7 @@
 @endsection    
 
 @section('script')
-<!-- Custom JavaScript -->
-<script>
+<!-- <script>
     // ========================================
     // CART FUNCTIONALITY
     // ========================================
@@ -447,5 +311,5 @@
     // ========================================
     console.log('🌿 GardenApp loaded successfully!');
     console.log('Features: Search filtering, Cart system, Category filtering, Smooth scroll');
-</script>
+</script> -->
 @endsection
