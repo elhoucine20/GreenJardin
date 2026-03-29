@@ -345,6 +345,18 @@
             font-weight: 700;
             box-shadow: 0 4px 10px rgba(0,0,0,0.2);
         }
+        .product-badgee {
+            position: absolute;
+            top: 15px;
+            left: 25px;
+            background: linear-gradient(135deg, var(--secondary-green), var(--primary-green));
+            color: var(--white);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
 
         .product-body {
             padding: 2rem;
@@ -374,7 +386,7 @@
         }
 
         .btn-view {
-            flex: 1;
+            /* flex: 1; */
             background-color: transparent;
             color: var(--primary-green);
             border: 2px solid var(--primary-green);

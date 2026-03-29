@@ -330,7 +330,7 @@
         }
 
         .btn-view {
-            flex: 1;
+            /* flex: 1; */
             background-color: transparent;
             color: var(--primary-green);
             border: 2px solid var(--primary-green);

@@ -21,6 +21,7 @@ class ClientController extends Controller
         $categories = Categorie::all();
         
         $favorites = Favorite::where('user_id', Auth::user()->id)->get();
+        // view('components/CardProduits',compact('produits','categories','favorites'));
 
         return view('client/client-dashbord',compact('produits','categories','favorites'));
     }
@@ -33,7 +34,7 @@ class ClientController extends Controller
         $user = Auth::user();
         $user->favorite()->toggle($produit->id);
 
-        return to_route('produitss');
+        return $this->lesFavorites();
     }
 
      public function lesFavorites(){
