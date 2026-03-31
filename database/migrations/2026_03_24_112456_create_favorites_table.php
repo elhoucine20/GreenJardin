@@ -27,3 +27,16 @@ return new class extends Migration
         Schema::dropIfExists('favorites');
     }
 };
+//    public function up(): void
+//     {
+//         Schema::create('commandes', function (Blueprint $table) {
+//             $table->id();
+//             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
+//             $table->foreignId('produit_id')->constrained()->cascadeOnDelete();
+//             $table->float('prix');
+//             $table->integer('quantity')->default(1);
+//             $table->float('total');
+//             $table->enum('status',['paid','pendding','cancelled'])->default('pendding');
+//             $table->timestamps();
+//         });
+//     }

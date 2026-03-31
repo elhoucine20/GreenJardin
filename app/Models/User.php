@@ -27,6 +27,10 @@ class User extends Authenticatable
      public function favorite():BelongsToMany{
              return $this->BelongsToMany(Produit::class, 'favorites','user_id', 'produit_id');
      }        
+     
+     public function produits():BelongsToMany{
+        return $this->belongsToMany(Produit::class,'commades');
+     }
 
     /**
      * The attributes that should be hidden for serialization.

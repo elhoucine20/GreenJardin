@@ -30,4 +30,9 @@ class Produit extends Model
            return $this->belongsToMany(User::class);
        }
 
+         public function user():BelongsToMany{
+        return $this->belongsToMany(User::class,'commades');
+     }
+
+
 }
