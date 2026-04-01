@@ -4,6 +4,7 @@ namespace App\Http\Controllers\client;
 
 use App\Http\Controllers\Controller;
 use App\Models\Categorie;
+use App\Models\Commande;
 use App\Models\Favorite;
 use App\Models\Produit;
 use Illuminate\Http\Request;
@@ -23,8 +24,13 @@ class ClientPages extends Controller
     }
 
     public function commandes(){
-        return view('client/commandes');
+        $penddings = Commande::where('status','=','pendding')->get();
+        $paids = Commande::where('status','=','paid')->get();
+        $cancelleds = Commande::where('status','=','cancelled')->get();
+        return view('client/commandes',compact('penddings','paids','cancelleds'));
     }
+
+    
     public function favorites(){
                  $favorites = Favorite::where('user_id', Auth::user()->id)->get();
                return view('client/favori', compact('favorites'));

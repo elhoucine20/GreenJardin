@@ -93,10 +93,12 @@
                                 <i class="bi bi-eye"></i> View Details
                             </button>
                             
-                            <form method="post" action="">
+                            <form method="post" action="{{route('commande-ajouter',$produit)}}">
                                 @csrf
                                 @method('POST')
 
+                                <input type="number" name="produit_id" hidden value="{{$produit->id}}">
+                                <input type="number" name="prix" hidden value="{{$produit->prix}}">
                                 <button type="submit" class="btn btn-cart">
                                     <i class="bi bi-cart-plus"></i> Add to Cart
                                 </button>

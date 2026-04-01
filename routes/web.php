@@ -3,6 +3,8 @@
 use App\Http\Controllers\CategorieController;
 use App\Http\Controllers\client\ClientController;
 use App\Http\Controllers\client\ClientPages;
+use App\Http\Controllers\client\CommandeClientController;
+// use App\Http\Controllers\client\CommandeController;
 use App\Http\Controllers\CommandesController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\ProduitController;
@@ -53,13 +55,11 @@ Route::controller()->middleware(ClientMiddleware::class)->group(function () {
     Route::get('paiment', [ClientPages::class, 'paiments'])->name('paiments');
     Route::get('panier', [ClientPages::class, 'paniers'])->name('paniers');
     Route::get('checkout', [ClientPages::class, 'checkout'])->name('checkout');
-    Route::put('/Myfavori/{produit}',[ClientController::class, 'CreateFavorite'])->name('AddToFavorites');
-    Route::get('/favorites',[ClientController::class, 'lesFavorites'])->name('favorites');
-    
+    Route::put('/Myfavori/{produit}', [ClientController::class, 'CreateFavorite'])->name('AddToFavorites');
+    Route::get('/favorites', [ClientController::class, 'lesFavorites'])->name('favorites');
+
+    // commandes
+    Route::post('/commandes/{produit}',[CommandeClientController::class,'store'])->name('commande-ajouter');
 });
 
     // Route::delete('/DeleteFavorite/{favorite}',"destroy")->name('DeleteFavorite');
-
-                    //  @php
-                    //     $Favorite = $favorites->contains('produit_id', $produit->id);
-                    //    @endphp

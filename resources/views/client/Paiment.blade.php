@@ -37,7 +37,21 @@
                                 </div>
                                 <div class="order-item-details">
                                     <div class="order-item-name">Rose Plant</div>
-                                    <div class="order-item-quantity">Quantity: 2</div>
+                                    <div class="order-item-quantity">
+                            <div class="cart-item-quantity">
+                                <div class="quantity-label">Quantity:</div>
+                                <div class="quantity-controls">
+                                    <button class="quantity-btn" >
+                                        <i class="bi bi-dash"></i>
+                                    </button>
+                                    <input type="number" class="quantity-input" id="qty-1" value="2" min="1" 
+                                            readonly>
+                                    <button class="quantity-btn" >
+                                        <i class="bi bi-plus"></i>
+                                    </button>
+                                </div>
+                            </div>
+                                        Quantity: 2</div>
                                 </div>
                                 <div class="order-item-price">$25.80</div>
                             </div>
