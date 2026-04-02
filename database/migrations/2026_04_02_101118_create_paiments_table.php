@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreignId('commande_id')->constrained()->cascadeOnDelete();
             $table->enum('methode',['cash','stripe','paypal'])->default('cash');
             $table->enum('status',['en_attente','paye','échoué'])->default('paye');
-            $table->decimal('montant',10,2);
+            $table->decimal('montant',10,2)->default(0);
             $table->timestamps();
         });
     }
