@@ -15,4 +15,8 @@ class Commande extends Model
 
     return $this->belongsTo(Produit::class);
     }
+
+    public function paiment():HasOne{
+        return $this->hasOne(Paiment::class);
+    }
 }
