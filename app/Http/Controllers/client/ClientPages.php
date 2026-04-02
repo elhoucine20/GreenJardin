@@ -34,8 +34,8 @@ class ClientPages extends Controller
     public function favorites(){
                  $favorites = Favorite::where('user_id', Auth::user()->id)->get();
                return view('client/favori', compact('favorites'));
-        // return view('client/favori');
     }
+
     public function checkout(){
         return view('client/Checkout');
     }
@@ -43,6 +43,7 @@ class ClientPages extends Controller
     public function paniers(){
         return view('client/Panier');
     }
+    
     public function paiments(){
         return view('client/Paiment');
     }

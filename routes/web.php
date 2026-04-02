@@ -50,16 +50,21 @@ Route::controller()->middleware(AdminMiddleware::class)->group(function () {
 Route::controller()->middleware(ClientMiddleware::class)->group(function () {
     Route::get('dashbord', [ClientController::class, 'index'])->name('dashbord');
     Route::get('produitss', [ClientPages::class, 'produits'])->name('produitss');
-    Route::get('commandess', [ClientPages::class, 'commandes'])->name('commandess');
-    Route::get('favorites', [ClientPages::class, 'favorites'])->name('favorites');
-    Route::get('paiment', [ClientPages::class, 'paiments'])->name('paiments');
     Route::get('panier', [ClientPages::class, 'paniers'])->name('paniers');
     Route::get('checkout', [ClientPages::class, 'checkout'])->name('checkout');
+
+    
+    Route::get('favorites', [ClientPages::class, 'favorites'])->name('favorites');
     Route::put('/Myfavori/{produit}', [ClientController::class, 'CreateFavorite'])->name('AddToFavorites');
     Route::get('/favorites', [ClientController::class, 'lesFavorites'])->name('favorites');
-
+    
     // commandes
+    Route::get('commandess', [ClientPages::class, 'commandes'])->name('commandess');
     Route::post('/commandes/{produit}',[CommandeClientController::class,'store'])->name('commande-ajouter');
+    
+    // paiment
+    Route::get('paiment', [ClientPages::class, 'paiments'])->name('paiments');
+    // Route::get();
 });
 
     // Route::delete('/DeleteFavorite/{favorite}',"destroy")->name('DeleteFavorite');
