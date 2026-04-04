@@ -165,10 +165,13 @@
             align-items: center;
             gap: 1rem;
             padding: 1rem;
+            justify-content: space-around;
             border: 2px solid var(--gray-light);
             border-radius: 12px;
             margin-bottom: 1rem;
             transition: all 0.3s ease;
+            padding-left: 2
+            -10px;
         }
 
         .order-item:hover {
@@ -367,7 +370,56 @@
             display: block;
             animation: fadeIn 0.3s ease;
         }
+        
+/* Quantity Controls */
+.quantity-controls {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 8px;
+}
 
+/* Buttons */
+.quantity-btn {
+    width: 20px;
+    height: 20px;
+    border: none;
+    background-color: #198754; /* Bootstrap success */
+    color: white;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+/* Hover effect */
+.quantity-btn:hover {
+    background-color: #146c43;
+}
+
+/* Input */
+.quantity-input {
+    width: 35px;
+    height: 25px;
+    text-align: center;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-weight: 500;
+    outline: none;
+}
+
+/* Remove arrows (number input) */
+.quantity-input::-webkit-outer-spin-button,
+.quantity-input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.quantity-input {
+    -moz-appearance: textfield;
+}
         @keyframes fadeIn {
             from {
                 opacity: 0;
@@ -447,7 +499,13 @@
             opacity: 0.9;
         }
 
-        /* ========================================
+        /* select card for paiment */
+.order-item.selected {
+    border: 2px solid #28a745;
+    background-color: #eafaf1;
+}
+        /*         
+        ========================================
            RESPONSIVE
            ======================================== */
         @media (max-width: 992px) {

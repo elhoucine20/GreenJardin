@@ -12,15 +12,12 @@ use Illuminate\Support\Facades\Auth;
 class CommandeClientController extends Controller
 {
 
-
-    public function index()
+    public function index($commandeId)
     {
-
-        $commandes = Commande::all();
-        return view('client/commandes');
+        $commande = Commande::with('produit')->findOrFail($commandeId);
+        return view('paiment', compact('commande'));
     }
-
-
+    
     public function store(Request $request) 
     {
         Commande::create([
@@ -33,4 +30,21 @@ class CommandeClientController extends Controller
         // dd($request->post());
 
     }
+
+
+    public function update(Request $request, $id){
+        $commande = Commande::findOrFail($id);
+        if ($request->action === 'increase') {
+            # code...
+            $commande->quantity += 1;
+        }
+        if ($request->action === 'decrease' && $commande->quantity >1) {
+            # code...
+            $commande->quantity -= 1;
+        }
+        // total
+        $commande->total = $commande->prix * $commande->quantity;
+        $commande->save();
+      return to_route('checkout')->with('success', 'Quantity updated');    }
+
 }

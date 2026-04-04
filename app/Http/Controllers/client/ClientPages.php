@@ -19,15 +19,15 @@ class ClientPages extends Controller
         $categories = Categorie::all();
         $favorites = Favorite::where('user_id', Auth::user()->id)->get();
 
-    //    return view('components/CardProduits',compact('produits','categories','favorites'));
+      //    return view('components/CardProduits',compact('produits','categories','favorites'));
         return view('client/produits',compact('produits','categories','favorites'));
     }
 
     public function commandes(){
         $penddings = Commande::where('status','=','pendding')->where('user_id','=',Auth::user()->id)->get();
         $paids = Commande::where('status','=','paid')->where('user_id','=',Auth::user()->id)->get();
-        $cancelleds = Commande::where('status','=','cancelled')->where('user_id','=',Auth::user()->id)->get();
-        return view('client/commandes',compact('penddings','paids','cancelleds'));
+        // $cancelleds = Commande::where('status','=','cancelled')->where('user_id','=',Auth::user()->id)->get();
+        return view('client/commandes',compact('penddings','paids'));
     }
 
     
@@ -37,10 +37,13 @@ class ClientPages extends Controller
     }
 
     public function checkout(){
-        return view('client/Checkout');
+        $commandes = Commande::where('status','=','pendding')->where('user_id','=',Auth::user()->id)->get();
+
+        return view('client/Checkout',compact('commandes'));
     }
 
     public function paniers(){
+        
         return view('client/Panier');
     }
     

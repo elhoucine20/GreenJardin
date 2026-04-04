@@ -4,6 +4,7 @@ use App\Http\Controllers\CategorieController;
 use App\Http\Controllers\client\ClientController;
 use App\Http\Controllers\client\ClientPages;
 use App\Http\Controllers\client\CommandeClientController;
+use App\Http\Controllers\client\PaimentController;
 // use App\Http\Controllers\client\CommandeController;
 use App\Http\Controllers\CommandesController;
 use App\Http\Controllers\LoginController;
@@ -61,10 +62,13 @@ Route::controller()->middleware(ClientMiddleware::class)->group(function () {
     // commandes
     Route::get('commandess', [ClientPages::class, 'commandes'])->name('commandess');
     Route::post('/commandes/{produit}',[CommandeClientController::class,'store'])->name('commande-ajouter');
+    Route::put('/commandes/{commande}',[CommandeClientController::class,'update'])->name('CommandeUpdated');
+    // CommandeUpdated
     
     // paiment
     Route::get('paiment', [ClientPages::class, 'paiments'])->name('paiments');
-    // Route::get();
+    Route::get('paiment/{commande}',[PaimentController::class,'index'])->name('paiment');
+    Route::post('payer',[PaimentController::class,'payer'])->name('payer');
+    Route::get('success',[PaimentController::class,'succes'])->name('succes');
+    Route::get('cancel',[PaimentController::class,'cancel'])->name('cancel');
 });
-
-    // Route::delete('/DeleteFavorite/{favorite}',"destroy")->name('DeleteFavorite');

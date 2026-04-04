@@ -28,44 +28,52 @@
                         <h2 class="summary-title">
                             <i class="bi bi-cart-check"></i> Order Summary
                         </h2>
-
+@if(session('success'))
+    <div class="alert alert-success">
+        {{ session('success') }}
+    </div>
+@endif
                         <!-- Order Items -->
-                        <div class="order-items">
-                            <div class="order-item">
+                        <div class="order-items" >
+                            @if($commandes)
+                            @foreach($commandes as $commande)
+                            <div class="order-item" data-id="{{ $commande->id }}" onclick="selectCommande({{ $commande->id }})">
                                 <div class="order-item-image">
-                                    <img src="https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=100&h=100&fit=crop"
-                                        alt="Rose Plant">
+                                    <img src="{{asset('storage/'.$commande->produit->image)}}"
+                                        alt="{{ $commande->produit->name }}">
                                 </div>
                                 <div class="order-item-details">
-                                    <div class="order-item-name">Rose Plant</div>
-                                    <div class="order-item-quantity">Quantity: 2</div>
-                                </div>
-                                <div class="order-item-price">$25.80</div>
-                            </div>
+                                    <div class="order-item-name">{{$commande->produit->name}}</div>
+                                    <div class="order-item-quantity">Quantity: {{$commande->quantity}}</div>
+  <form method="POST" action="{{ route('CommandeUpdated', $commande->id) }}">
+    @csrf
+    @method('PUT')
 
-                            <div class="order-item">
-                                <div class="order-item-image">
-                                    <img src="https://images.unsplash.com/photo-1617576683096-00fc8eecb3af?w=100&h=100&fit=crop"
-                                        alt="Garden Shovel">
-                                </div>
-                                <div class="order-item-details">
-                                    <div class="order-item-name">Garden Shovel</div>
-                                    <div class="order-item-quantity">Quantity: 1</div>
-                                </div>
-                                <div class="order-item-price">$45.00</div>
-                            </div>
+    <div class="quantity-controls">
 
-                            <div class="order-item">
-                                <div class="order-item-image">
-                                    <img src="https://images.unsplash.com/photo-1597848212624-e530501dfcda?w=100&h=100&fit=crop"
-                                        alt="Sunflower Seeds">
+        <button type="submit" name="action" value="decrease" class="quantity-btn">
+            <i class="bi bi-dash"></i>
+        </button>
+
+        <input type="number"
+               class="quantity-input"
+               name="quantity"
+               value="{{ $commande->quantity }}"
+               readonly>
+
+        <button type="submit" name="action" value="increase" class="quantity-btn">
+            <i class="bi bi-plus"></i>
+        </button>
+
+    </div>
+</form>
+
                                 </div>
-                                <div class="order-item-details">
-                                    <div class="order-item-name">Sunflower Seeds</div>
-                                    <div class="order-item-quantity">Quantity: 3</div>
-                                </div>
-                                <div class="order-item-price">$25.50</div>
+                                <div class="order-item-price">${{$commande->total}}</div>
                             </div>
+                            @endforeach
+                            @endif
+
                         </div>
 
                         <!-- Order Total -->
@@ -94,6 +102,7 @@
                 <div class="col-lg-8 order-lg-1">
                     <form id="checkoutForm" class="checkout-form" novalidate>
 
+                    
                         <!-- Customer Information -->
                         <div class="form-section">
                             <h2 class="section-title">
@@ -245,7 +254,7 @@
 @endsection
 @section('script')
 <!-- Custom JavaScript -->
-<script>
+<!-- <script>
     // ========================================
     // PAYMENT METHOD SELECTION
     // ========================================
@@ -418,5 +427,33 @@
         console.log('Features: Form validation, Payment method selection, Auto-formatting');
         console.log('Total amount: $110.93');
     });
+</script> -->
+
+<!-- for quantity -->
+<script>
+function selectCommande(id){
+    // get the order item div
+    const item = document.querySelector(`.order-item[data-id='${id}']`);
+    
+    // get data
+    const name = item.querySelector('.order-item-name').textContent;
+    const quantity = item.querySelector('.order-item-quantity').textContent.replace('Quantity: ', '');
+    const price = item.querySelector('.order-item-price').textContent.replace('$', '');
+
+    // fill form
+    document.getElementById('fullName').value = name; // for testing, later use customer info
+    document.getElementById('address').value = `Qty: ${quantity} | Price: $${price}`;
+    
+    console.log('Selected commande:', id, name, quantity, price);
+}
+
+
+document.querySelectorAll('.order-item').forEach(item => {
+    item.addEventListener('click', function(){
+        document.querySelectorAll('.order-item').forEach(i => i.classList.remove('selected'));
+        this.classList.add('selected');
+        selectCommande(this.dataset.id);
+    });
+});
 </script>
 @endsection
