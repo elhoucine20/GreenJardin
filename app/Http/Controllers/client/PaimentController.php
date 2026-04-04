@@ -23,15 +23,20 @@ class PaimentController extends Controller
         
         // method de cash
         if ($request->methode=='cash') {
+            $commande = Commande::findOrFail($request->commande_id);
             # code...
             Paiment::create([
                 'commande_id'=>$request->commande_id,
                 'status'=>'en_attente',
+                'methode'     => 'cash',    
+                'montant'     => $commande->total,
+
             ]);
-            return to_route('commandes')->with('success','paiment a la laivraison confirmer');
+            $commande->update(['status' => 'paid']);
+            return to_route('checkout')->with('success','paiment a la laivraison confirmer');
         }
+        return back()->with('error', 'Methode invalide.');
         
     }
 
-    
 }
