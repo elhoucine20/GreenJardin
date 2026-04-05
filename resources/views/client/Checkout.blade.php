@@ -93,7 +93,7 @@
                 <form id="checkoutForm" class="checkout-form" method="POST" action="{{ route('payer') }}">
                     @csrf
 
-                    <input type="text" name="commande_id" id="commande_id" value="">
+                    <input type="text" hidden name="commande_id" id="commande_id" value="">
                     <!-- Customer Information -->
                     <div class="form-section">
                         <h2 class="section-title">
@@ -124,16 +124,7 @@
                             <div class="invalid-feedback">Please enter a valid email address.</div>
                         </div>
 
-                        <div class="mb-3">
-                            <label for="phone" class="form-label">Phone Number *</label>
-                            <input type="tel"
-                                class="form-control"
-                                id="phone"
-                                name="phone"
-                                placeholder="+212 123-4566797"
-                                required>
-                            <div class="invalid-feedback">Please enter your phone number.</div>
-                        </div>
+           
 
                         <div class="mb-3">
                             <label for="address" class="form-label">Delivery Address *</label>

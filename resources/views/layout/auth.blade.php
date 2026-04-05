@@ -16,6 +16,13 @@
 </head>
 
 <body>
+<header style="display: flex;position:fixed; with:100%">
+    <nav>
+        <a href="{{route('visiteur')}}" style="padding-left:1080px;margin:15px;">
+            dashbord
+        </a>
+    </nav>
+</header>
 @yield('body-content')
     <!-- Footer -->
     <footer class="footer" style="background: rgba(255, 255, 255, 0.95); padding: 2rem 0; text-align: center; box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);">
