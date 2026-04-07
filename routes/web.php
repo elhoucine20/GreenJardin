@@ -25,14 +25,13 @@ Route::get('/', function () {
 Route::get('/inscription', [registerController::class, 'index'])->name('inscrire');
 Route::post('/login', [registerController::class, 'create'])->name('login');
 
-Route::get('/login', [LoginController::class, 'index'])->name('login');
-Route::post('/dashbord-admin', [LoginController::class, 'create'])->name('dashbord-admin');
-Route::post('/dashbord-client', [LoginController::class, 'create'])->name('dashbord-client');
-Route::post('/logout', [LoginController::class, 'LogOut'])->name('logout');
+Route::controller(LoginController::class)->group(function(){
 
-
-
-
+    Route::get('/login','index')->name('login');
+    Route::post('/dashbord-admin','create')->name('dashbord-admin');
+    Route::post('/dashbord-client',  'create')->name('dashbord-client');
+    Route::post('/logout','LogOut')->name('logout');
+});
 
 // admin
 Route::controller()->middleware(AdminMiddleware::class)->group(function () {
@@ -50,28 +49,40 @@ Route::controller()->middleware(AdminMiddleware::class)->group(function () {
 
 //client  
 Route::controller()->middleware(ClientMiddleware::class)->group(function () {
-    Route::get('dashbord', [ClientController::class, 'index'])->name('dashbord');
-    Route::get('produitss', [ClientPages::class, 'produits'])->name('produitss');
-    Route::get('panier', [ClientPages::class, 'paniers'])->name('paniers');
-    Route::get('checkout', [ClientPages::class, 'checkout'])->name('checkout');
+
+    Route::controller(ClientController::class)->group(function(){
+
+        Route::get('dashbord', 'index')->name('dashbord');
+        Route::put('/Myfavori/{produit}', 'CreateFavorite')->name('AddToFavorites');
+        Route::get('/favorites','lesFavorites')->name('favorites');
+    });
 
     
-    Route::get('favorites', [ClientPages::class, 'favorites'])->name('favorites');
-    Route::put('/Myfavori/{produit}', [ClientController::class, 'CreateFavorite'])->name('AddToFavorites');
-    Route::get('/favorites', [ClientController::class, 'lesFavorites'])->name('favorites');
-    
+
+    Route::controller(ClientPages::class)->group(function(){
+
+        Route::get('produitss','produits')->name('produitss');
+        Route::get('panier','paniers')->name('paniers');
+        Route::get('checkout', 'checkout')->name('checkout');
+        Route::get('favorites','favorites')->name('favorites');
+        Route::get('commandess', 'commandes')->name('commandess');
+        Route::get('paiment', 'paiments')->name('paiments');
+    });
+
     // commandes
-    Route::get('commandess', [ClientPages::class, 'commandes'])->name('commandess');
     Route::post('/commandes/{produit}',[CommandeClientController::class,'store'])->name('commande-ajouter');
     Route::put('/commandes/{commande}',[CommandeClientController::class,'update'])->name('CommandeUpdated');
-    // CommandeUpdated
     
     // paiment
-    Route::get('paiment', [ClientPages::class, 'paiments'])->name('paiments');
-    Route::get('paiment/{commande}',[PaimentController::class,'index'])->name('paiment');
-    Route::post('payer',[PaimentController::class,'payer'])->name('payer');
-    Route::get('success',[PaimentController::class,'succes'])->name('succes');
-    Route::get('cancel',[PaimentController::class,'cancel'])->name('cancel');
+        Route::controller(PaimentController::class)->group(function(){
+
+            Route::get('paiment/{commande}','index')->name('paiment');
+            Route::post('payer','payer')->name('payer');
+            Route::get('cancel','cancel')->name('cancel');
+            Route::get('/stripe/success','stripeSuccess')->name('stripe.success');
+        });
+
+
 });
 
 // visiteur

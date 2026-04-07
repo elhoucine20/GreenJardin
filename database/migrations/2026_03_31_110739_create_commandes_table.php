@@ -18,7 +18,7 @@ return new class extends Migration
             $table->float('prix');
             $table->integer('quantity')->default(1);
             $table->float('total');
-            $table->enum('status',['paid','pendding','cancelled'])->default('pendding');
+            $table->enum('status',['en_cash','pendding','paid'])->default('pendding');
             $table->timestamps();
         });
     }

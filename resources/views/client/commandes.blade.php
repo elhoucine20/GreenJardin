@@ -40,7 +40,7 @@
                 </div>
                 <div class="order-body">
                     <div class="order-info">
-                        <div class="order-total">Total: $96.30</div>
+                        <div class="order-total">Total: ${{$totalPaids}}</div>
                         <div class="order-status">
                             <span class="status-badge paid">
                                 <i class="bi bi-check-circle"></i> Paid
@@ -70,9 +70,11 @@
                             </div>
                             <div class="product-info">
                                 <div class="product-name">{{$commande->produit->name}}</div>
-                                <div class="product-quantity">Quantity:{{$commande->quantity}}</div>
+                                <div class="product-quantity">Quantity: {{$commande->quantity}}</div>
+                                <div class="product-quantity">Prix: ${{$commande->produit->prix}}</div>
                             </div>
-                            <div class="product-price">${{$commande->produit->prix}}</div>
+                            <!-- <div class="product-price">prix: ${{$commande->produit->prix}} </div> -->
+                            <div class="product-price">${{$commande->total}}</div>
                         </div>
                         @endforeach
                         @endif
@@ -97,7 +99,7 @@
                 </div>
                 <div class="order-body">
                     <div class="order-info">
-                        <div class="order-total">Total: $53.40</div>
+                        <div class="order-total">Total: ${{$totalPenddings}}</div>
                         <div class="order-status">
                             <span class="status-badge pending">
                                 <i class="bi bi-clock-history"></i> Pending
@@ -125,9 +127,11 @@
                             </div>
                             <div class="product-info">
                                 <div class="product-name">{{$commande->produit->name}}</div>
-                                <div class="product-quantity">Quantity:{{$commande->quantity}}</div>
+                                <div class="product-quantity">Quantity: {{$commande->quantity}}</div>
+                                <div class="product-quantity">Prix: ${{$commande->produit->prix}}</div>
                             </div>
-                            <div class="product-price">${{$commande->produit->prix}}</div>
+                            <!-- <div class="product-price">${{$commande->produit->prix}}</div> -->
+                            <div class="product-price">${{$commande->total}}</div>
                         </div>
                         @endforeach
                         @endif

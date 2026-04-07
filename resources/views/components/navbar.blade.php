@@ -30,27 +30,16 @@
                             <span class="cart-badge" id="cartCount">0</span>
                         </a>
                     </li> -->
-                    <li class="nav-item">
-                        <a class="nav-link cart-link {{ request()->routeIs('checkout') ? 'active' : '' }}" href="{{route('checkout')}}">
-                            <i class="bi bi-credit-card"></i> checkout
-                            <!-- <span class="cart-badge" id="cartCount">0</span> -->
-                        </a>
-                    </li>
+
                     <li class="nav-item">
                         <a class="nav-link cart-link {{ request()->routeIs('commandess') ? 'active' : '' }}" href="{{route('commandess')}}">
                             <i class="bi bi-bag-check"></i> Mes Commandes
                             <!-- <span class="cart-badge" id="cartCount">0</span> -->
                         </a>
                     </li>
-                        <li class="nav-item">
-                        <a class="nav-link cart-link {{ request()->routeIs('paiments') ? 'active' : '' }}" href="{{route('paiments')}}">
-                            <i class="bi bi-cash-stack"></i> Paiment
-                            <!-- <span class="cart-badge" id="cartCount">0</span> -->
-                        </a>
-                    </li>
                     <li class="nav-item">
-                        <a class="nav-link cart-link {{ request()->routeIs('paniers') ? 'active' : '' }}" href="{{route('paniers')}}">
-                            <i class="bi  bi-cart"></i> Panier
+                        <a class="nav-link cart-link {{ request()->routeIs('checkout') ? 'active' : '' }}" href="{{route('checkout')}}">
+                            <i class="bi bi-credit-card"></i> checkout
                             <!-- <span class="cart-badge" id="cartCount">0</span> -->
                         </a>
                     </li>

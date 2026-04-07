@@ -24,10 +24,12 @@ class ClientPages extends Controller
     }
 
     public function commandes(){
-        $penddings = Commande::where('status','=','pendding')->where('user_id','=',Auth::user()->id)->get();
+        $penddings = Commande::where('status','=','en_cash')->where('user_id','=',Auth::user()->id)->get();
+        $totalPenddings = $penddings->sum('total');
+
         $paids = Commande::where('status','=','paid')->where('user_id','=',Auth::user()->id)->get();
-        // $cancelleds = Commande::where('status','=','cancelled')->where('user_id','=',Auth::user()->id)->get();
-        return view('client/commandes',compact('penddings','paids'));
+        $totalPaids = $paids->sum('total');
+        return view('client/commandes',compact('penddings','paids','totalPaids','totalPenddings'));
     }
 
     

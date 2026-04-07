@@ -81,8 +81,13 @@
 
 
                         <!-- <div class="total-row grand-total"> -->
+                            @if($total!=0)
                         <span class="total-label">Total:</span>
                         <span class="total-value" id="grandTotal">${{$total}}</span>
+                        @else
+                        <span class="total-value" id="grandTotal">Aucun Order</span>
+                        @endif
+
                         <!-- </div> -->
                     </div>
                 </div>
@@ -124,7 +129,7 @@
                             <div class="invalid-feedback">Please enter a valid email address.</div>
                         </div>
 
-           
+
 
                         <div class="mb-3">
                             <label for="address" class="form-label">Delivery Address *</label>
@@ -157,57 +162,6 @@
 
                         <input type="hidden" id="paymentMethod" name="methode" value="stripe">
 
-                        <!-- Card Payment Fields -->
-                        <div id="cardFields" class="payment-fields show">
-                            <div class="mb-3">
-                                <label for="cardNumber" class="form-label">Card Number *</label>
-                                <input type="text"
-                                    class="form-control"
-                                    id="cardNumber"
-                                    name="cardNumber"
-                                    placeholder="1234 5678 9012 3456"
-                                    maxlength="19"
-                                    pattern="[0-9\s]{13,19}">
-                                <div class="invalid-feedback">Please enter a valid card number.</div>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-md-6 mb-3">
-                                    <label for="cardExpiry" class="form-label">Expiry Date *</label>
-                                    <input type="text"
-                                        class="form-control"
-                                        id="cardExpiry"
-                                        name="cardExpiry"
-                                        placeholder="MM/YY"
-                                        maxlength="5"
-                                        pattern="(0[1-9]|1[0-2])\/[0-9]{2}">
-                                    <div class="invalid-feedback">Please enter expiry date (MM/YY).</div>
-                                </div>
-
-                                <div class="col-md-6 mb-3">
-                                    <label for="cardCVV" class="form-label">CVV *</label>
-                                    <input type="text"
-                                        class="form-control"
-                                        id="cardCVV"
-                                        name="cardCVV"
-                                        placeholder="123"
-                                        maxlength="4"
-                                        pattern="[0-9]{3,4}">
-                                    <div class="invalid-feedback">Please enter CVV.</div>
-                                </div>
-                            </div>
-
-                            <div class="mb-3">
-                                <label for="cardName" class="form-label">Cardholder Name *</label>
-                                <input type="text"
-                                    class="form-control"
-                                    id="cardName"
-                                    name="cardName"
-                                    placeholder="Name on card">
-                                <div class="invalid-feedback">Please enter cardholder name.</div>
-                            </div>
-                        </div>
-
                         <!-- Cash Payment Fields -->
                         <div id="cashFields" class="payment-fields">
                             <div class="alert alert-info d-flex align-items-center">
@@ -238,64 +192,37 @@
 @endsection
 @section('script')
 
-<!-- for quantity -->
 <script>
     function selectCommande(id) {
-        // get the order item div
-        const item = document.querySelector(`.order-item[data-id='${id}']`);
-
-        // get data
-        const name = item.querySelector('.order-item-name').textContent;
-        const quantity = item.querySelector('.order-item-quantity').textContent.replace('Quantity: ', '');
-        const price = item.querySelector('.order-item-price').textContent.replace('$', '');
-
-        // fill form
-        document.getElementById('fullName').value = name; // for testing, later use customer info
-        document.getElementById('address').value = `Qty: ${quantity} | Price: $${price}`;
-
-        // console.log('Selected commande:', id, name, quantity, price);
-                    addCommandIdToForm(id);
-
+        document.getElementById('commande_id').value = id;
     }
-
-
+    
     document.querySelectorAll('.order-item').forEach(item => {
         item.addEventListener('click', function() {
             document.querySelectorAll('.order-item').forEach(i => i.classList.remove('selected'));
             this.classList.add('selected');
             selectCommande(this.dataset.id);
-
         });
     });
 
-    function addCommandIdToForm(id){
-       let inputComandeId = document.getElementById('commande_id');
-       inputComandeId.value = id;
-       console.log('commande_id :',id);
-       
-    }
-
+    // payment method toggle
     let methodeStripe = document.getElementById('methodeStripe');
     let methodeCash = document.getElementById('methodeCash');
 
     methodeStripe.addEventListener('click', () => {
-        document.getElementById('cardFields').classList.add('show');
+        // document.getElementById('cardFields').classList.add('show');
         document.getElementById('cashFields').classList.remove('show');
-
         document.getElementById('methodeStripe').classList.add('active');
         document.getElementById('methodeCash').classList.remove('active');
         document.getElementById('paymentMethod').value = 'stripe';
-
     });
 
     methodeCash.addEventListener('click', () => {
-        document.getElementById('cardFields').classList.remove('show');
+        // document.getElementById('cardFields').classList.remove('show');
         document.getElementById('cashFields').classList.add('show');
-
         document.getElementById('methodeStripe').classList.remove('active');
         document.getElementById('methodeCash').classList.add('active');
         document.getElementById('paymentMethod').value = 'cash';
-
     });
 </script>
 @endsection
