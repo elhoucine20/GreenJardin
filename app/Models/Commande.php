@@ -15,6 +15,10 @@ class Commande extends Model
 
     return $this->belongsTo(Produit::class);
     }
+        public function user():BelongsTo{
+
+    return $this->belongsTo(User::class);
+    }
 
     public function paiment():HasOne{
         return $this->hasOne(Paiment::class);

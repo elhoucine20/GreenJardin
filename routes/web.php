@@ -43,7 +43,7 @@ Route::controller()->middleware(AdminMiddleware::class)->group(function () {
     Route::get('/dashbord-admin', [LoginController::class, 'show'])->name('Dashbord-Admin');
 
 
-    Route::resource('/commandes', CommandesController::class);
+    Route::resource('/commandesAdmin', CommandesController::class);
 });
 
 

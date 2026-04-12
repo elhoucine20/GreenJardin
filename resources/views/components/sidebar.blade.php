@@ -17,8 +17,8 @@
             <span class="nav-text">Produits</span>
             <span class="nav-badge">48</span>
         </a>
-        <a href="{{ route('commandes.index') }}" 
-           class="nav-item {{ request()->routeIs('commandes.*') ? 'active' : '' }}">
+        <a href="{{ route('commandesAdmin.index') }}" 
+           class="nav-item {{ request()->routeIs('commandesAdmin.*') ? 'active' : '' }}">
             <span class="nav-icon">📦</span>
             <span class="nav-text">Commandes</span>
             <span class="nav-badge">12</span>

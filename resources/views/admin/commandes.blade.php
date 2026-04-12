@@ -1,434 +1,315 @@
 @extends('layout.admin')
 @section('title-and-style')
 
-    <title>Gestion des Commandes - Jardin Naturel</title>
-    <link rel="stylesheet" href="{{asset('css/commandes.css')}}">
+<title>Gestion des Commandes - Jardin Naturel</title>
+<link rel="stylesheet" href="{{asset('css/commandes.css')}}">
 @endsection
 
 @section('main-content')
-    <!-- Sidebar -->
-    <!-- <x-sidebar /> -->
+<!-- Sidebar -->
+<!-- <x-sidebar /> -->
 
-    <!-- Main Content -->
-    <main class="main-content">
-        <!-- Page Header -->
-        <div class="page-header">
-            <div class="header-left">
-                <h2 class="page-title">Gestion des Commandes</h2>
-                <p class="page-subtitle">Suivez et gérez toutes vos commandes en temps réel</p>
-            </div>
-            <button class="btn-primary" onclick="exportOrders()">
-                <span class="btn-icon">📥</span>
-                Exporter
-            </button>
+<!-- Main Content -->
+<main class="main-content">
+    @if(session('success'))
+    <div class="alert alert-success" style="color: green; padding:10px;">
+        <h3> {{ session('success') }} ✅</h3>
+
+    </div>
+    @endif
+
+    @if(session('deleted'))
+    <div class="alert alert-danger" style="color:red; padding:10px;">
+        <h3>{{ session('deleted') }} 🚫</h3>
+        
+    </div>
+@endif
+    <!-- Page Header -->
+    <div class="page-header">
+
+
+        <div class="header-left">
+            <h2 class="page-title">Gestion des Commandes</h2>
+            <p class="page-subtitle">Suivez et gérez toutes vos commandes en temps réel</p>
         </div>
+        <!-- <button class="btn-primary" onclick="exportOrders()">
+            <span class="btn-icon">📥</span>
+            Exporter
+        </button> -->
+    </div>
 
-        <!-- Stats Summary -->
-        <div class="stats-summary">
-            <div class="stat-card">
-                <div class="stat-icon pending">⏳</div>
-                <div class="stat-content">
-                    <span class="stat-value" id="pendingCount">3</span>
-                    <span class="stat-label">En attente</span>
-                </div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-icon paid">💰</div>
-                <div class="stat-content">
-                    <span class="stat-value" id="paidCount">2</span>
-                    <span class="stat-label">Payées</span>
-                </div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-icon shipped">🚚</div>
-                <div class="stat-content">
-                    <span class="stat-value" id="shippedCount">2</span>
-                    <span class="stat-label">Expédiées</span>
-                </div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-icon cancelled">❌</div>
-                <div class="stat-content">
-                    <span class="stat-value" id="cancelledCount">1</span>
-                    <span class="stat-label">Annulées</span>
-                </div>
+    <!-- Stats Summary -->
+    <div class="stats-summary">
+        <div class="stat-card">
+            <div class="stat-icon pending">⏳</div>
+            <div class="stat-content">
+                <span class="stat-value" id="pendingCount">{{$countPendding}}</span>
+                <span class="stat-label">En attente</span>
             </div>
         </div>
-
-        <!-- Filters Bar -->
-        <div class="filters-bar">
-            <div class="search-box">
-                <span class="search-icon">🔍</span>
-                <input type="search" id="searchInput" placeholder="Rechercher par numéro ou client...">
-            </div>
-
-            <div class="filter-group">
-                <select id="statusFilter" class="filter-select">
-                    <option value="">Tous les statuts</option>
-                    <option value="pending">En attente</option>
-                    <option value="paid">Payée</option>
-                    <option value="shipped">Expédiée</option>
-                    <option value="cancelled">Annulée</option>
-                </select>
-
-                <select id="dateFilter" class="filter-select">
-                    <option value="">Toutes les dates</option>
-                    <option value="today">Aujourd'hui</option>
-                    <option value="week">Cette semaine</option>
-                    <option value="month">Ce mois</option>
-                </select>
-
-                <select id="sortBy" class="filter-select">
-                    <option value="date-desc">Plus récentes</option>
-                    <option value="date-asc">Plus anciennes</option>
-                    <option value="amount-desc">Montant décroissant</option>
-                    <option value="amount-asc">Montant croissant</option>
-                </select>
+        <div class="stat-card">
+            <div class="stat-icon paid">💰</div>
+            <div class="stat-content">
+                <span class="stat-value" id="paidCount">{{$countPaye}}</span>
+                <span class="stat-label">Payées</span>
             </div>
         </div>
 
-        <!-- Orders Grid -->
-        <div class="orders-grid" id="ordersGrid">
-            <!-- Order Card 1 -->
-            <div class="order-card" data-id="1" data-status="pending" data-date="2026-02-08">
-                <div class="card-header">
-                    <div class="order-number">#CMD-2026-001</div>
-                    <span class="status-badge pending">En attente</span>
-                </div>
-                <div class="card-body">
-                    <div class="customer-info">
-                        <div class="customer-avatar">PD</div>
-                        <div class="customer-details">
-                            <span class="customer-name">Pierre Dubois</span>
-                            <span class="customer-email">pierre.dubois@email.fr</span>
-                        </div>
-                    </div>
-                    <div class="order-meta">
-                        <div class="meta-item">
-                            <span class="meta-label">📅 Date</span>
-                            <span class="meta-value">08 Fév 2026</span>
-                        </div>
-                        <div class="meta-item">
-                            <span class="meta-label">💳 Paiement</span>
-                            <span class="meta-value">Carte bancaire</span>
-                        </div>
-                        <div class="meta-item">
-                            <span class="meta-label">📦 Articles</span>
-                            <span class="meta-value">3 produits</span>
-                        </div>
-                    </div>
-                    <div class="order-amount">
-                        <span class="amount-label">Montant total</span>
-                        <span class="amount-value">145,90€</span>
-                    </div>
-                </div>
-                <div class="card-actions">
-                    <button class="btn-view" onclick="viewOrderDetails(1)">
-                        <span class="btn-icon">👁️</span>
-                        Détails
-                    </button>
-                    <button class="btn-status" onclick="changeStatus(1)">
-                        <span class="btn-icon">🔄</span>
-                        Statut
-                    </button>
-                    <button class="btn-cancel" onclick="confirmCancelOrder(1)">
-                        <span class="btn-icon">🗑️</span>
-                        Annuler
-                    </button>
-                </div>
-            </div>
-
-            <!-- Order Card 2 -->
-            <div class="order-card" data-id="2" data-status="paid" data-date="2026-02-08">
-                <div class="card-header">
-                    <div class="order-number">#CMD-2026-002</div>
-                    <span class="status-badge paid">Payée</span>
-                </div>
-                <div class="card-body">
-                    <div class="customer-info">
-                        <div class="customer-avatar">ML</div>
-                        <div class="customer-details">
-                            <span class="customer-name">Marie Laurent</span>
-                            <span class="customer-email">marie.laurent@email.fr</span>
-                        </div>
-                    </div>
-                    <div class="order-meta">
-                        <div class="meta-item">
-                            <span class="meta-label">📅 Date</span>
-                            <span class="meta-value">08 Fév 2026</span>
-                        </div>
-                        <div class="meta-item">
-                            <span class="meta-label">💳 Paiement</span>
-                            <span class="meta-value">PayPal</span>
-                        </div>
-                        <div class="meta-item">
-                            <span class="meta-label">📦 Articles</span>
-                            <span class="meta-value">5 produits</span>
-                        </div>
-                    </div>
-                    <div class="order-amount">
-                        <span class="amount-label">Montant total</span>
-                        <span class="amount-value">289,50€</span>
-                    </div>
-                </div>
-                <div class="card-actions">
-                    <button class="btn-view" onclick="viewOrderDetails(2)">
-                        <span class="btn-icon">👁️</span>
-                        Détails
-                    </button>
-                    <button class="btn-status" onclick="changeStatus(2)">
-                        <span class="btn-icon">🔄</span>
-                        Statut
-                    </button>
-                    <button class="btn-cancel" onclick="confirmCancelOrder(2)">
-                        <span class="btn-icon">🗑️</span>
-                        Annuler
-                    </button>
-                </div>
-            </div>
-
-            <!-- Order Card 3 -->
-            <div class="order-card" data-id="3" data-status="shipped" data-date="2026-02-07">
-                <div class="card-header">
-                    <div class="order-number">#CMD-2026-003</div>
-                    <span class="status-badge shipped">Expédiée</span>
-                </div>
-                <div class="card-body">
-                    <div class="customer-info">
-                        <div class="customer-avatar">JM</div>
-                        <div class="customer-details">
-                            <span class="customer-name">Jean Martin</span>
-                            <span class="customer-email">jean.martin@email.fr</span>
-                        </div>
-                    </div>
-                    <div class="order-meta">
-                        <div class="meta-item">
-                            <span class="meta-label">📅 Date</span>
-                            <span class="meta-value">07 Fév 2026</span>
-                        </div>
-                        <div class="meta-item">
-                            <span class="meta-label">💳 Paiement</span>
-                            <span class="meta-value">Carte bancaire</span>
-                        </div>
-                        <div class="meta-item">
-                            <span class="meta-label">📦 Articles</span>
-                            <span class="meta-value">2 produits</span>
-                        </div>
-                    </div>
-                    <div class="order-amount">
-                        <span class="amount-label">Montant total</span>
-                        <span class="amount-value">78,00€</span>
-                    </div>
-                </div>
-                <div class="card-actions">
-                    <button class="btn-view" onclick="viewOrderDetails(3)">
-                        <span class="btn-icon">👁️</span>
-                        Détails
-                    </button>
-                    <button class="btn-status" onclick="changeStatus(3)">
-                        <span class="btn-icon">🔄</span>
-                        Statut
-                    </button>
-                    <button class="btn-cancel" onclick="confirmCancelOrder(3)">
-                        <span class="btn-icon">🗑️</span>
-                        Annuler
-                    </button>
-                </div>
-            </div>
-
-            <!-- Order Card 4 -->
-            <div class="order-card" data-id="4" data-status="cancelled" data-date="2026-02-06">
-                <div class="card-header">
-                    <div class="order-number">#CMD-2026-004</div>
-                    <span class="status-badge cancelled">Annulée</span>
-                </div>
-                <div class="card-body">
-                    <div class="customer-info">
-                        <div class="customer-avatar">SB</div>
-                        <div class="customer-details">
-                            <span class="customer-name">Sophie Bernard</span>
-                            <span class="customer-email">sophie.bernard@email.fr</span>
-                        </div>
-                    </div>
-                    <div class="order-meta">
-                        <div class="meta-item">
-                            <span class="meta-label">📅 Date</span>
-                            <span class="meta-value">06 Fév 2026</span>
-                        </div>
-                        <div class="meta-item">
-                            <span class="meta-label">💳 Paiement</span>
-                            <span class="meta-value">Virement</span>
-                        </div>
-                        <div class="meta-item">
-                            <span class="meta-label">📦 Articles</span>
-                            <span class="meta-value">1 produit</span>
-                        </div>
-                    </div>
-                    <div class="order-amount">
-                        <span class="amount-label">Montant total</span>
-                        <span class="amount-value">45,00€</span>
-                    </div>
-                </div>
-                <div class="card-actions">
-                    <button class="btn-view" onclick="viewOrderDetails(4)">
-                        <span class="btn-icon">👁️</span>
-                        Détails
-                    </button>
-                    <button class="btn-status" onclick="changeStatus(4)" disabled>
-                        <span class="btn-icon">🔄</span>
-                        Statut
-                    </button>
-                    <button class="btn-cancel" onclick="confirmCancelOrder(4)" disabled>
-                        <span class="btn-icon">🗑️</span>
-                        Annuler
-                    </button>
-                </div>
-            </div>
-        </div>
-    </main>
-
-    <!-- Order Details Modal -->
-    <div class="modal-overlay" id="detailsModal">
-        <div class="modal-container large">
-            <div class="modal-header">
-                <h3 class="modal-title">Détails de la commande <span id="detailOrderNumber"></span></h3>
-                <button class="modal-close" onclick="closeDetailsModal()">✕</button>
-            </div>
-
-            <div class="modal-body">
-                <!-- Customer Information -->
-                <div class="details-section">
-                    <h4 class="section-title">👤 Informations Client</h4>
-                    <div class="info-grid">
-                        <div class="info-item">
-                            <span class="info-label">Nom</span>
-                            <span class="info-value" id="detailCustomerName"></span>
-                        </div>
-                        <div class="info-item">
-                            <span class="info-label">Email</span>
-                            <span class="info-value" id="detailCustomerEmail"></span>
-                        </div>
-                        <div class="info-item">
-                            <span class="info-label">Téléphone</span>
-                            <span class="info-value" id="detailCustomerPhone"></span>
-                        </div>
-                        <div class="info-item">
-                            <span class="info-label">Adresse</span>
-                            <span class="info-value" id="detailCustomerAddress"></span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Order Information -->
-                <div class="details-section">
-                    <h4 class="section-title">📦 Informations Commande</h4>
-                    <div class="info-grid">
-                        <div class="info-item">
-                            <span class="info-label">Date</span>
-                            <span class="info-value" id="detailOrderDate"></span>
-                        </div>
-                        <div class="info-item">
-                            <span class="info-label">Statut</span>
-                            <span class="info-value" id="detailOrderStatus"></span>
-                        </div>
-                        <div class="info-item">
-                            <span class="info-label">Paiement</span>
-                            <span class="info-value" id="detailPaymentMethod"></span>
-                        </div>
-                        <div class="info-item">
-                            <span class="info-label">Livraison</span>
-                            <span class="info-value" id="detailShippingMethod"></span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Products List -->
-                <div class="details-section">
-                    <h4 class="section-title">🛒 Produits Commandés</h4>
-                    <div class="products-table" id="detailProductsList">
-                        <!-- Dynamic content -->
-                    </div>
-                </div>
-
-                <!-- Order Summary -->
-                <div class="details-section">
-                    <h4 class="section-title">💰 Récapitulatif</h4>
-                    <div class="order-summary">
-                        <div class="summary-row">
-                            <span>Sous-total</span>
-                            <span id="detailSubtotal"></span>
-                        </div>
-                        <div class="summary-row">
-                            <span>Livraison</span>
-                            <span id="detailShipping"></span>
-                        </div>
-                        <div class="summary-row">
-                            <span>Taxes (TVA 20%)</span>
-                            <span id="detailTax"></span>
-                        </div>
-                        <div class="summary-row total">
-                            <span>Total</span>
-                            <span id="detailTotal"></span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Status History -->
-                <div class="details-section">
-                    <h4 class="section-title">📋 Historique</h4>
-                    <div class="status-timeline" id="detailTimeline">
-                        <!-- Dynamic content -->
-                    </div>
-                </div>
+        <div class="stat-card">
+            <div class="stat-icon cancelled">❌</div>
+            <div class="stat-content">
+                <span class="stat-value" id="cancelledCount">{{$countAnnuler}}</span>
+                <span class="stat-label">Annulées</span>
             </div>
         </div>
     </div>
 
-    <!-- Change Status Modal -->
-    <div class="modal-overlay" id="statusModal">
-        <div class="modal-container">
-            <div class="modal-header">
-                <h3 class="modal-title">Changer le statut</h3>
-                <button class="modal-close" onclick="closeStatusModal()">✕</button>
+    <!-- Filters Bar -->
+    <!-- <div class="filters-bar">
+        <div class="search-box">
+            <span class="search-icon">🔍</span>
+            <input type="search" id="searchInput" placeholder="Rechercher par numéro ou client...">
+        </div>
+
+        <div class="filter-group">
+            <select id="statusFilter" class="filter-select">
+                <option value="">Tous les statuts</option>
+                <option value="pending">En attente</option>
+                <option value="paid">Payée</option>
+                <option value="shipped">Expédiée</option>
+                <option value="cancelled">Annulée</option>
+            </select>
+
+            <select id="dateFilter" class="filter-select">
+                <option value="">Toutes les dates</option>
+                <option value="today">Aujourd'hui</option>
+                <option value="week">Cette semaine</option>
+                <option value="month">Ce mois</option>
+            </select>
+
+            <select id="sortBy" class="filter-select">
+                <option value="date-desc">Plus récentes</option>
+                <option value="date-asc">Plus anciennes</option>
+                <option value="amount-desc">Montant décroissant</option>
+                <option value="amount-asc">Montant croissant</option>
+            </select>
+        </div>
+    </div> -->
+
+    <!-- Orders Grid -->
+    <div class="orders-grid" id="ordersGrid">
+        <!-- Order Card 1 -->
+
+        @foreach($paimentes as $paiment)
+        <div class="order-card" data-id="1" data-status="pending" data-date="2026-02-08">
+            <div class="card-header">
+                <div class="order-number">#CMD-2026-00{{$paiment->id}}</div>
+                @if($paiment->status=='en_attente')
+                <span class="status-badge pending">{{$paiment->status}}</span>
+                @elseif($paiment->status=='paye')
+                <span class="status-badge paid">{{$paiment->status}}</span>
+                @elseif($paiment->status=='annuler')
+                <span class="status-badge cancelled">{{$paiment->status}}</span>
+                @endif
+            </div>
+            <div class="card-body">
+                <div class="customer-info">
+                    <div class="customer-avatar">PD</div>
+                    <div class="customer-details">
+                        <span class="customer-name">{{$paiment->commande->user->name}}</span>
+                        <span class="customer-email">{{$paiment->commande->user->email}}</span>
+                    </div>
+                </div>
+                <div class="order-meta">
+                    <div class="meta-item">
+                        <span class="meta-label">📅 Date</span>
+                        <span class="meta-value">{{$paiment->created_at}}</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-label">💳 Paiement</span>
+                        <span class="meta-value">{{$paiment->methode}}</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-label">📦 Articles</span>
+                        <span class="meta-value">{{$paiment->commande->quantity}} produits</span>
+                    </div>
+                </div>
+                <div class="order-amount">
+                    <span class="amount-label">Montant total</span>
+                    <span class="amount-value">{{$paiment->commande->total}}$</span>
+                </div>
+            </div>
+            <div class="card-actions">
+                <!-- <button class="btn-view" onclick="viewOrderDetails(1)">
+                    <span class="btn-icon">👁️</span>
+                    Détails
+                </button> -->
+                <button class="btn-status" onclick="changeStatus(1)">
+                    <span class="btn-icon">🔄</span>
+                    Statut
+                </button>
+                <form action="{{ route('commandesAdmin.destroy', $paiment->id) }}" method="POST" onsubmit="return confirm()">
+                    @csrf
+                    @method('DELETE')
+                    <button  type="submit" class="btn-cancel">
+                       Delete<span class="btn-icon">🗑️</span>
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Change Status Modal -->
+        <div class="modal-overlay" id="statusModal">
+            <div class="modal-container">
+                <div class="modal-header">
+                    <h3 class="modal-title">Changer le statut</h3>
+                    <button class="modal-close" onclick="closeStatusModal()">✕</button>
+                </div>
+
+                <form action="{{route('commandesAdmin.update',$paiment->id)}}" method="post">
+                    @csrf
+                    @method('PUT')
+                    <div class="modal-body">
+                        <input type="hidden" id="statusOrderId">
+                        <div class="form-group">
+                            <label>Nouveau statut</label>
+                            <select id="newStatus" name="statu" class="form-select">
+                                <option value="en_attente">En attente</option>
+                                <option value="paye">Payée</option>
+                                <option value="annuler">Annulée</option>
+                            </select>
+                        </div>
+                        <div class="modal-actions">
+                            <button type="button" class="btn-secondary" onclick="closeStatusModal()">Annuler</button>
+                            <button type="submit" class="btn-primary">Confirmer</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        @endforeach
+
+
+    </div>
+</main>
+
+<!-- Order Details Modal -->
+<div class="modal-overlay" id="detailsModal">
+    <div class="modal-container large">
+        <div class="modal-header">
+            <h3 class="modal-title">Détails de la commande <span id="detailOrderNumber"></span></h3>
+            <button class="modal-close" onclick="closeDetailsModal()">✕</button>
+        </div>
+
+        <div class="modal-body">
+            <!-- Customer Information -->
+            <div class="details-section">
+                <h4 class="section-title">👤 Informations Client</h4>
+                <div class="info-grid">
+                    <div class="info-item">
+                        <span class="info-label">Nom</span>
+                        <span class="info-value" id="detailCustomerName"></span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Email</span>
+                        <span class="info-value" id="detailCustomerEmail"></span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Téléphone</span>
+                        <span class="info-value" id="detailCustomerPhone"></span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Adresse</span>
+                        <span class="info-value" id="detailCustomerAddress"></span>
+                    </div>
+                </div>
             </div>
 
-            <div class="modal-body">
-                <input type="hidden" id="statusOrderId">
-                <div class="form-group">
-                    <label>Nouveau statut</label>
-                    <select id="newStatus" class="form-select">
-                        <option value="pending">En attente</option>
-                        <option value="paid">Payée</option>
-                        <option value="shipped">Expédiée</option>
-                        <option value="cancelled">Annulée</option>
-                    </select>
+            <!-- Order Information -->
+            <div class="details-section">
+                <h4 class="section-title">📦 Informations Commande</h4>
+                <div class="info-grid">
+                    <div class="info-item">
+                        <span class="info-label">Date</span>
+                        <span class="info-value" id="detailOrderDate"></span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Statut</span>
+                        <span class="info-value" id="detailOrderStatus"></span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Paiement</span>
+                        <span class="info-value" id="detailPaymentMethod"></span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Livraison</span>
+                        <span class="info-value" id="detailShippingMethod"></span>
+                    </div>
                 </div>
-                <div class="modal-actions">
-                    <button class="btn-secondary" onclick="closeStatusModal()">Annuler</button>
-                    <button class="btn-primary" onclick="updateOrderStatus()">Confirmer</button>
+            </div>
+
+            <!-- Products List -->
+            <div class="details-section">
+                <h4 class="section-title">🛒 Produits Commandés</h4>
+                <div class="products-table" id="detailProductsList">
+                    <!-- Dynamic content -->
+                </div>
+            </div>
+
+            <!-- Order Summary -->
+            <div class="details-section">
+                <h4 class="section-title">💰 Récapitulatif</h4>
+                <div class="order-summary">
+                    <div class="summary-row">
+                        <span>Sous-total</span>
+                        <span id="detailSubtotal"></span>
+                    </div>
+                    <div class="summary-row">
+                        <span>Livraison</span>
+                        <span id="detailShipping"></span>
+                    </div>
+                    <div class="summary-row">
+                        <span>Taxes (TVA 20%)</span>
+                        <span id="detailTax"></span>
+                    </div>
+                    <div class="summary-row total">
+                        <span>Total</span>
+                        <span id="detailTotal"></span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Status History -->
+            <div class="details-section">
+                <h4 class="section-title">📋 Historique</h4>
+                <div class="status-timeline" id="detailTimeline">
+                    <!-- Dynamic content -->
                 </div>
             </div>
         </div>
     </div>
+</div>
 
-    <!-- Cancel Order Modal -->
-    <div class="modal-overlay" id="cancelModal">
-        <div class="modal-container confirm-modal">
-            <div class="confirm-icon">⚠️</div>
-            <h3 class="confirm-title">Annuler la commande</h3>
-            <p class="confirm-message">Êtes-vous sûr de vouloir annuler cette commande ? Cette action est irréversible et le client sera notifié.</p>
-            <div class="modal-actions">
-                <button class="btn-secondary" onclick="closeCancelModal()">Non, conserver</button>
-                <button class="btn-danger" onclick="cancelOrder()">Oui, annuler</button>
-            </div>
+
+<!-- Cancel Order Modal -->
+<div class="modal-overlay" id="cancelModal">
+    <div class="modal-container confirm-modal">
+        <div class="confirm-icon">⚠️</div>
+        <h3 class="confirm-title">Annuler la commande</h3>
+        <p class="confirm-message">Êtes-vous sûr de vouloir annuler cette commande ? Cette action est irréversible et le client sera notifié.</p>
+        <div class="modal-actions">
+            <button class="btn-secondary" onclick="closeCancelModal()">Non, conserver</button>
+            <button class="btn-danger" onclick="cancelOrder()">Oui, annuler</button>
         </div>
     </div>
+</div>
 
-    <!-- Toast Notification -->
-    <div class="toast" id="toast">
-        <div class="toast-icon" id="toastIcon">✓</div>
-        <div class="toast-message" id="toastMessage">Action effectuée avec succès</div>
-    </div>
+<!-- Toast Notification -->
+<div class="toast" id="toast">
+    <div class="toast-icon" id="toastIcon">✓</div>
+    <div class="toast-message" id="toastMessage">Action effectuée avec succès</div>
+</div>
 
 <script>
     //     // ========================================
@@ -808,20 +689,20 @@
     // // ========================================
     // // CHANGER LE STATUT
     // // ========================================
-    // function changeStatus(id) {
-    //     const order = orders.find(o => o.id === id);
-    //     if (!order || order.status === 'cancelled') return;
+    function changeStatus(id) {
+        // const order = orders.find(o => o.id === id);
+        // if (!order || order.status === 'cancelled') return;
 
-    //     currentOrderId = id;
-    //     document.getElementById('statusOrderId').value = id;
-    //     document.getElementById('newStatus').value = order.status;
-    //     document.getElementById('statusModal').classList.add('show');
-    // }
+        // currentOrderId = id;
+        document.getElementById('statusOrderId').value = id;
+        // document.getElementById('newStatus').value = order.status;
+        document.getElementById('statusModal').classList.add('show');
+    }
 
-    // function closeStatusModal() {
-    //     currentOrderId = null;
-    //     document.getElementById('statusModal').classList.remove('show');
-    // }
+    function closeStatusModal() {
+        currentOrderId = null;
+        document.getElementById('statusModal').classList.remove('show');
+    }
 
     // function updateOrderStatus() {
     //     const orderId = parseInt(document.getElementById('statusOrderId').value);
