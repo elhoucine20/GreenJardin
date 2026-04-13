@@ -22,7 +22,8 @@ class User extends Authenticatable
          'name',
          'email',
          'role',
-         'password'
+         'password',
+         'statu'
      ];
      public function favorite():BelongsToMany{
              return $this->BelongsToMany(Produit::class, 'favorites','user_id', 'produit_id');

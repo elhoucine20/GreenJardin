@@ -25,7 +25,7 @@
     </div>
 
     <!-- Stats Summary -->
-    <div class="stats-summary">
+    <!-- <div class="stats-summary">
         <div class="stat-item">
             <div class="stat-icon">📚</div>
             <div class="stat-content">
@@ -47,10 +47,10 @@
                 <span class="stat-label">Produits associés</span>
             </div>
         </div>
-    </div>
+    </div> -->
 
     <!-- Filters Bar -->
-    <div class="filters-bar">
+    <!-- <div class="filters-bar">
         <div class="search-box">
             <span class="search-icon">🔍</span>
             <input type="search" id="searchInput" placeholder="Rechercher une catégorie...">
@@ -70,7 +70,7 @@
                 <option value="products-asc">Moins de produits</option>
             </select>
         </div>
-    </div>
+    </div> -->
 
     <!-- Categories Grid -->
     <div class="categories-grid" id="categoriesGrid">

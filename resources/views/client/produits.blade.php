@@ -97,8 +97,8 @@
                                 @csrf
                                 @method('POST')
 
-                                <input type="number" name="produit_id" hidden value="{{$produit->id}}">
-                                <input type="number" name="prix" hidden value="{{$produit->prix}}">
+                                  <input type="number" name="prix" hidden value="{{$produit->prix}}">
+                                  <input type="number" name="produit_id" hidden value="{{$produit->id}}">
                                 <button type="submit" class="btn btn-cart">
                                     <i class="bi bi-cart-plus"></i> Add to Cart
                                 </button>

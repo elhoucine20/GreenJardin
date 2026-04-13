@@ -33,28 +33,27 @@
             </div>
 
             <div class="filter-group">
-                <select id="categoryFilter" class="filter-select">
+                <select id="categoryFilter" name="categorie" class="filter-select">
                     <option value="">Toutes les catégories</option>
-                    <option value="graines">Graines et semences</option>
-                    <option value="outils">Outils de jardinage</option>
+                    @foreach($categories as $categorie)
+                    <option value="{{$categorie->id}}">{{$categorie->name}}</option>
+                    @endforeach
+                    <!-- <option value="outils">Outils de jardinage</option>
                     <option value="engrais">Engrais et fertilisants</option>
                     <option value="pots">Pots et jardinières</option>
-                    <option value="decor">Décoration jardin</option>
+                    <option value="decor">Décoration jardin</option> -->
                 </select>
 
-                <select id="statusFilter" class="filter-select">
+                <!-- <select id="statusFilter" class="filter-select">
                     <option value="">Tous les statuts</option>
                     <option value="active">Actif</option>
                     <option value="inactive">Inactif</option>
-                </select>
+                </select> -->
 
                 <select id="sortBy" class="filter-select">
-                    <option value="name-asc">Nom (A-Z)</option>
-                    <option value="name-desc">Nom (Z-A)</option>
-                    <option value="price-asc">Prix croissant</option>
-                    <option value="price-desc">Prix décroissant</option>
-                    <option value="stock-asc">Stock croissant</option>
-                    <option value="stock-desc">Stock décroissant</option>
+                    <option value="name">Nom (A-Z)</option>
+                    <option value="prix">Prix croissant</option>
+                    <option value="stock">Stock croissant</option>
                 </select>
             </div>
         </div>

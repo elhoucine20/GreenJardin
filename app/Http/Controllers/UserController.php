@@ -1,8 +1,9 @@
 <?php
-
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
@@ -12,54 +13,46 @@ class UserController extends Controller
     public function index()
     {
         //
-        return view('admin/utilisateurs');
+        $users = User::all();
+        $countUsers = $users->count();
+        $countAdmins = User::where('role', 'admin')->count();
+        $countClients = User::where('role', 'client')->count();
+        return view('admin/utilisateurs', compact('users', 'countUsers', 'countAdmins', 'countClients'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+
+    // deBloquer   
+    public function deBloquer(string $id)
     {
         //
+        $user = User::findOrFail($id);
+        if (Auth::user()->role !== 'admin')
+        {
+           return to_route('utilisateurs-admin')->with('error','pas possible de bloquer');
+        }
+
+        $user->update(['statu' => 'active']);
+        return to_route('utilisateurs-admin')->with('succes','user est deBloquer avec succes');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+    // bloquer
+    public function Bloquer($id)
     {
         //
-    }
+        $user = User::findOrFail($id);
+        if (Auth::user()->role !== 'admin')
+        {
+           return to_route('utilisateurs-admin')->with('error','pas possible de bloquer');
+        }
+        if($user->email === 'elhoucinenaitbrahim@gmail.com')
+        { 
+            return to_route('utilisateurs-admin')->with('error','pas possible de bloquer admin');
+        }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
+        $user->update(['statu' => 'desActive']);
+        return to_route('utilisateurs-admin')->with('succes','user bloquer avec succes');
+  
     }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
-    }
+    
 }

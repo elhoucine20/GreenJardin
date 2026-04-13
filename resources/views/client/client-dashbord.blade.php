@@ -48,16 +48,14 @@
     <!-- ========================================
          CATEGORIES SECTION
          ======================================== -->
-    <section class="categories-section">
+    <!-- <section class="categories-section">
         <div class="container">
             <h2 class="section-title">Browse Categories</h2>
             <div class="row">
                 @foreach($categories as $categorie)
                 <div class="col-lg-4 col-md-6">
                     <div class="category-card" onclick="filterCategory('plant')">
-                        <!-- <img src="https://images.unsplash.com/photo-1466781783364-36c955e42a7f?w=600&h=400&fit=crop"
-                            alt="Plants"
-                            class="category-image"> -->
+
                             <div  >{{$categorie->icon}}</div>
                         <div class="category-body">
                             <h3>{{$categorie->name}}</h3>
@@ -67,7 +65,7 @@
                 @endforeach
             </div>
         </div>
-    </section>
+    </section> -->
 
     <!-- ========================================
          PRODUCTS SECTION
@@ -114,10 +112,13 @@
                                 <i class="bi bi-eye"></i> View Details
                             </button>
                             
-                            <form method="post" action="">
+                            <form method="post" action="{{route('commande-ajouter',$produit)}}">
                                 @csrf
                                 @method('POST')
 
+                                <input type="number" name="produit_id" hidden value="{{$produit->id}}">
+                                <input type="number" name="prix" hidden value="{{$produit->prix}}">
+                                
                                 <button type="submit" class="btn btn-cart">
                                     <i class="bi bi-cart-plus"></i> Add to Cart
                                 </button>

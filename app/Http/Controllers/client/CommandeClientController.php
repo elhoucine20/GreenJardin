@@ -26,7 +26,7 @@ class CommandeClientController extends Controller
             'prix'=>$request->prix,
             'total'=>$request->prix
         ]);
-        return to_route('commandess');
+        return to_route('checkout');
         // dd($request->post());
 
     }

@@ -7,6 +7,7 @@ use App\Http\Controllers\client\CommandeClientController;
 use App\Http\Controllers\client\PaimentController;
 // use App\Http\Controllers\client\CommandeController;
 use App\Http\Controllers\CommandesController;
+use App\Http\Controllers\DashbordAdminController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\ProduitController;
 use App\Http\Controllers\registerController;
@@ -40,7 +41,13 @@ Route::controller()->middleware(AdminMiddleware::class)->group(function () {
     Route::resource('categories', CategorieController::class);
 
     Route::get('/utilisateurs', [UserController::class, 'index'])->name('utilisateurs-admin');
+
+    Route::put('/userBloquer/{id}',[UserController::class,'Bloquer'])->name('userBloquer');
+    Route::put('/userDeBloquer/{id}',[UserController::class,'deBloquer'])->name('userDeBloquer');
+
     Route::get('/dashbord-admin', [LoginController::class, 'show'])->name('Dashbord-Admin');
+
+    Route::get('adminDashbord',[DashbordAdminController::class,'index'])->name('dashbordAdmin');
 
 
     Route::resource('/commandesAdmin', CommandesController::class);

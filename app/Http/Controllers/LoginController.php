@@ -31,7 +31,7 @@ class LoginController extends Controller
             if (Auth::user()->role=="admin") {
                 # code...
                 $request->session()->regenerate();
-                return to_route('Dashbord-Admin');
+                return to_route('dashbordAdmin');
             }else if(Auth::user()->role=="client"){
                 $request->session()->regenerate();
                 return to_route('dashbord');

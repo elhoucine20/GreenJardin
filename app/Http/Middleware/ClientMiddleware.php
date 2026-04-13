@@ -17,11 +17,11 @@ class ClientMiddleware
     public function handle(Request $request, Closure $next): Response
     {
         $user = Auth::user();
-        if( Auth::check() && $user->role=='client') {
+        if( Auth::check() && $user->role=='client' && $user->statu == 'active') {
             # code...
             return $next($request);
         }else{
-            return back();
+            return back()->with('error','your account is banned by administrateur');
         }
     }
 }

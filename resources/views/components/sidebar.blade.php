@@ -28,10 +28,10 @@
             <span class="nav-icon">👥</span>
             <span class="nav-text">Utilisateurs</span>
         </a>
-        <a href="#" class="nav-item">
+        <!-- <a href="#" class="nav-item">
             <span class="nav-icon">📈</span>
             <span class="nav-text">Statistiques</span>
-        </a>
+        </a> -->
         <a href="#" class="nav-item">
             <span class="nav-icon">⚙️</span>
             <span class="nav-text">Paramètres</span>
