@@ -24,15 +24,15 @@ class LoginController extends Controller
     {
         $email = $request->email;
         $password = $request->password;
-        $credentials = ['email'=> $email, 'password'=>$password];
+        $credentials = ['email' => $email, 'password' => $password];
         // Auth::attempt($credentials);
         if (Auth::attempt($credentials)) {
             # code...
-            if (Auth::user()->role=="admin") {
+            if (Auth::user()->role == "admin") {
                 # code...
                 $request->session()->regenerate();
                 return to_route('dashbordAdmin');
-            }else if(Auth::user()->role=="client"){
+            } else if (Auth::user()->role == "client") {
                 $request->session()->regenerate();
                 return to_route('dashbord');
             } else {
@@ -58,7 +58,7 @@ class LoginController extends Controller
     {
         //
         $categories = Categorie::all();
-        return  view('admin/admin-dashbord',compact('categories'));
+        return  view('admin/admin-dashbord', compact('categories'));
     }
 
     /**
@@ -86,7 +86,8 @@ class LoginController extends Controller
     }
 
 
-    public function LogOut(){
+    public function LogOut()
+    {
         Auth::logout();
         return view('auth/login');
     }

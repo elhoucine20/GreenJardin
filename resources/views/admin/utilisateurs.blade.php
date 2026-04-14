@@ -16,14 +16,14 @@
     <!-- Page Header -->
     @if(session('succes'))
     <div class="alert alert-success" style="color: green; padding:10px;">
-        <h3> {{ session('succes') }} ✅</h3>
+        <h3> {{ session('succes') }}</h3>
 
     </div>
     @endif
 
         @if(session('error'))
     <div class="alert alert-success" style="color: red; padding:10px;">
-        <h3> {{ session('error') }} 🚫</h3>
+        <h3> {{ session('error') }}</h3>
 
     </div>
     @endif
@@ -32,10 +32,10 @@
             <h2 class="page-title">Gestion des Utilisateurs</h2>
             <p class="page-subtitle">Gérez les comptes et les permissions de vos utilisateurs</p>
         </div>
-        <button class="btn-primary" id="addUserBtn">
+        <!-- <button class="btn-primary" id="addUserBtn">
             <span class="btn-icon">➕</span>
             Ajouter un utilisateur
-        </button>
+        </button> -->
     </div>
 
     <!-- Stats Summary -->
@@ -105,7 +105,11 @@
         @foreach($users as $user)
         <div class="user-card" data-id="1" data-role="admin" data-status="active">
             <div class="card-header">
-                <div class="user-avatar admin">JD</div>
+                @if($user->role == 'client')
+                <div class="user-avatar client">{{strtoupper(substr($user->name, 0, 2))}}</div>
+                @else
+                <div class="user-avatar admin">{{strtoupper(substr($user->name, 0, 2))}}</div>
+                @endif
                 <div class="user-badges">
                     <span class="role-badge admin">{{$user->role}}</span>
                     @if($user->statu == 'active')
@@ -148,10 +152,10 @@
                 </form>
                 @endif
 
-                <button class="btn-edit">
+                <!-- <button class="btn-edit">
                     <span class="btn-icon">✏️</span>
                     Modifier
-                </button>
+                </button> -->
                 <!-- <button class="btn-more" onclick="toggleUserMenu(1)">&vellip; </button> -->
             </div>
             <!-- <div class="dropdown-menu" id="menu-1">
