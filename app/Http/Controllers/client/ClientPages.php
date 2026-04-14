@@ -18,7 +18,7 @@ class ClientPages extends Controller
         $produits = Produit::all();
         $categories = Categorie::all();
         $favorites = Favorite::where('user_id', Auth::user()->id)->get();
-
+        
       //    return view('components/CardProduits',compact('produits','categories','favorites'));
         return view('client/produits',compact('produits','categories','favorites'));
     }

@@ -92,17 +92,32 @@
                             <button class="btn btn-view" onclick="ViewModal({{$produit->id}})">
                                 <i class="bi bi-eye"></i> View Details
                             </button>
-                            
-                            <form method="post" action="{{route('commande-ajouter',$produit)}}">
-                                @csrf
-                                @method('POST')
 
+                            @if($produit->stock <= 0)
+                                <button type="button" class="btn btn-decart">
+                                  <i class="bi bi-cart-plus"></i> n'exist pas
+                              </button>
+                              @else
+                              <form method="post" action="{{route('commande-ajouter',$produit)}}">
+                                  @csrf
+  
                                   <input type="number" name="prix" hidden value="{{$produit->prix}}">
                                   <input type="number" name="produit_id" hidden value="{{$produit->id}}">
-                                <button type="submit" class="btn btn-cart">
-                                    <i class="bi bi-cart-plus"></i> Add to Cart
-                                </button>
-                            </form>
+  
+                                  @if($produit->commandes()->where('status', 'pendding')->exists())
+  
+                                  <button type="button" class="btn btn-decart">
+                                      <i class="bi bi-cart-plus"></i> deja to Cart
+                                  </button>
+                                  @else
+                                  <button type="submit" class="btn btn-cart">
+                                      <i class="bi bi-cart-plus"></i> Add to Cart
+                                  </button>
+                                  @endif
+                              </form>
+
+                            @endif
+
                         </div>
                     </div>
                 </div>

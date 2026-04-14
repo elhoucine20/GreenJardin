@@ -78,7 +78,7 @@ Route::controller()->middleware(ClientMiddleware::class)->group(function () {
 
     // commandes
     Route::post('/commandes/{produit}',[CommandeClientController::class,'store'])->name('commande-ajouter');
-    Route::put('/commandes/{commande}',[CommandeClientController::class,'update'])->name('CommandeUpdated');
+    Route::put('/commandes/{id}',[CommandeClientController::class,'update'])->name('CommandeUpdated');
     
     // paiment
         Route::controller(PaimentController::class)->group(function(){

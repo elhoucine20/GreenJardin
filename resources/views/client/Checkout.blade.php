@@ -1,6 +1,7 @@
 @extends('layout.client')
 @section('title')
 <title>Checkout - GardenApp</title>
+<meta name="csrf-token" content="{{ csrf_token() }}">
 @endsection
 
 @section('style')
@@ -45,31 +46,30 @@
                             <div class="order-item-details">
                                 <div class="order-item-name">{{$commande->produit->name}}</div>
                                 <div class="order-item-quantity">Quantity: {{$commande->quantity}}</div>
-                                <form method="POST" action="{{ route('CommandeUpdated', $commande->id) }}">
-                                    @csrf
-                                    @method('PUT')
+                                <!-- <form method="POST" action=""> -->
 
-                                    <div class="quantity-controls">
 
-                                        <button type="submit" name="action" value="decrease" class="quantity-btn">
-                                            <i class="bi bi-dash"></i>
-                                        </button>
+                                <div class="checkout-container quantity-controls" data-update-url="{{route('CommandeUpdated', $commande->id)}}">
 
-                                        <input type="number"
-                                            class="quantity-input"
-                                            name="quantity"
-                                            value="{{ $commande->quantity }}"
-                                            readonly>
+                                    <button data-action="decrease" class="quantity-btn" data-id="{{ $commande->id }}">
+                                        <i class="bi bi-dash"></i>
+                                    </button>
 
-                                        <button type="submit" name="action" value="increase" class="quantity-btn">
-                                            <i class="bi bi-plus"></i>
-                                        </button>
+                                    <input type="number"
+                                        class="quantity-input"
+                                        id="quantity-{{$commande->id}}"
+                                        value="{{ $commande->quantity }}"
+                                        readonly>
 
-                                    </div>
-                                </form>
+                                    <button data-action="increase" data-id="{{$commande->id}}" class="quantity-btn">
+                                        <i class="bi bi-plus"></i>
+                                    </button>
+
+                                </div>
+                                <!-- </form> -->
 
                             </div>
-                            <div class="order-item-price">${{$commande->total}}</div>
+                            <div  id="total-{{$commande->id}}" class="order-item-price">${{$commande->total}}</div>
                         </div>
                         @endforeach
                         @endif
@@ -81,7 +81,7 @@
 
 
                         <!-- <div class="total-row grand-total"> -->
-                            @if($total!=0)
+                        @if($total!=0)
                         <span class="total-label">Total:</span>
                         <span class="total-value" id="grandTotal">${{$total}}</span>
                         @else
@@ -196,7 +196,7 @@
     function selectCommande(id) {
         document.getElementById('commande_id').value = id;
     }
-    
+
     document.querySelectorAll('.order-item').forEach(item => {
         item.addEventListener('click', function() {
             document.querySelectorAll('.order-item').forEach(i => i.classList.remove('selected'));
@@ -224,5 +224,57 @@
         document.getElementById('methodeCash').classList.add('active');
         document.getElementById('paymentMethod').value = 'cash';
     });
+
+    // pour changement quantity
+
+    let buttonsQuantity = document.querySelectorAll('.quantity-btn');
+    buttonsQuantity.forEach(btn => {
+        // console.log('Bouton trouver:', btn)
+        btn.addEventListener('click', function() {
+            // console.log('Click sur button')
+
+            // recuperer des donnees
+            let id = this.dataset.id;
+            let Action = this.dataset.action;
+            let url = this.closest('.checkout-container').dataset.updateUrl;
+
+
+             // url from  button clikcer
+            //  const urll = this.closest('[data-update-url]').dataset.updateUrl;
+                //  console.log('URL:', urll)
+            // console.log('id:', id, 'action:', action)
+
+            //  envoyer la requet a server 
+            fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        // 'Accept': 'application/json', // laravel va return json pas html
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                        'X-HTTP-Method-Override': 'PUT' // this post is put de l'origine
+                    },
+                    body: JSON.stringify({ action: Action })
+                })
+
+                // convertur reponse en json
+                    
+                .then(response => { /**  console.log('Status:', response.status)*/
+                                    return response.json()
+                                   })
+
+
+                // change dom
+                .then(data => {
+                    // console.log('Data:', data)
+                    document.getElementById(`quantity-${id}`).value = data.quantity;
+                    document.getElementById(`total-${id}`).innerHTML = data.total;
+                })
+
+                // .catch(error => {
+                //     console.log('❌ Erreur:', error)
+                // })
+
+        });
+    })
 </script>
 @endsection
