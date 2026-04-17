@@ -30,7 +30,7 @@
 <!-- ========================================
          SEARCH SECTION
          ======================================== -->
-<section class="search-section">
+<!-- <section class="search-section">
     <div class="container">
         <div class="search-container">
             <div class="search-wrapper">
@@ -43,7 +43,7 @@
             </div>
         </div>
     </div>
-</section>
+</section> -->
 
 <!-- ========================================
          CATEGORIES SECTION

@@ -32,11 +32,11 @@
 
         <!-- Category Filter Buttons -->
         <div class="category-filters">
-            <button class="category-btn active" onclick="filterByCategory('all')">
+            <button class="category-btn active" data-filter="all">
                 <i class="bi bi-grid-3x3-gap"></i> All Products
             </button>
             @foreach($categories as $categorie)
-            <button class="category-btn" onclick="filterByCategory('plant')">
+            <button class="category-btn" data-filter="{{$categorie->id}}">
                 <span>{{$categorie->icon}}</span>
                 {{$categorie->name}}
             </button>
@@ -51,13 +51,13 @@
 <section class="products-section">
     <div class="container">
         <div class="products-count">
-            Showing <strong id="productCount">9</strong> products
+            Showing <strong id="produitsCount"></strong> products
         </div>
 
         <div class="row" id="productsContainer">
             <!-- Product 1: Rose Plant -->
             @foreach($produits as $produit)
-            <div class="col-lg-4 col-md-6 product-item" data-name="Rose Plant" data-category="plant">
+            <div class="col-lg-4 col-md-6 product-item" data-categorie="{{$produit->categorie->id}}">
                 <div class="product-card">
                     <div class="product-image-wrapper">
 
@@ -95,28 +95,28 @@
 
                             @if($produit->stock <= 0)
                                 <button type="button" class="btn btn-decart">
-                                  <i class="bi bi-cart-plus"></i> n'exist pas
-                              </button>
-                              @else
-                              <form method="post" action="{{route('commande-ajouter',$produit)}}">
-                                  @csrf
-  
-                                  <input type="number" name="prix" hidden value="{{$produit->prix}}">
-                                  <input type="number" name="produit_id" hidden value="{{$produit->id}}">
-  
-                                  @if($produit->commandes()->where('status', 'pendding')->exists())
-  
-                                  <button type="button" class="btn btn-decart">
-                                      <i class="bi bi-cart-plus"></i> deja to Cart
-                                  </button>
-                                  @else
-                                  <button type="submit" class="btn btn-cart">
-                                      <i class="bi bi-cart-plus"></i> Add to Cart
-                                  </button>
-                                  @endif
-                              </form>
+                                <i class="bi bi-cart-plus"></i> n'exist pas
+                                </button>
+                                @else
+                                <form method="post" action="{{route('commande-ajouter',$produit)}}">
+                                    @csrf
 
-                            @endif
+                                    <input type="number" name="prix" hidden value="{{$produit->prix}}">
+                                    <input type="number" name="produit_id" hidden value="{{$produit->id}}">
+
+                                    @if($produit->commandes()->where('status', 'pendding')->exists())
+
+                                    <button type="button" class="btn btn-decart">
+                                        <i class="bi bi-cart-plus"></i> deja to Cart
+                                    </button>
+                                    @else
+                                    <button type="submit" class="btn btn-cart">
+                                        <i class="bi bi-cart-plus"></i> Add to Cart
+                                    </button>
+                                    @endif
+                                </form>
+
+                                @endif
 
                         </div>
                     </div>
@@ -201,5 +201,73 @@
 
         new bootstrap.Modal(document.getElementById(idProduit)).show();
     }
+
+    
+    // filtrage and recherch
+    //btns categories and cards produits
+    const btns = document.querySelectorAll('.category-btn');
+    const produits = document.querySelectorAll('.product-item');
+
+    let currentFilter = 'all';
+    let currentSearch = '';
+
+    const searchInput = document.getElementById('searchInput');
+
+    function filtrageAndSearch() {
+        let count = 0;
+        produits.forEach(produit => {
+            const categorie = produit.getAttribute('data-categorie');
+            const name = produit.querySelector('h4').textContent.toLowerCase();
+            const desc = produit.querySelector('p').textContent.toLowerCase();
+
+            const matchFilter = (currentFilter === 'all' || categorie === currentFilter);
+            const matchSearch = (name.includes(currentSearch) || desc.includes(currentSearch));
+
+            if (matchFilter && matchSearch) {
+                produit.style.display = "block";
+                count++;
+            } else {
+                produit.style.display = "none";
+            }
+            document.getElementById('produitsCount').textContent = count;
+        })
+
+        const noResults = document.getElementById('noResults');
+        if (count === 0) {
+            noResults.style.display = 'block';
+        } else {
+            noResults.style.display = 'none';
+        }
+    }
+
+    btns.forEach(btn => {
+        btn.addEventListener('click', function() {
+            btns.forEach(b => b.classList.remove('active'));
+            this.classList.add('active');
+
+            currentFilter = this.getAttribute('data-filter');
+            localStorage.setItem('filter', currentFilter);
+            filtrageAndSearch();
+        });
+    });
+
+    searchInput.addEventListener('input', function() {
+        currentSearch = this.value.toLowerCase();
+        filtrageAndSearch();
+    })
+
+    // appres reflish 
+    const savedFilter = localStorage.getItem('filter');
+    if (savedFilter) {
+        currentFilter = savedFilter;
+        btns.forEach(btn => {
+            if (btn.getAttribute('data-filter') == savedFilter) {
+                btn.classList.add('active')
+            } else {
+                btn.classList.remove('active');
+            }
+        });
+    }
+    filtrageAndSearch();
 </script>
 @endsection

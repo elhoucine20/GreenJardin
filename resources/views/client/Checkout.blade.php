@@ -45,7 +45,7 @@
                             </div>
                             <div class="order-item-details">
                                 <div class="order-item-name">{{$commande->produit->name}}</div>
-                                <div class="order-item-quantity">Quantity: {{$commande->quantity}}</div>
+                                <div  class="order-item-quantity">Quantity: <span id="quantityy-{{$commande->id}}">{{$commande->quantity}}</span></div>
                                 <!-- <form method="POST" action=""> -->
 
 
@@ -69,7 +69,7 @@
                                 <!-- </form> -->
 
                             </div>
-                            <div  id="total-{{$commande->id}}" class="order-item-price">${{$commande->total}}</div>
+                            <div id="total-{{$commande->id}}" class="order-item-price">${{$commande->total}}</div>
                         </div>
                         @endforeach
                         @endif
@@ -78,7 +78,6 @@
 
                     <!-- Order Total -->
                     <div class="order-total">
-
 
                         <!-- <div class="total-row grand-total"> -->
                         @if($total!=0)
@@ -211,7 +210,7 @@
 
     methodeStripe.addEventListener('click', () => {
         // document.getElementById('cardFields').classList.add('show');
-        document.getElementById('cashFields').classList.remove('show');
+        // document.getElementById('cashFields').classList.remove('show');
         document.getElementById('methodeStripe').classList.add('active');
         document.getElementById('methodeCash').classList.remove('active');
         document.getElementById('paymentMethod').value = 'stripe';
@@ -219,61 +218,56 @@
 
     methodeCash.addEventListener('click', () => {
         // document.getElementById('cardFields').classList.remove('show');
-        document.getElementById('cashFields').classList.add('show');
+        // document.getElementById('cashFields').classList.add('show');
         document.getElementById('methodeStripe').classList.remove('active');
         document.getElementById('methodeCash').classList.add('active');
         document.getElementById('paymentMethod').value = 'cash';
     });
 
     // pour changement quantity
-
     let buttonsQuantity = document.querySelectorAll('.quantity-btn');
     buttonsQuantity.forEach(btn => {
-        // console.log('Bouton trouver:', btn)
+        // console.log('btn trouver:', btn)
         btn.addEventListener('click', function() {
-            // console.log('Click sur button')
 
             // recuperer des donnees
             let id = this.dataset.id;
             let Action = this.dataset.action;
             let url = this.closest('.checkout-container').dataset.updateUrl;
 
-
-             // url from  button clikcer
-            //  const urll = this.closest('[data-update-url]').dataset.updateUrl;
-                //  console.log('URL:', urll)
-            // console.log('id:', id, 'action:', action)
+            // url from  btn click
+            //  console.log('URL:', url)
+            console.log('id:', id, 'action:', Action)
 
             //  envoyer la requet a server 
             fetch(url, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
-                        // 'Accept': 'application/json', // laravel va return json pas html
+                        'Accept': 'application/json', // laravel va return json pas html
                         'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
                         'X-HTTP-Method-Override': 'PUT' // this post is put de l'origine
                     },
-                    body: JSON.stringify({ action: Action })
+                    body: JSON.stringify({
+                        action: Action
+                    })
                 })
 
                 // convertur reponse en json
-                    
-                .then(response => { /**  console.log('Status:', response.status)*/
-                                    return response.json()
-                                   })
+
+                .then(response => {
+                    /**  console.log('Status:', response.status)*/
+                    return response.json()
+                })
 
 
                 // change dom
                 .then(data => {
-                    // console.log('Data:', data)
+                    console.log('Data:', data)
                     document.getElementById(`quantity-${id}`).value = data.quantity;
+                    document.getElementById(`quantityy-${id}`).innerHTML = data.quantity;
                     document.getElementById(`total-${id}`).innerHTML = data.total;
                 })
-
-                // .catch(error => {
-                //     console.log('❌ Erreur:', error)
-                // })
-
         });
     })
 </script>

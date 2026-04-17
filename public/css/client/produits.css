@@ -427,6 +427,11 @@ html {
 
 /*  */
 
+.category-btn.active {
+    background-color: #28a745;
+    color: white;
+}
+
 /* No Results */
 .no-results {
     text-align: center;
