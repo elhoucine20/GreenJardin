@@ -64,7 +64,7 @@
         <div class="stat-card">
             <div class="stat-icon active">✅</div>
             <div class="stat-content">
-                <span class="stat-value" id="activeCount">{{$countUsers}}</span>
+                <span class="stat-value" id="activeCount">{{$usersActif}}</span>
                 <span class="stat-label">Comptes actifs</span>
             </div>
         </div>

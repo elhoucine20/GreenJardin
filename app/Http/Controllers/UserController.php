@@ -15,9 +15,10 @@ class UserController extends Controller
         //
         $users = User::all();
         $countUsers = $users->count();
+        $usersActif = $users->where('statu','active')->count();
         $countAdmins = User::where('role', 'admin')->count();
         $countClients = User::where('role', 'client')->count();
-        return view('admin/utilisateurs', compact('users', 'countUsers', 'countAdmins', 'countClients'));
+        return view('admin/utilisateurs', compact('users', 'countUsers', 'countAdmins', 'countClients','usersActif'));
     }
 
 
