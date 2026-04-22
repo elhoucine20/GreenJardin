@@ -22,7 +22,8 @@
 <section class="orders-section">
     <div class="container">
         <div class="orders-count" id="ordersCount">
-            You have <strong id="orderNumber">3</strong> orders
+     
+            You have <strong id="orderNumber">{{$totalCommandes}}</strong> orders
         </div>
 
         <div id="ordersContainer">
@@ -158,18 +159,14 @@
 <!-- Custom JavaScript -->
 @section('script')
 <script>
-    // ========================================
-    // TOGGLE ORDER DETAILS
-    // ========================================
+
+    // toggle for delaits de commandes 
     function toggleOrderDetails(orderId) {
         const detailsElement = document.getElementById(`details-${orderId}`);
         const button = event.currentTarget;
 
         // Toggle show class
         detailsElement.classList.toggle('show');
-
-        // Toggle button icon
-        button.classList.toggle('expanded');
 
         // Update button text
         if (detailsElement.classList.contains('show')) {
@@ -178,62 +175,8 @@
             button.innerHTML = '<i class="bi bi-chevron-down"></i> View Details';
         }
 
-        console.log(`Toggled details for order ${orderId}`);
+        // console.log(`Toggle for order ${orderId}`);
     }
 
-    // ========================================
-    // CHECK EMPTY STATE
-    // ========================================
-    function checkEmptyState() {
-        const ordersContainer = document.getElementById('ordersContainer');
-        const orderCards = ordersContainer.querySelectorAll('.order-card');
-        const emptyOrders = document.getElementById('emptyOrders');
-        const ordersCount = document.getElementById('ordersCount');
-
-        if (orderCards.length === 0) {
-            emptyOrders.classList.add('show');
-            ordersContainer.style.display = 'none';
-            ordersCount.style.display = 'none';
-        } else {
-            emptyOrders.classList.remove('show');
-            ordersContainer.style.display = 'block';
-            ordersCount.style.display = 'block';
-        }
-    }
-
-    // ========================================
-    // UPDATE ORDER COUNT
-    // ========================================
-    function updateOrderCount() {
-        const orderCards = document.querySelectorAll('.order-card');
-        const count = orderCards.length;
-
-        document.getElementById('orderNumber').textContent = count;
-
-        const countText = document.getElementById('ordersCount');
-        if (count === 0) {
-            countText.textContent = 'You have no orders';
-        } else if (count === 1) {
-            countText.innerHTML = 'You have <strong>1</strong> order';
-        } else {
-            countText.innerHTML = `You have <strong>${count}</strong> orders`;
-        }
-
-        console.log(`Order count updated: ${count}`);
-    }
-
-    // ========================================
-    // INITIALIZE ON PAGE LOAD
-    // ========================================
-    document.addEventListener('DOMContentLoaded', function() {
-        updateOrderCount();
-        checkEmptyState();
-
-        console.log('🌿 GardenApp My Orders Page loaded successfully!');
-        console.log('Features: Order list, Expandable details, Status badges');
-
-        const orderCards = document.querySelectorAll('.order-card');
-        console.log(`Total orders: ${orderCards.length}`);
-    });
 </script>
 @endsection

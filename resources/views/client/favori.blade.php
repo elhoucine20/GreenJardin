@@ -21,7 +21,7 @@
 <section class="favorites-section">
     <div class="container">
         <div class="favorites-count" id="favoritesCount">
-            You have <strong id="favoriteNumber">5</strong> favorite products
+            You have <strong id="favoriteNumber">{{$favorites->count()}}</strong> favorite products
         </div>
 
         <div class="row" id="favoritesContainer">

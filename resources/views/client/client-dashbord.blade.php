@@ -21,9 +21,7 @@
     <div class="hero-content">
         <h1>Welcome to GardenApp</h1>
         <p>Discover plants, seeds and gardening tools</p>
-        <button class="btn btn-explore" onclick="scrollToProducts()">
-            Explore Products
-        </button>
+
     </div>
 </section>
 

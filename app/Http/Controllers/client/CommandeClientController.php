@@ -48,14 +48,6 @@ class CommandeClientController extends Controller
         $commande->total = $commande->prix * $commande->quantity;
         $commande->save();
 
-            // ← hadi hiya l fix
-            //  if ($request->expectsJson()) {
-            //      return response()->json([
-            //          'quantity' => $commande->quantity,
-            //          'total'    => $commande->total,
-            //      ]);
-            //  }
-
         return response()->json([
             'quantity' => $commande->quantity,
             'total' => $commande->total
