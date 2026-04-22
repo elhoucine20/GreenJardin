@@ -24,7 +24,7 @@ class LoginController extends Controller
     {
         $email = $request->email;
         $password = $request->password;
-        $credentials = ['email' => $email, 'password' => $password];
+        $credentials = ['email' => $email, 'password' => $password,'statu' => 'active'];
         // Auth::attempt($credentials);
         if (Auth::attempt($credentials)) {
             # code...
@@ -40,6 +40,8 @@ class LoginController extends Controller
                 // $request->session()->regenerate();
                 return view('auth/login');
             }
+        }else{
+            return to_route('login')->with('error','your account introvable ');
         }
     }
 

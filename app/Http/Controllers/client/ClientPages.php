@@ -29,7 +29,10 @@ class ClientPages extends Controller
 
         $paids = Commande::where('status','=','paid')->where('user_id','=',Auth::user()->id)->get();
         $totalPaids = $paids->sum('total');
-        return view('client/commandes',compact('penddings','paids','totalPaids','totalPenddings'));
+
+        $totalCommandes =   $penddings->count() + $paids->count() ;
+        
+        return view('client/commandes',compact('penddings','paids','totalPaids','totalPenddings','totalCommandes'));
     }
 
     

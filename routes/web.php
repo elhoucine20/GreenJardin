@@ -45,7 +45,7 @@ Route::controller()->middleware(AdminMiddleware::class)->group(function () {
     Route::put('/userBloquer/{id}',[UserController::class,'Bloquer'])->name('userBloquer');
     Route::put('/userDeBloquer/{id}',[UserController::class,'deBloquer'])->name('userDeBloquer');
 
-    Route::get('/dashbord-admin', [LoginController::class, 'show'])->name('Dashbord-Admin');
+    Route::get('/dashbordd-admin', [LoginController::class, 'show'])->name('Dashbord-Admin');
 
     Route::get('adminDashbord',[DashbordAdminController::class,'index'])->name('dashbordAdmin');
 

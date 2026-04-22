@@ -17,11 +17,13 @@
             </div>
 
             <!-- Message d'erreur (masqué par défaut) -->
-            <div class="error-message" style="display: none;">
+            @if(session('error'))
+            <div class="error-message">
                 <ul class="error-list">
-                    <li>Email ou mot de passe incorrect</li>
+                    <li>{{session('error')}}</li>
                 </ul>
             </div>
+            @endif
 
             <!-- Message de succès (masqué par défaut) -->
             <div class="success-message" style="display: none;">

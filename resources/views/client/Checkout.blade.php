@@ -45,7 +45,7 @@
                             </div>
                             <div class="order-item-details">
                                 <div class="order-item-name">{{$commande->produit->name}}</div>
-                                <div  class="order-item-quantity">Quantity: <span id="quantityy-{{$commande->id}}">{{$commande->quantity}}</span></div>
+                                <div class="order-item-quantity">Quantity: <span id="quantityy-{{$commande->id}}">{{$commande->quantity}}</span></div>
                                 <!-- <form method="POST" action=""> -->
 
 
@@ -192,13 +192,19 @@
 @section('script')
 
 <script>
+    // commande selecter
     function selectCommande(id) {
+        // add commande_id a input pour envoyer a laravel
         document.getElementById('commande_id').value = id;
     }
 
-    document.querySelectorAll('.order-item').forEach(item => {
+    // tout commandes 
+    let commandes = document.querySelectorAll('.order-item');
+
+    // remove class selected for all et apres add selected for current commande 
+    commandes.forEach(item => {
         item.addEventListener('click', function() {
-            document.querySelectorAll('.order-item').forEach(i => i.classList.remove('selected'));
+            commandes.forEach(i => i.classList.remove('selected'));
             this.classList.add('selected');
             selectCommande(this.dataset.id);
         });
@@ -207,21 +213,23 @@
     // payment method toggle
     let methodeStripe = document.getElementById('methodeStripe');
     let methodeCash = document.getElementById('methodeCash');
+    // input payment methiode 
+    let InputPaymentMethod = document.getElementById('paymentMethod');
 
     methodeStripe.addEventListener('click', () => {
-        // document.getElementById('cardFields').classList.add('show');
-        // document.getElementById('cashFields').classList.remove('show');
-        document.getElementById('methodeStripe').classList.add('active');
-        document.getElementById('methodeCash').classList.remove('active');
-        document.getElementById('paymentMethod').value = 'stripe';
+
+        methodeStripe.classList.add('active');
+        methodeCash.classList.remove('active');
+        // input method de paiment 
+        InputPaymentMethod.value = 'stripe';
     });
 
     methodeCash.addEventListener('click', () => {
-        // document.getElementById('cardFields').classList.remove('show');
-        // document.getElementById('cashFields').classList.add('show');
+
         document.getElementById('methodeStripe').classList.remove('active');
         document.getElementById('methodeCash').classList.add('active');
-        document.getElementById('paymentMethod').value = 'cash';
+        // input method de paiment 
+        InputPaymentMethod.value = 'cash';
     });
 
     // pour changement quantity
@@ -230,14 +238,15 @@
         // console.log('btn trouver:', btn)
         btn.addEventListener('click', function() {
 
-            // recuperer des donnees
+            // recuperer des donnees id de commande et action avec url
             let id = this.dataset.id;
             let Action = this.dataset.action;
+            
+            // recuperer route de controller pour modifier quentity
             let url = this.closest('.checkout-container').dataset.updateUrl;
 
-            // url from  btn click
             //  console.log('URL:', url)
-            console.log('id:', id, 'action:', Action)
+            // console.log('id:', id, 'action:', Action)
 
             //  envoyer la requet a server 
             fetch(url, {
@@ -248,15 +257,15 @@
                         'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
                         'X-HTTP-Method-Override': 'PUT' // this post is put de l'origine
                     },
+                    // kansift action li khso ydar
                     body: JSON.stringify({
                         action: Action
                     })
                 })
 
                 // convertur reponse en json
-
                 .then(response => {
-                    /**  console.log('Status:', response.status)*/
+                    //   console.log('Status:', response.status)
                     return response.json()
                 })
 
