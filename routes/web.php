@@ -1,17 +1,18 @@
 <?php
 
-use App\Http\Controllers\CategorieController;
+// use App\Http\Controllers\CategorieController;
+
+use App\Http\Controllers\admin\CategorieController;
+use App\Http\Controllers\admin\CommandesController;
+use App\Http\Controllers\admin\DashbordAdminController;
+use App\Http\Controllers\admin\ProduitController;
+use App\Http\Controllers\admin\UserController;
+use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Auth\registerController;
 use App\Http\Controllers\client\ClientFavoriController;
 use App\Http\Controllers\client\ClientPages;
 use App\Http\Controllers\client\CommandeClientController;
 use App\Http\Controllers\client\PaimentController;
-// use App\Http\Controllers\client\CommandeController;
-use App\Http\Controllers\CommandesController;
-use App\Http\Controllers\DashbordAdminController;
-use App\Http\Controllers\LoginController;
-use App\Http\Controllers\ProduitController;
-use App\Http\Controllers\registerController;
-use App\Http\Controllers\UserController;
 use App\Http\Controllers\visiteur\VisiteurController;
 use App\Http\Middleware\AdminMiddleware;
 use App\Http\Middleware\ClientMiddleware;

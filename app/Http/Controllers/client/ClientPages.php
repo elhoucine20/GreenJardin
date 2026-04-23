@@ -53,7 +53,7 @@ class ClientPages extends Controller
     public function checkout(){
         $commandes = Commande::where('status','=','pendding')->where('user_id','=',Auth::user()->id)->get();
          $total = $commandes->sum('total');
-         $user = Auth()->user();
+         $user = Auth::user();
         return view('client/Checkout',compact('commandes','total','user'));
     }
 

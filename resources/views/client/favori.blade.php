@@ -47,7 +47,7 @@
                         <h4>{{$favorite->produit->name}}</h4>
                         <p>{{$favorite->produit->description}}</p>
                         <div class="product-buttons">
-                            <button class="btn btn-view" onclick="ViewModal({{$favorite->id}})">
+                            <button class="btn btn-view" data-id="{{$favorite->id}}" onclick="ViewModal(this.dataset.id)">
                                 <i class="bi bi-eye"></i> View Details
                             </button>
 

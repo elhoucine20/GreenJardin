@@ -38,7 +38,7 @@
                     <div class="order-items">
                         @if($commandes)
                         @foreach($commandes as $commande)
-                        <div class="order-item" data-id="{{ $commande->id }}" onclick="selectCommande({{ $commande->id }})">
+                        <div class="order-item" data-id="{{ $commande->id }}" onclick="selectCommande(this.dataset.id)">
                             <div class="order-item-image">
                                 <img src="{{asset('storage/'.$commande->produit->image)}}"
                                     alt="{{ $commande->produit->name }}">
