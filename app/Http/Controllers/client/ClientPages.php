@@ -13,13 +13,22 @@ use Illuminate\Support\Facades\Auth;
 class ClientPages extends Controller
 {
     //
+        public function dashbordClient()
+    {
+        //
+        $produits = Produit::paginate(3);
+        $categories = Categorie::all();        
+        $favorites = Favorite::where('user_id', Auth::user()->id)->get();
+
+        return view('client/client-dashbord',compact('produits','categories','favorites'));
+    }
+
 
     public function produits(){
-        $produits = Produit::all();
+        $produits = Produit::paginate(3);
         $categories = Categorie::all();
         $favorites = Favorite::where('user_id', Auth::user()->id)->get();
         
-      //    return view('components/CardProduits',compact('produits','categories','favorites'));
         return view('client/produits',compact('produits','categories','favorites'));
     }
 
@@ -37,7 +46,7 @@ class ClientPages extends Controller
 
     
     public function favorites(){
-                 $favorites = Favorite::where('user_id', Auth::user()->id)->get();
+                 $favorites = Favorite::where('user_id', Auth::user()->id)->paginate(3);
                return view('client/favori', compact('favorites'));
     }
 

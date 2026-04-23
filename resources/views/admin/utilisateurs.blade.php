@@ -70,36 +70,7 @@
         </div>
     </div>
 
-    <!-- Filters Bar -->
-    <!-- <div class="filters-bar">
-            <div class="search-box">
-                <span class="search-icon">🔍</span>
-                <input type="search" id="searchInput" placeholder="Rechercher par nom ou email...">
-            </div>
 
-            <div class="filter-group">
-                <select id="roleFilter" class="filter-select">
-                    <option value="">Tous les rôles</option>
-                    <option value="admin">Administrateurs</option>
-                    <option value="client">Clients</option>
-                </select>
-
-                <select id="statusFilter" class="filter-select">
-                    <option value="">Tous les statuts</option>
-                    <option value="active">Actifs</option>
-                    <option value="blocked">Bloqués</option>
-                </select>
-
-                <select id="sortBy" class="filter-select">
-                    <option value="name-asc">Nom (A-Z)</option>
-                    <option value="name-desc">Nom (Z-A)</option>
-                    <option value="date-desc">Plus récents</option>
-                    <option value="date-asc">Plus anciens</option>
-                </select>
-            </div>
-        </div> -->
-
-    <!-- Users Grid -->
     <div class="users-grid" id="usersGrid">
         <!-- User Card 1 -->
         @foreach($users as $user)
@@ -168,127 +139,9 @@
                 </div> -->
         </div>
         @endforeach
-
-        <!-- User Card 2 -->
-        <!-- <div class="user-card" data-id="2" data-role="admin" data-status="active">
-                <div class="card-header">
-                    <div class="user-avatar admin">ML</div>
-                    <div class="user-badges">
-                        <span class="role-badge admin">Admin</span>
-                        <span class="status-badge active">Actif</span>
-                    </div>
-                </div>
-                <div class="card-body">
-                    <h3 class="user-name">Marc Laurent</h3>
-                    <p class="user-email">marc.laurent@email.fr</p>
-                    <div class="user-meta">
-                        <span class="meta-item">
-                            <span class="meta-icon">📅</span>
-                            Inscrit le 20 Jan 2024
-                        </span>
-                    </div>
-                </div>
-                <div class="card-actions">
-                    <button class="btn-view" onclick="viewUserProfile(2)">
-                        <span class="btn-icon">👁️</span>
-                        Profil
-                    </button>
-                    <button class="btn-edit" onclick="editUser(2)">
-                        <span class="btn-icon">✏️</span>
-                        Modifier
-                    </button>
-                    <button class="btn-more" onclick="toggleUserMenu(2)">⋮</button>
-                </div>
-                <div class="dropdown-menu" id="menu-2">
-                    <button onclick="toggleUserStatus(2)">
-                        <span>🔒</span> Bloquer
-                    </button>
-                    <button onclick="confirmDeleteUser(2)">
-                        <span>🗑️</span> Supprimer
-                    </button>
-                </div>
-            </div> -->
-
-        <!-- User Card 3 -->
-        <!-- <div class="user-card" data-id="3" data-role="client" data-status="active">
-                <div class="card-header">
-                    <div class="user-avatar client">PD</div>
-                    <div class="user-badges">
-                        <span class="role-badge client">Client</span>
-                        <span class="status-badge active">Actif</span>
-                    </div>
-                </div>
-                <div class="card-body">
-                    <h3 class="user-name">Pierre Dubois</h3>
-                    <p class="user-email">pierre.dubois@email.fr</p>
-                    <div class="user-meta">
-                        <span class="meta-item">
-                            <span class="meta-icon">📅</span>
-                            Inscrit le 05 Fév 2024
-                        </span>
-                    </div>
-                </div>
-                <div class="card-actions">
-                    <button class="btn-view" onclick="viewUserProfile(3)">
-                        <span class="btn-icon">👁️</span>
-                        Profil
-                    </button>
-                    <button class="btn-edit" onclick="editUser(3)">
-                        <span class="btn-icon">✏️</span>
-                        Modifier
-                    </button>
-                    <button class="btn-more" onclick="toggleUserMenu(3)">⋮</button>
-                </div>
-                <div class="dropdown-menu" id="menu-3">
-                    <button onclick="toggleUserStatus(3)">
-                        <span>🔒</span> Bloquer
-                    </button>
-                    <button onclick="confirmDeleteUser(3)">
-                        <span>🗑️</span> Supprimer
-                    </button>
-                </div>
-            </div> -->
-
-        <!-- User Card 4 -->
-        <!-- <div class="user-card" data-id="4" data-role="client" data-status="blocked">
-                <div class="card-header">
-                    <div class="user-avatar client">SB</div>
-                    <div class="user-badges">
-                        <span class="role-badge client">Client</span>
-                        <span class="status-badge blocked">Bloqué</span>
-                    </div>
-                </div>
-                <div class="card-body">
-                    <h3 class="user-name">Sophie Bernard</h3>
-                    <p class="user-email">sophie.bernard@email.fr</p>
-                    <div class="user-meta">
-                        <span class="meta-item">
-                            <span class="meta-icon">📅</span>
-                            Inscrit le 10 Fév 2024
-                        </span>
-                    </div>
-                </div>
-                <div class="card-actions">
-                    <button class="btn-view" onclick="viewUserProfile(4)">
-                        <span class="btn-icon">👁️</span>
-                        Profil
-                    </button>
-                    <button class="btn-edit" onclick="editUser(4)">
-                        <span class="btn-icon">✏️</span>
-                        Modifier
-                    </button>
-                    <button class="btn-more" onclick="toggleUserMenu(4)">⋮</button>
-                </div>
-                <div class="dropdown-menu" id="menu-4">
-                    <button onclick="toggleUserStatus(4)">
-                        <span>✅</span> Activer
-                    </button>
-                    <button onclick="confirmDeleteUser(4)">
-                        <span>🗑️</span> Supprimer
-                    </button>
-                </div>
-            </div> -->
     </div>
+    {{ $users->links() }}
+
 </main>
 
 <!-- Add/Edit User Modal -->

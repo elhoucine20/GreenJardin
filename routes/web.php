@@ -1,7 +1,7 @@
 <?php
 
 use App\Http\Controllers\CategorieController;
-use App\Http\Controllers\client\ClientController;
+use App\Http\Controllers\client\ClientFavoriController;
 use App\Http\Controllers\client\ClientPages;
 use App\Http\Controllers\client\CommandeClientController;
 use App\Http\Controllers\client\PaimentController;
@@ -12,7 +12,7 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\ProduitController;
 use App\Http\Controllers\registerController;
 use App\Http\Controllers\UserController;
-use App\Http\Controllers\visiteur\VisiteurController ;
+use App\Http\Controllers\visiteur\VisiteurController;
 use App\Http\Middleware\AdminMiddleware;
 use App\Http\Middleware\ClientMiddleware;
 use Illuminate\Support\Facades\Route;
@@ -57,17 +57,17 @@ Route::controller()->middleware(AdminMiddleware::class)->group(function () {
 //client  
 Route::controller()->middleware(ClientMiddleware::class)->group(function () {
 
-    Route::controller(ClientController::class)->group(function(){
+    Route::controller(ClientFavoriController::class)->group(function(){
 
-        Route::get('dashbord', 'index')->name('dashbord');
         Route::put('/Myfavori/{produit}', 'CreateFavorite')->name('AddToFavorites');
-        Route::get('/favorites','lesFavorites')->name('favorites');
-    });
-
-    
-
-    Route::controller(ClientPages::class)->group(function(){
-
+        // Route::get('/favorites','lesFavorites')->name('favorites');
+        });
+        
+        
+        
+        Route::controller(ClientPages::class)->group(function(){
+            
+        Route::get('dashbord', 'dashbordClient')->name('dashbord');
         Route::get('produitss','produits')->name('produitss');
         Route::get('panier','paniers')->name('paniers');
         Route::get('checkout', 'checkout')->name('checkout');

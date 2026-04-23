@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Produit\StoreProduitRequest;
+use App\Http\Requests\Produit\UpdateProduitRequest;
 use App\Http\Services\Validate;
 use App\Models\Categorie;
 use App\Models\Produit;
@@ -9,86 +11,41 @@ use Illuminate\Http\Request;
 
 class ProduitController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+
     public function index()
     {
         //
         $categories = Categorie::all();
-        $produits = Produit::all();
-        return view('admin/produits-admin',compact('categories','produits'));
+        $produits = Produit::paginate(4);
+        return view('admin/produits-admin', compact('categories', 'produits'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-        // return view('admin/create-produit');
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+    public function store(StoreProduitRequest $request)
     {
         //
         $image = null;
-        Validate::validateProduit($request);
-        $data = $request->all();
+        $data = $request->validated();
         if ($request->hasFile('image')) {
             # code...
-            $data['image'] = $request->file('image')->store('photos','public');
-            }
-            Produit::create($data);
-            return redirect()->route('produits.index');
-            // dd($request->post(), $image );
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(Produit $produit)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Produit $produit)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, $id)
-    {
-        //
-        // dd($request->post(),$id);
-        $produit = Produit::findOrFail($id);
-        $produit->update([
-            'name'=>$request->name,
-            'prix'=>$request->prix,
-            'description'=>$request->description,
-            'stock'=>$request->stock,
-            'categorie_id'=>$request->categorie_id,
-        ]);
-        return redirect()->route('produits.index');
+            $data['image'] = $request->file('image')->store('photos', 'public');
         }
-        
-        /**
-         * Remove the specified resource from storage.
-        */
-        public function destroy($id)
-        {
-            //
-            Produit::destroy($id);
-            return redirect()->route('produits.index');
+        Produit::create($data);
+        return redirect()->route('produits.index')->with('succes','produit created avec succes');
     }
 
+    public function update(UpdateProduitRequest $request, $id)
+    {
+        //
+        $produit = Produit::findOrFail($id);
+        $produit->update($request->validated());
+        return redirect()->route('produits.index')->with('succes','produit updated avec succes');
+    }
+
+
+    public function destroy($id)
+    {
+        //
+        Produit::destroy($id);
+        return redirect()->route('produits.index')->with('delete','produit deleted avec succes');
+    }
 }

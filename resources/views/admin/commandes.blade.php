@@ -63,39 +63,6 @@
             </div>
         </div>
     </div>
-
-    <!-- Filters Bar -->
-    <!-- <div class="filters-bar">
-        <div class="search-box">
-            <span class="search-icon">🔍</span>
-            <input type="search" id="searchInput" placeholder="Rechercher par numéro ou client...">
-        </div>
-
-        <div class="filter-group">
-            <select id="statusFilter" class="filter-select">
-                <option value="">Tous les statuts</option>
-                <option value="pending">En attente</option>
-                <option value="paid">Payée</option>
-                <option value="shipped">Expédiée</option>
-                <option value="cancelled">Annulée</option>
-            </select>
-
-            <select id="dateFilter" class="filter-select">
-                <option value="">Toutes les dates</option>
-                <option value="today">Aujourd'hui</option>
-                <option value="week">Cette semaine</option>
-                <option value="month">Ce mois</option>
-            </select>
-
-            <select id="sortBy" class="filter-select">
-                <option value="date-desc">Plus récentes</option>
-                <option value="date-asc">Plus anciennes</option>
-                <option value="amount-desc">Montant décroissant</option>
-                <option value="amount-asc">Montant croissant</option>
-            </select>
-        </div>
-    </div> -->
-
     <!-- Orders Grid -->
     <div class="orders-grid" id="ordersGrid">
         <!-- Order Card 1 -->
@@ -187,11 +154,9 @@
                 </form>
             </div>
         </div>
-
         @endforeach
-
-
     </div>
+    {{ $paimentes->links() }}
 </main>
 
 <!-- Order Details Modal -->

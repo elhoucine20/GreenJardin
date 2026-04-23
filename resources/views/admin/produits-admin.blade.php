@@ -19,6 +19,14 @@
                 <h2 class="page-title">Gestion des Produits</h2>
                 <p class="page-subtitle">Gérez votre catalogue de produits de jardinage</p>
             </div>
+                    <div>
+            @if(session('succes'))
+            <p style="color: green;">{{session('succes')}}</p>
+            @endif
+            @if(session('delete'))
+            <p style="color: red;">{{session('delete')}}</p>
+            @endif
+        </div>
             <button class="btn-primary" onclick="openAddModal()">
                 <span class="btn-icon">➕</span>
                 Ajouter un produit
@@ -26,7 +34,7 @@
         </div>
 
         <!-- Filters and Search -->
-        <div class="filters-bar">
+        <!-- <div class="filters-bar">
             <div class="search-box">
                 <span class="search-icon">🔍</span>
                 <input type="search" id="searchInput" placeholder="Rechercher un produit...">
@@ -34,29 +42,13 @@
 
             <div class="filter-group">
                 <select id="categoryFilter" name="categorie" class="filter-select">
-                    <option value="">Toutes les catégories</option>
+                    <option value="tout">Toutes les catégories</option>
                     @foreach($categories as $categorie)
                     <option value="{{$categorie->id}}">{{$categorie->name}}</option>
                     @endforeach
-                    <!-- <option value="outils">Outils de jardinage</option>
-                    <option value="engrais">Engrais et fertilisants</option>
-                    <option value="pots">Pots et jardinières</option>
-                    <option value="decor">Décoration jardin</option> -->
-                </select>
-
-                <!-- <select id="statusFilter" class="filter-select">
-                    <option value="">Tous les statuts</option>
-                    <option value="active">Actif</option>
-                    <option value="inactive">Inactif</option>
-                </select> -->
-
-                <select id="sortBy" class="filter-select">
-                    <option value="name">Nom (A-Z)</option>
-                    <option value="prix">Prix croissant</option>
-                    <option value="stock">Stock croissant</option>
                 </select>
             </div>
-        </div>
+        </div> -->
 
         <!-- Products Grid -->
         <div class="products-grid" id="productsGrid">
@@ -112,6 +104,9 @@
                 </div>
             </div>
             @endforeach
+         {{ $produits->links() }}
+
+
         </div>
     </main>
 

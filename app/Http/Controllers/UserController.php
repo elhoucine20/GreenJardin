@@ -7,20 +7,17 @@ use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+
     public function index()
     {
         //
-        $users = User::all();
-        $countUsers = $users->count();
-        $usersActif = $users->where('statu','active')->count();
+        $users = User::paginate(4);
+        $countUsers = User::count();
+        $usersActif = User::where('statu','active')->count();
         $countAdmins = User::where('role', 'admin')->count();
         $countClients = User::where('role', 'client')->count();
         return view('admin/utilisateurs', compact('users', 'countUsers', 'countAdmins', 'countClients','usersActif'));
     }
-
 
     // deBloquer   
     public function deBloquer(string $id)

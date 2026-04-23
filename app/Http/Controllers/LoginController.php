@@ -2,30 +2,26 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Auth\LoginRequest;
 use App\Models\Categorie;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class LoginController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+
     public function index()
     {
         //
         return view('auth/login');
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create(Request $request)
+    public function create(LoginRequest $request)
     {
         $email = $request->email;
         $password = $request->password;
-        $credentials = ['email' => $email, 'password' => $password,'statu' => 'active'];
-        // Auth::attempt($credentials);
+        $credentials = ['email' => $email, 'password' => $password, 'statu' => 'active'];
+
         if (Auth::attempt($credentials)) {
             # code...
             if (Auth::user()->role == "admin") {
@@ -40,53 +36,17 @@ class LoginController extends Controller
                 // $request->session()->regenerate();
                 return view('auth/login');
             }
-        }else{
-            return to_route('login')->with('error','your account introvable ');
+        } else {
+            return to_route('login')->with('error', 'your account introvable ');
         }
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
     public function show()
     {
         //
         $categories = Categorie::all();
         return  view('admin/admin-dashbord', compact('categories'));
     }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
-    }
-
 
     public function LogOut()
     {

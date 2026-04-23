@@ -2,70 +2,40 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Categorie\StoreCategorieRequest;
+use App\Http\Requests\Categorie\UpdateCategorieRequest;
 use App\Http\Services\Validate;
 use App\Models\Categorie;
 use Illuminate\Http\Request;
 
 class CategorieController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+
     public function index()
     {
         //
-        $categories = Categorie::all();
+        $categories = Categorie::paginate(3);
         $totalCategories = $categories->count();
         return view('admin/category',compact('categories','totalCategories'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function store(StoreCategorieRequest $request)
     {
         //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-        Validate::ValidateCategorie($request);
+        // Validate::ValidateCategorie($request);
         Categorie::create([
                 'name'=>$request->categorie_name,
                 'icon'=>$request->emoji,
                 'description'=>$request->description,
             ]);
-            return redirect()->route('category-admin');
             // dd($request->post());
+            return redirect()->route('categories.index')->with('succes','categorie created avec succes');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Categorie $categorie)
+    public function update(UpdateCategorieRequest $request, $id)
     {
         //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Categorie $categorie)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, $id)
-    {
-        //
-        Validate::ValidateCategorie($request);
+        // Validate::ValidateCategorie($request);   
         $categorie = Categorie::findOrFail($id);
         $categorie->update([
             'name' => $request->categorie_name,
@@ -74,17 +44,14 @@ class CategorieController extends Controller
             ]);
             
             // dd($request->post(),$id);
-    return redirect()->route('category-admin');
+    return redirect()->route('categories.index')->with('succes','categorie updated avec succes');
 
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy($id)
     {
         // dd($categorie);
         Categorie::destroy($id);
-        return redirect()->route('category-admin');
+        return redirect()->route('categories.index')->with('delete','categorie deleted avec succes');
     }
 }

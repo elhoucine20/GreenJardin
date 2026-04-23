@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\client;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Client\StoreCommandeRequest;
+use App\Http\Requests\Client\UpdateCommandeRequest;
 use App\Models\Commande;
 use App\Models\Produit;
 use App\Models\User;
@@ -12,13 +14,13 @@ use Illuminate\Support\Facades\Auth;
 class CommandeClientController extends Controller
 {
 
-    public function index($commandeId)
-    {
-        $commande = Commande::with('produit')->findOrFail($commandeId);
-        return view('paiment', compact('commande'));
-    }
+    // public function index($commandeId)
+    // {
+    //     $commande = Commande::with('produit')->findOrFail($commandeId);
+    //     return view('paiment', compact('commande'));
+    // }
 
-    public function store(Request $request)
+    public function store(StoreCommandeRequest $request)
     {
         Commande::create([
             'user_id' => Auth::user()->id,
@@ -26,13 +28,13 @@ class CommandeClientController extends Controller
             'prix' => $request->prix,
             'total' => $request->prix
         ]);
-        return to_route('checkout');
+        return to_route('checkout')->with('succes','add produit de cart avec succes');
         // dd($request->post());
 
     }
 
 
-    public function update(Request $request, $id)
+    public function update(UpdateCommandeRequest $request, $id)
     {
         $commande = Commande::findOrFail($id);
 

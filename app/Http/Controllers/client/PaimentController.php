@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\client;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Client\PaimentRequest;
 use App\Models\Commande;
 use App\Models\Paiment;
 use Illuminate\Http\Request;
@@ -16,16 +17,16 @@ class PaimentController extends Controller
         return view('paiment', compact('commande'));
     }
 
-
-    public function payer(Request $request)
+    public function payer(PaimentRequest $request)
     {
+
+        $commande = Commande::findOrFail($request->commande_id);
 
         // method de cash
         if ($request->methode == 'cash') {
-            $commande = Commande::findOrFail($request->commande_id);
             # code...
             Paiment::create([
-                'commande_id' => $request->commande_id,
+                'commande_id' => $commande->id,
                 'status' => 'en_attente',
                 'methode'     => 'cash',
                 'montant'     => $commande->total,
@@ -34,11 +35,8 @@ class PaimentController extends Controller
             $commande->update(['status' => 'en_cash']);
             return to_route('checkout')->with('success', 'paiment a la laivraison confirmer');
         } else if ($request->methode == 'stripe') {
-            # code...
-            // find commande 
-            $commande = Commande::findOrFail($request->commande_id);
 
-        // connecter avec stripe par secret key
+            // connecter avec stripe par secret key
             \Stripe\Stripe::setApiKey(env('STRIPE_SECRET'));
 
             // creation de session en stripe 
@@ -67,7 +65,7 @@ class PaimentController extends Controller
         return back()->with('error', 'Methode invalide.');
     }
 
- 
+
     // sripe redirect user vers cette page automatiquement avec commande_id 
     public function stripeSuccess(Request $request)
     {
@@ -87,7 +85,7 @@ class PaimentController extends Controller
             ]);
 
             $commande->update(['status' => 'paid']);
-            
+
             // redirect page principale avec message de succes
             return to_route('checkout')->with('success', 'Paiement Stripe reussi !');
         }

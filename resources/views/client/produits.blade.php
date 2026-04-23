@@ -177,6 +177,8 @@
                 </div>
             </div>
             @endforeach
+            {{ $produits->links('pagination::bootstrap-5') }}
+
 
         </div>
 

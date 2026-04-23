@@ -18,59 +18,19 @@
             <h2 class="page-title">Gestion des Catégories</h2>
             <p class="page-subtitle">Organisez et gérez les catégories de votre catalogue</p>
         </div>
+        <div>
+            @if(session('succes'))
+            <p style="color: green;">{{session('succes')}}</p>
+            @endif
+            @if(session('delete'))
+            <p style="color: red;">{{session('delete')}}</p>
+            @endif
+        </div>
         <button onclick="openAddModal()" class="btn-primary" id="addCategoryBtn">
             <span class="btn-icon">➕</span>
             Ajouter une catégorie
         </button>
     </div>
-
-    <!-- Stats Summary -->
-    <!-- <div class="stats-summary">
-        <div class="stat-item">
-            <div class="stat-icon">📚</div>
-            <div class="stat-content">
-                <span class="stat-value">{{$totalCategories}}</span>
-                <span class="stat-label">Total catégories</span>
-            </div>
-        </div>
-        <div class="stat-item">
-            <div class="stat-icon">✅</div>
-            <div class="stat-content">
-                <span class="stat-value" id="activeCategories">5</span>
-                <span class="stat-label">Catégories actives</span>
-            </div>
-        </div>
-        <div class="stat-item">
-            <div class="stat-icon">📦</div>
-            <div class="stat-content">
-                <span class="stat-value" id="totalProducts">248</span>
-                <span class="stat-label">Produits associés</span>
-            </div>
-        </div>
-    </div> -->
-
-    <!-- Filters Bar -->
-    <!-- <div class="filters-bar">
-        <div class="search-box">
-            <span class="search-icon">🔍</span>
-            <input type="search" id="searchInput" placeholder="Rechercher une catégorie...">
-        </div>
-
-        <div class="filter-group">
-            <select id="statusFilter" class="filter-select">
-                <option value="">Tous les statuts</option>
-                <option value="active">Actives</option>
-                <option value="inactive">Inactives</option>
-            </select>
-
-            <select id="sortBy" class="filter-select">
-                <option value="name-asc">Nom (A-Z)</option>
-                <option value="name-desc">Nom (Z-A)</option>
-                <option value="products-desc">Plus de produits</option>
-                <option value="products-asc">Moins de produits</option>
-            </select>
-        </div>
-    </div> -->
 
     <!-- Categories Grid -->
     <div class="categories-grid" id="categoriesGrid">
@@ -121,37 +81,9 @@
         <div class="modal-overlay" id="categoryModalEdit">
 
         </div>
-
         @endforeach
-
-        <!-- Category Card 6 -->
-        <div class="category-card" data-id="6" data-status="inactive">
-            <div class="card-header">
-                <div class="category-icon">💧</div>
-                <span class="category-status inactive">Inactif</span>
-            </div>
-            <div class="card-content">
-                <h3 class="category-name">Arrosage et Irrigation</h3>
-                <p class="category-description">Systèmes d'arrosage automatique et équipements pour optimiser la gestion de l'eau.</p>
-                <div class="category-stats">
-                    <div class="stat-badge">
-                        <span class="badge-icon">📦</span>
-                        <span class="badge-text">11 produits</span>
-                    </div>
-                </div>
-            </div>
-            <div class="card-actions">
-                <button class="btn-edit">
-                    <span class="btn-icon">✏️</span>
-                    Modifier
-                </button>
-                <button class="btn-delete" >
-                    <span class="btn-icon">🗑️</span>
-                    Supprimer
-                </button>
-            </div>
-        </div>
     </div>
+    {{ $categories->links() }}
 </main>
 
 <!-- Modal Form - Add/Edit Category -->

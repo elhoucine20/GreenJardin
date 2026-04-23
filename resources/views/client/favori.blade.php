@@ -23,6 +23,11 @@
         <div class="favorites-count" id="favoritesCount">
             You have <strong id="favoriteNumber">{{$favorites->count()}}</strong> favorite products
         </div>
+        <aside>
+            @if(session('deleted'))
+            <p style="color: red;">{{session('deleted')}}</p>
+            @endif
+        </aside>
 
         <div class="row" id="favoritesContainer">
             <!-- Favorite 1: Rose Plant -->
@@ -141,8 +146,10 @@
             <p>Aucun Produit</p>
             @endif
             @endforeach
-
+            
+            
         </div>
+        {{ $favorites->links('pagination::bootstrap-5') }}
 
         <!-- Empty State -->
         <div id="emptyState" class="empty-state">
