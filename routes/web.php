@@ -1,7 +1,4 @@
 <?php
-
-// use App\Http\Controllers\CategorieController;
-
 use App\Http\Controllers\admin\CategorieController;
 use App\Http\Controllers\admin\CommandesController;
 use App\Http\Controllers\admin\DashbordAdminController;
@@ -18,10 +15,8 @@ use App\Http\Middleware\AdminMiddleware;
 use App\Http\Middleware\ClientMiddleware;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
+// visiteur
+Route::get('/',[VisiteurController::class,'index'])->name('visiteur');
 
 // authentification
 Route::get('/inscription', [registerController::class, 'index'])->name('inscrire');
@@ -50,10 +45,8 @@ Route::controller()->middleware(AdminMiddleware::class)->group(function () {
 
     Route::get('adminDashbord',[DashbordAdminController::class,'index'])->name('dashbordAdmin');
 
-
     Route::resource('/commandesAdmin', CommandesController::class);
 });
-
 
 //client  
 Route::controller()->middleware(ClientMiddleware::class)->group(function () {
@@ -63,9 +56,7 @@ Route::controller()->middleware(ClientMiddleware::class)->group(function () {
         Route::put('/Myfavori/{produit}', 'CreateFavorite')->name('AddToFavorites');
         // Route::get('/favorites','lesFavorites')->name('favorites');
         });
-        
-        
-        
+    
         Route::controller(ClientPages::class)->group(function(){
             
         Route::get('dashbord', 'dashbordClient')->name('dashbord');
@@ -89,9 +80,4 @@ Route::controller()->middleware(ClientMiddleware::class)->group(function () {
             Route::get('cancel','cancel')->name('cancel');
             Route::get('/stripe/success','stripeSuccess')->name('stripe.success');
         });
-
-
 });
-
-// visiteur
-Route::get('visiteur',[VisiteurController::class,'index'])->name('visiteur');
