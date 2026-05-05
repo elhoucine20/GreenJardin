@@ -11,7 +11,7 @@ use Illuminate\Http\Request;
 class PaimentController extends Controller
 {
     //
-    public function index($commandeId)
+    public function index(int $commandeId)
     {
         $commande = Commande::with('produit')->findOrFail($commandeId);
         return view('paiment', compact('commande'));
@@ -44,9 +44,9 @@ class PaimentController extends Controller
                 'payment_method_types' => ['card'],
                 'line_items' => [[
                     'price_data' => [
-                        'currency'     => 'usd',
+                        'currency'     => 'usd', //lomla
                         'product_data' => [
-                            'name' => $commande->produit->name,
+                            'name' => $commande->produit->name, // name de produit
                         ],
                         'unit_amount'  => $commande->total * 100, // stripe va calculer en cents
                     ],
@@ -87,9 +87,9 @@ class PaimentController extends Controller
             $commande->update(['status' => 'paid']);
 
             // redirect page principale avec message de succes
-            return to_route('checkout')->with('success', 'Paiement Stripe reussi !');
+            return to_route('checkout')->with('success', 'paiement Stripe avec success');
         }
 
-        return to_route('checkout')->with('error', 'Paiement echoue.');
+        return to_route('checkout')->with('error', 'paiement pas terminer.');
     }
 }

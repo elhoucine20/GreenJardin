@@ -8,6 +8,7 @@ use App\Http\Requests\Categorie\UpdateCategorieRequest;
 use App\Http\Services\Validate;
 use App\Models\Categorie;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class CategorieController extends Controller
 {
@@ -33,7 +34,7 @@ class CategorieController extends Controller
             return redirect()->route('categories.index')->with('succes','categorie created avec succes');
     }
 
-    public function update(UpdateCategorieRequest $request, $id)
+    public function update(UpdateCategorieRequest $request, int $id)
     {
         //
         // Validate::ValidateCategorie($request);   
@@ -49,7 +50,7 @@ class CategorieController extends Controller
 
     }
 
-    public function destroy($id)
+    public function destroy(int $id)
     {
         // dd($categorie);
         Categorie::destroy($id);

@@ -156,7 +156,6 @@
 </section>
 @endsection
 
-<!-- Custom JavaScript -->
 @section('script')
 <script>
 
@@ -175,7 +174,6 @@
             button.innerHTML = '<i class="bi bi-chevron-down"></i> View Details';
         }
 
-        // console.log(`Toggle for order ${orderId}`);
     }
 
 </script>

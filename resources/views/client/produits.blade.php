@@ -89,7 +89,7 @@
                         <h4>{{$produit->name}}</h4>
                         <p>{{$produit->description}}</p>
                         <div class="product-buttons">
-                            <button class="btn btn-view" onclick="ViewModal({{$produit->id}})">
+                            <button class="btn btn-view" data-produit="{{$produit->id}}" onclick="ViewModal(this.dataset.produit)">
                                 <i class="bi bi-eye"></i> View Details
                             </button>
 
@@ -104,7 +104,7 @@
                                     <input type="number" name="prix" hidden value="{{$produit->prix}}">
                                     <input type="number" name="produit_id" hidden value="{{$produit->id}}">
 
-                                    @if($produit->commandes()->where('status', 'pendding')->exists())
+                                    @if($produit->commandes()->where('status', 'pendding')->where('user_id',auth()->id())->exists())
 
                                     <button type="button" class="btn btn-decart">
                                         <i class="bi bi-cart-plus"></i> deja to Cart
@@ -177,7 +177,9 @@
                 </div>
             </div>
             @endforeach
-            {{ $produits->links('pagination::bootstrap-5') }}
+            <div id="containerDePagination">
+                {{ $produits->links('pagination::bootstrap-5') }}
+            </div>
 
 
         </div>
@@ -231,6 +233,8 @@
             } else {
                 produit.style.display = "none";
             }
+            console.log(count);
+            
             document.getElementById('produitsCount').textContent = count;
         })
 

@@ -15,7 +15,6 @@
 @section('title-h1', 'Checkout')
 @section('description-p', 'Confirm your order and enter payment details')
 
-
 @section('sections')
 <!-- ========================================
          CHECKOUT SECTION
@@ -46,48 +45,35 @@
                             <div class="order-item-details">
                                 <div class="order-item-name">{{$commande->produit->name}}</div>
                                 <div class="order-item-quantity">Quantity: <span id="quantityy-{{$commande->id}}">{{$commande->quantity}}</span></div>
-                                <!-- <form method="POST" action=""> -->
-
 
                                 <div class="checkout-container quantity-controls" data-update-url="{{route('CommandeUpdated', $commande->id)}}">
-
                                     <button data-action="decrease" class="quantity-btn" data-id="{{ $commande->id }}">
                                         <i class="bi bi-dash"></i>
                                     </button>
-
                                     <input type="number"
                                         class="quantity-input"
                                         id="quantity-{{$commande->id}}"
                                         value="{{ $commande->quantity }}"
                                         readonly>
-
                                     <button data-action="increase" data-id="{{$commande->id}}" class="quantity-btn">
                                         <i class="bi bi-plus"></i>
                                     </button>
-
                                 </div>
-                                <!-- </form> -->
-
                             </div>
                             <div id="total-{{$commande->id}}" class="order-item-price">${{$commande->total}}</div>
                         </div>
                         @endforeach
                         @endif
-
                     </div>
-
                     <!-- Order Total -->
                     <div class="order-total">
-
                         <!-- <div class="total-row grand-total"> -->
                         @if($total!=0)
-                        <span class="total-label">Total:</span>
-                        <span class="total-value" id="grandTotal">${{$total}}</span>
+                        <span class="total-label">Total:$</span>
+                        <span class="total-value" id="grandTotal">{{$total}}</span>
                         @else
-                        <span class="total-value" id="grandTotal">Aucun Order</span>
+                        <span class="total-value" id="grandTotal2">Aucun Order</span>
                         @endif
-
-                        <!-- </div> -->
                     </div>
                 </div>
             </div>
@@ -115,7 +101,6 @@
                                 required>
                             <div class="invalid-feedback">Please enter your full name.</div>
                         </div>
-
                         <div class="mb-3">
                             <label for="email" class="form-label">Email Address *</label>
                             <input type="email"
@@ -127,9 +112,6 @@
                                 required>
                             <div class="invalid-feedback">Please enter a valid email address.</div>
                         </div>
-
-
-
                         <div class="mb-3">
                             <label for="address" class="form-label">Delivery Address *</label>
                             <textarea class="form-control"
@@ -141,13 +123,11 @@
                             <div class="invalid-feedback">Please enter your delivery address.</div>
                         </div>
                     </div>
-
                     <!-- Payment Method -->
                     <div class="form-section">
                         <h2 class="section-title">
                             <i class="bi bi-wallet2"></i> Payment Method
                         </h2>
-
                         <div class="payment-methods">
                             <div class="payment-option active" id="methodeStripe">
                                 <i class="bi bi-credit-card-2-front"></i>
@@ -158,31 +138,23 @@
                                 <div class="payment-name">Cash on Delivery</div>
                             </div>
                         </div>
-
                         <input type="hidden" id="paymentMethod" name="methode" value="stripe">
 
                         <!-- Cash Payment Fields -->
-                        <div id="cashFields" class="payment-fields">
+                        <!-- <div id="cashFields" class="payment-fields">
                             <div class="alert alert-info d-flex align-items-center">
                                 <i class="bi bi-info-circle me-3" style="font-size: 2rem;"></i>
                                 <div>
                                     <strong>Cash on Delivery</strong><br>
-                                    Please prepare the exact amount of <strong>$110.93</strong> for payment upon delivery.
+                                    Please prepare the exact amount of <strong>$110.93</strong> for payment upon delivery.  
                                 </div>
                             </div>
-                        </div>
+                        </div> -->
                     </div>
-
                     <!-- Place Order Button -->
-                    <button type="submit" class="btn-place-order">
+                    <button type="submit" onclick="return confirm('are you sure to passe this commande')" class="btn-place-order">
                         <i class="bi bi-check-circle"></i> Place Order
                     </button>
-
-                    <!-- Security Badge -->
-                    <!-- <div class="security-badge">
-                            <i class="bi bi-shield-check"></i>
-                            <p>Secure Checkout - Your information is protected</p>
-                        </div> -->
                 </form>
             </div>
         </div>
@@ -232,6 +204,8 @@
         InputPaymentMethod.value = 'cash';
     });
 
+
+
     // pour changement quantity
     let buttonsQuantity = document.querySelectorAll('.quantity-btn');
     buttonsQuantity.forEach(btn => {
@@ -239,8 +213,8 @@
         btn.addEventListener('click', function() {
 
             // recuperer des donnees id de commande et action avec url
-            let id = this.dataset.id;
-            let Action = this.dataset.action;
+            let id = this.dataset.id; // commande id
+            let Action = this.dataset.action; // action soit decrease soit increse 
             
             // recuperer route de controller pour modifier quentity
             let url = this.closest('.checkout-container').dataset.updateUrl;
@@ -250,18 +224,18 @@
 
             //  envoyer la requet a server 
             fetch(url, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Accept': 'application/json', // laravel va return json pas html
-                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
-                        'X-HTTP-Method-Override': 'PUT' // this post is put de l'origine
-                    },
-                    // kansift action li khso ydar
-                    body: JSON.stringify({
-                        action: Action
-                    })
-                })
+              method: 'POST',
+              headers: {
+                  'Content-Type': 'application/json',  // communication avec server a will send json 
+                  'Accept': 'application/json', // and i want just json 
+                  'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content, // security CSRF
+                  'X-HTTP-Method-Override': 'PUT' // this post is put de l'origine
+              },
+              // kansift action li khso ydar
+              body: JSON.stringify({ // send action vers laravel forma json
+                  action: Action
+              })
+            })
 
                 // convertur reponse en json
                 .then(response => {
@@ -275,9 +249,13 @@
                     console.log('Data:', data)
                     document.getElementById(`quantity-${id}`).value = data.quantity;
                     document.getElementById(`quantityy-${id}`).innerHTML = data.quantity;
-                    document.getElementById(`total-${id}`).innerHTML = data.total;
+                    document.getElementById(`total-${id}`).innerHTML = "$"+data.total;
+                    // setTimeout(function(){
+                    //       alert(data.succes)
+                    // },1)
+                    
                 })
         });
     })
 </script>
-@endsection
+@endsection     

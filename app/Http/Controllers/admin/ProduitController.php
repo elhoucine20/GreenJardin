@@ -34,16 +34,15 @@ class ProduitController extends Controller
         return redirect()->route('produits.index')->with('succes','produit created avec succes');
     }
 
-    public function update(UpdateProduitRequest $request, $id)
+    public function update(UpdateProduitRequest $request, int $id)
     {
         //
         $produit = Produit::findOrFail($id);
         $produit->update($request->validated());
         return redirect()->route('produits.index')->with('succes','produit updated avec succes');
     }
-
-
-    public function destroy($id)
+    
+    public function destroy(int $id)
     {
         //
         Produit::destroy($id);

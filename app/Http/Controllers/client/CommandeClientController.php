@@ -52,7 +52,8 @@ class CommandeClientController extends Controller
 
         return response()->json([
             'quantity' => $commande->quantity,
-            'total' => $commande->total
+            'total' => $commande->total,
+            'succes'=>'quantity change avec succes'
         ]);
 
         // return to_route('checkout')->with('success', 'Quantity updated');

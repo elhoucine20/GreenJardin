@@ -35,10 +35,11 @@ class LoginController extends Controller
             } else {
                 # code...
                 // $request->session()->regenerate();
-                return view('auth/login');
+                return to_route('login')->with('error', 'your role not authoriser');
+                // return view('auth/login');
             }
         } else {
-            return to_route('login')->with('error', 'your account introvable ');
+            return to_route('login')->with('error', 'your account introvable or is bloquer by admin');
         }
     }
 

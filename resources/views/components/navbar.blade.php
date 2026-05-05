@@ -24,12 +24,6 @@
                             <i class="bi bi-heart"></i> Favorites
                         </a>
                     </li>
-                    <!-- <li class="nav-item">
-                        <a class="nav-link cart-link" href="{{route('dashbord')}}">
-                            <i class="bi bi-cart3"></i> Cart
-                            <span class="cart-badge" id="cartCount">0</span>
-                        </a>
-                    </li> -->
 
                     <li class="nav-item">
                         <a class="nav-link cart-link {{ request()->routeIs('commandess') ? 'active' : '' }}" href="{{route('commandess')}}">

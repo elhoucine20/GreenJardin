@@ -14,7 +14,7 @@ class CommandesController extends Controller
     public function index()
     {
         //
-        $paimentes = Paiment::with('commande')->paginate(3);
+        $paimentes = Paiment::with('commande')->paginate(4);
         // dd($commandes);
         $countPaye = Paiment::where('status','paye')->count();
         $countPendding = Paiment::where('status','en_attente')->count();
@@ -23,17 +23,19 @@ class CommandesController extends Controller
 
     }
 
-    public function update(UpdateCommandeRequest $request, string $id)
+    public function update(UpdateCommandeRequest $request)
     {
-
         // dd($request->post(),$id);
-        $paiment = Paiment::findOrFail($id);
-        $paiment->update($request->validated());
+        $paiment = Paiment::findOrFail($request->id);
+        $paiment->update([
+            'status' => $request->status
+            
+        ]);        
+        // dd($paiment->fresh());
             return to_route('commandesAdmin.index')->with('success','status updated avec success');
     }
 
-
-    public function destroy(string $id)
+    public function destroy(int $id)
     {
         //
          $paiment = Paiment::findOrFail($id);

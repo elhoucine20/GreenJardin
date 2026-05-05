@@ -21,7 +21,7 @@ class AdminMiddleware
             # code...
             return $next($request);
         }else{
-            return back();
+            return to_route("login")->with("error","not have acces");
         }
     }
 }

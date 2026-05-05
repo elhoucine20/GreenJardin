@@ -26,7 +26,7 @@ class registerController extends Controller
             $pass2 = $request->password2;
             if ($pass1==$pass2) {
                 # code...
-                Validate::Valider($request);
+                // Validate::Valider($request);
                 User::create([
                     'name'=>$request->name,
                     'email'=>$request->email,
@@ -36,7 +36,7 @@ class registerController extends Controller
 
                 return view('auth/login');
             }else{
-                return back()->with("confirmer your password");
+                return back()->with("error","confirmer your password");
             }
         }else{
             return view('auth/register');

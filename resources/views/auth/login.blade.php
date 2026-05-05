@@ -25,11 +25,6 @@
             </div>
             @endif
 
-            <!-- Message de succès (masqué par défaut) -->
-            <div class="success-message" style="display: none;">
-                ✓ Inscription réussie ! Vous pouvez maintenant vous connecter.
-            </div>
-
             <form action="{{route('dashbord-admin')}}" method="POST" id="loginForm">
 
                 @csrf
@@ -53,11 +48,6 @@
                         placeholder="Votre mot de passe"
                         required>
                 </div>
-
-                <!-- <div class="remember-me">
-                    <input type="checkbox" name="remember" id="remember">
-                    <label for="remember">Se souvenir de moi</label>
-                </div> -->
 
                 <button type="submit">Se connecter</button>
             </form>

@@ -23,7 +23,7 @@ class UpdateCommandeRequest extends FormRequest
     {
         return [
             //
-             'statu' => 'required|in:paye,en_attente,annuler',
+             'status' => 'required',
         ];
     }
 }

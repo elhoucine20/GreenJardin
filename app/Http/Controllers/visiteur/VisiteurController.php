@@ -11,7 +11,7 @@ class VisiteurController extends Controller{
 
    public function index(){
     $categories = Categorie::all();
-    $produits = Produit::all();
+    $produits = Produit::paginate(6);
     return view('visiteur/visiteur',compact('categories','produits'));
     // return view('welcome',compact('categories','produits'));
    }

@@ -14,9 +14,7 @@
 @endsection
 
 @section('sections')
-<!-- ========================================
-         HERO SECTION
-         ======================================== -->
+         <!-- HERO SECTION -->
 <section id="home" class="hero-section">
     <div class="hero-content">
         <h1>Welcome to GardenApp</h1>
@@ -25,49 +23,7 @@
     </div>
 </section>
 
-<!-- ========================================
-         SEARCH SECTION
-         ======================================== -->
-<!-- <section class="search-section">
-    <div class="container">
-        <div class="search-container">
-            <div class="search-wrapper">
-                <input
-                    type="text"
-                    id="searchInput"
-                    class="search-input"
-                    placeholder="Search for plants, seeds, tools...">
-                <i class="bi bi-search search-icon"></i>
-            </div>
-        </div>
-    </div>
-</section> -->
-
-<!-- ========================================
-         CATEGORIES SECTION
-         ======================================== -->
-<!-- <section class="categories-section">
-        <div class="container">
-            <h2 class="section-title">Browse Categories</h2>
-            <div class="row">
-                @foreach($categories as $categorie)
-                <div class="col-lg-4 col-md-6">
-                    <div class="category-card" onclick="filterCategory('plant')">
-
-                            <div  >{{$categorie->icon}}</div>
-                        <div class="category-body">
-                            <h3>{{$categorie->name}}</h3>
-                        </div>
-                    </div>
-                </div>
-                @endforeach
-            </div>
-        </div>
-    </section> -->
-
-<!-- ========================================
-         PRODUCTS SECTION
-         ======================================== -->
+         <!-- PRODUCTS SECTION -->
 <section id="products" class="products-section">
     <div class="container">
         <h2 class="section-title">Featured Products</h2>
@@ -98,7 +54,6 @@
                                 <i class="bi bi-heart"></i> Add to Favorites
                             </button>
                             @endif
-
                         </form>
                         <span class="product-badge">{{$produit->categorie->name}} </span>
                     </div>
@@ -109,22 +64,18 @@
                             <button class="btn btn-view" data-id="{{$produit->id}}" onclick="ViewModal(this.dataset.id)">
                                 <i class="bi bi-eye"></i> View Details
                             </button>
-
-
                             @if($produit->stock <= 0)
                                 <button type="button" class="btn btn-decart">
                                   <i class="bi bi-cart-plus"></i> n'exist pas
                               </button>
                               @else
-
                               <form method="post" action="{{route('commande-ajouter',$produit)}}">
                               @csrf
                               @method('POST')
-
                               <input type="number" name="produit_id" hidden value="{{$produit->id}}">
                               <input type="number" name="prix" hidden value="{{$produit->prix}}">
 
-                              @if($produit->commandes()->where('status', 'pendding')->exists())
+                              @if($produit->commandes()->where('status', 'pendding')->where('user_id',auth()->id())->exists())
                               <button type="button" class="btn btn-decart">
                                   <i class="bi bi-cart-plus"></i> deja to Cart
                               </button>
@@ -135,16 +86,10 @@
                               @endif
                               </form>
                                 @endif
-                                <!--  -->
-
-
-                                <!--  -->
                         </div>
                     </div>
                 </div>
-                <!-- ========================================
-                    PRODUCT DETAILS MODAL
-                         ======================================== -->
+                    <!-- PRODUCT DETAILS MODAL -->
                 <div class="modal fade" id="{{$produit->id}}" tabindex="-1" aria-labelledby="productModalLabel" aria-hidden="true">
                     <div class="modal-dialog modal-lg modal-dialog-centered">
                         <div class="modal-content">
@@ -200,7 +145,6 @@
             @endforeach
             {{ $produits->links('pagination::bootstrap-5') }}
         </div>
-
         <!-- No Results Message -->
         <div id="noResults" class="no-results">
             <i class="bi bi-search"></i>
@@ -209,18 +153,15 @@
         </div>
     </div>
 </section>
-
 @endsection
 
 @section('script')
 <script>
     function ViewModal(idProduit) {
-
         document.getElementById('modalAddToCart').onclick = function() {
             // addToCart(name);
             bootstrap.Modal.getInstance(document.getElementById('productModal')).hide();
         };
-
         new bootstrap.Modal(document.getElementById(idProduit)).show();
     }
 </script>

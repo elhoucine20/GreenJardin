@@ -121,7 +121,7 @@
                                                 <input type="number" name="produit_id" hidden value="{{$favorite->produit->id}}">
                                                 <input type="number" name="prix" hidden value="{{$favorite->produit->prix}}">
 
-                                                @if($favorite->produit->commandes()->where('status', 'pendding')->exists())
+                                                @if($favorite->produit->commandes()->where('status', 'pendding')->where('user_id',auth()->id())->exists())
                                                 <button id="modalAddToCart" type="button" class="btn btn-decart">
                                                     <i class="bi bi-cart-plus"></i> deja to Cart
                                                 </button>

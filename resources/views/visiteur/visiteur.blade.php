@@ -25,48 +25,6 @@
     </section>
 
     <!-- ========================================
-         SEARCH SECTION
-         ======================================== -->
-    <section class="search-section">
-        <div class="container">
-            <div class="search-container">
-                <div class="search-wrapper">
-                    <input
-                        type="text"
-                        id="searchInput"
-                        class="search-input"
-                        placeholder="Search for plants, seeds, tools...">
-                    <i class="bi bi-search search-icon"></i>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- ========================================
-         CATEGORIES SECTION
-         ======================================== -->
-    <section class="categories-section">
-        <div class="container">
-            <h2 class="section-title">Browse Categories</h2>
-            <div class="row">
-                @foreach($categories as $categorie)
-                <div class="col-lg-4 col-md-6">
-                    <div class="category-card" >
-                        <!-- <img src="https://images.unsplash.com/photo-1466781783364-36c955e42a7f?w=600&h=400&fit=crop"
-                            alt="Plants"
-                            class="category-image"> -->
-                            <div  >{{$categorie->icon}}</div>
-                        <div class="category-body">
-                            <h3>{{$categorie->name}}</h3>
-                        </div>
-                    </div>
-                </div>
-                @endforeach
-            </div>
-        </div>
-    </section>
-
-    <!-- ========================================
          PRODUCTS SECTION
          ======================================== -->
     <section id="products" class="products-section">
@@ -88,7 +46,7 @@
                         <h4>{{$produit->name}}</h4>
                         <p>{{$produit->description}}</p>
                         <div class="product-buttons">
-                            <button class="btn btn-view" onclick="ViewModal({{$produit->id}})">
+                            <button class="btn btn-view" data-produit="{{$produit->id}}" onclick="ViewModal(this.dataset.produit)">
                                 <i class="bi bi-eye"></i> View Details
                             </button>
                             
@@ -103,7 +61,7 @@
                 </div>
                 <!-- ========================================
                     PRODUCT DETAILS MODAL
-                         ======================================== -->
+                    ======================================== -->
                 <div class="modal fade" id="{{$produit->id}}" tabindex="-1" aria-labelledby="productModalLabel" aria-hidden="true">
                     <div class="modal-dialog modal-lg modal-dialog-centered">
                         <div class="modal-content">
@@ -161,6 +119,7 @@
             </div>
             @endforeach
             </div>
+            {{$produits->links('pagination::bootstrap-5')}}
 
             <!-- No Results Message -->
             <div id="noResults" class="no-results">

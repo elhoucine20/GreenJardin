@@ -177,28 +177,8 @@
         document.getElementById('productModal').classList.add('show');
     }
 
-    // function editProduct(id) {
-    //     document.getElementById('productModal').classList.add('show');
-    // }
-
     function closeModal() {
         document.getElementById('productModal').classList.remove('show');
     }
-
-    // function confirmDelete(id) {
-    //     //     productToDelete = id;
-    //     document.getElementById('confirmModal').classList.add('show');
-    // }
-
-    // function closeConfirmModal() {
-    //     productToDelete = null;
-    //     document.getElementById('confirmModal').classList.remove('show');
-    // }
-
-
-    // window.confirmDelete = confirmDelete;
-    // window.deleteProduct = deleteProduct;
-    // window.closeModal = closeModal;
-    // window.closeConfirmModal = closeConfirmModal;
 </script>
 @endsection

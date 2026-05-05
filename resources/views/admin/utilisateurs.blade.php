@@ -32,10 +32,7 @@
             <h2 class="page-title">Gestion des Utilisateurs</h2>
             <p class="page-subtitle">Gérez les comptes et les permissions de vos utilisateurs</p>
         </div>
-        <!-- <button class="btn-primary" id="addUserBtn">
-            <span class="btn-icon">➕</span>
-            Ajouter un utilisateur
-        </button> -->
+
     </div>
 
     <!-- Stats Summary -->
@@ -74,6 +71,8 @@
     <div class="users-grid" id="usersGrid">
         <!-- User Card 1 -->
         @foreach($users as $user)
+        @if(auth()->id() != $user->id)
+
         <div class="user-card" data-id="1" data-role="admin" data-status="active">
             <div class="card-header">
                 @if($user->role == 'client')
@@ -106,7 +105,7 @@
                     @csrf
                     @method('PUT')
 
-                    <button type="submit" class="btn-view">
+                    <button type="submit" onclick="return confirm('are you sure to bloquer ?')" class="btn-view">
                         <span class="btn-icon">🔒</span>
                         Bloquer
                     </button>
@@ -116,171 +115,18 @@
                     @csrf
                     @method('PUT')
 
-                    <button type="submit" class="btn-view">
+                    <button type="submit" onclick="return confirm('are you sure to debloquer ?')" class="btn-view">
                         <span class="btn-icon">🔒</span>
                         DeBloquer
                     </button>
                 </form>
                 @endif
-
-                <!-- <button class="btn-edit">
-                    <span class="btn-icon">✏️</span>
-                    Modifier
-                </button> -->
-                <!-- <button class="btn-more" onclick="toggleUserMenu(1)">&vellip; </button> -->
             </div>
-            <!-- <div class="dropdown-menu" id="menu-1">
-                    <button onclick="toggleUserStatus(1)">
-                        <span>🔒</span> Bloquer
-                    </button>
-                    <button onclick="confirmDeleteUser(1)">
-                        <span>🗑️</span> Supprimer
-                    </button>
-                </div> -->
         </div>
+        @endif
         @endforeach
     </div>
     {{ $users->links() }}
 
 </main>
-
-<!-- Add/Edit User Modal -->
-<div class="modal-overlay" id="userModal">
-    <div class="modal-container">
-        <div class="modal-header">
-            <h3 class="modal-title" id="modalTitle">Ajouter un utilisateur</h3>
-            <button class="modal-close" onclick="closeUserModal()">✕</button>
-        </div>
-
-        <form class="user-form" id="userForm">
-            <input type="hidden" id="userId">
-
-            <div class="form-row">
-                <div class="form-group">
-                    <label for="userName">Nom complet *</label>
-                    <input type="text" id="userName" required placeholder="Ex: Julie Dupont">
-                </div>
-            </div>
-
-            <div class="form-row">
-                <div class="form-group">
-                    <label for="userEmail">Email *</label>
-                    <input type="email" id="userEmail" required placeholder="exemple@email.fr">
-                </div>
-            </div>
-
-            <div class="form-row">
-                <div class="form-group">
-                    <label for="userPassword">Mot de passe *</label>
-                    <input type="password" id="userPassword" placeholder="••••••••">
-                    <small class="form-hint">Laisser vide pour conserver l'actuel (modification)</small>
-                </div>
-            </div>
-
-            <div class="form-row">
-                <div class="form-group">
-                    <label for="userRole">Rôle *</label>
-                    <select id="userRole" required>
-                        <option value="">Sélectionnez un rôle</option>
-                        <option value="admin">Administrateur</option>
-                        <option value="client">Client</option>
-                    </select>
-                </div>
-
-                <div class="form-group">
-                    <label for="userStatus">Statut *</label>
-                    <select id="userStatus" required>
-                        <option value="active">Actif</option>
-                        <option value="blocked">Bloqué</option>
-                    </select>
-                </div>
-            </div>
-
-            <div class="modal-actions">
-                <button type="button" class="btn-secondary" onclick="closeUserModal()">Annuler</button>
-                <button type="submit" class="btn-primary">
-                    <span id="submitBtnText">Ajouter l'utilisateur</span>
-                </button>
-            </div>
-        </form>
-    </div>
-</div>
-
-<!-- User Profile Modal -->
-<div class="modal-overlay" id="profileModal">
-    <div class="modal-container large">
-        <div class="modal-header">
-            <h3 class="modal-title">Profil Utilisateur</h3>
-            <button class="modal-close" onclick="closeProfileModal()">✕</button>
-        </div>
-
-        <div class="modal-body">
-            <div class="profile-section">
-                <div class="profile-header">
-                    <div class="profile-avatar-large" id="profileAvatar">JD</div>
-                    <div class="profile-info">
-                        <h3 id="profileName">Julie Dupont</h3>
-                        <p id="profileEmail">julie.dupont@email.fr</p>
-                        <div class="profile-badges">
-                            <span class="role-badge" id="profileRole"></span>
-                            <span class="status-badge" id="profileStatus"></span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="profile-details">
-                <div class="detail-row">
-                    <span class="detail-label">📅 Date d'inscription</span>
-                    <span class="detail-value" id="profileDate"></span>
-                </div>
-                <div class="detail-row">
-                    <span class="detail-label">📦 Commandes passées</span>
-                    <span class="detail-value" id="profileOrders">0</span>
-                </div>
-                <div class="detail-row">
-                    <span class="detail-label">💰 Total dépensé</span>
-                    <span class="detail-value" id="profileSpent">0,00€</span>
-                </div>
-                <div class="detail-row">
-                    <span class="detail-label">📧 Dernière connexion</span>
-                    <span class="detail-value" id="profileLastLogin">Jamais</span>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Toggle Status Confirmation Modal -->
-<div class="modal-overlay" id="statusModal">
-    <div class="modal-container confirm-modal">
-        <div class="confirm-icon" id="statusIcon">⚠️</div>
-        <h3 class="confirm-title" id="statusTitle">Bloquer cet utilisateur ?</h3>
-        <p class="confirm-message" id="statusMessage">L'utilisateur ne pourra plus se connecter ni passer de commandes.</p>
-        <div class="modal-actions">
-            <button class="btn-secondary" onclick="closeStatusModal()">Annuler</button>
-            <button class="btn-danger" onclick="confirmToggleStatus()">Confirmer</button>
-        </div>
-    </div>
-</div>
-
-<!-- Delete User Confirmation Modal -->
-<div class="modal-overlay" id="deleteModal">
-    <div class="modal-container confirm-modal">
-        <div class="confirm-icon">⚠️</div>
-        <h3 class="confirm-title">Supprimer cet utilisateur ?</h3>
-        <p class="confirm-message">Cette action est irréversible. Toutes les données de l'utilisateur seront définitivement supprimées.</p>
-        <div class="modal-actions">
-            <button class="btn-secondary" onclick="closeDeleteModal()">Annuler</button>
-            <button class="btn-danger" onclick="deleteUser()">Supprimer</button>
-        </div>
-    </div>
-</div>
-
-<!-- Toast Notification -->
-<div class="toast" id="toast">
-    <div class="toast-icon" id="toastIcon">✓</div>
-    <div class="toast-message" id="toastMessage">Action effectuée avec succès</div>
-</div>
-
 @endsection

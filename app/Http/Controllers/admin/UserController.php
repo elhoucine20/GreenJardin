@@ -21,7 +21,7 @@ class UserController extends Controller
     }
 
     // deBloquer   
-    public function deBloquer(string $id)
+    public function deBloquer(int $id)
     {
         //
         $user = User::findOrFail($id);
@@ -35,7 +35,7 @@ class UserController extends Controller
     }
 
     // bloquer
-    public function Bloquer($id)
+    public function Bloquer(int $id)
     {
         //
         $user = User::findOrFail($id);
@@ -44,7 +44,7 @@ class UserController extends Controller
            return to_route('utilisateurs-admin')->with('error','pas possible de bloquer');
         }
         if($user->email === 'elhoucinenaitbrahim@gmail.com')
-        { 
+        {
             return to_route('utilisateurs-admin')->with('error','pas possible de bloquer admin');
         }
 
@@ -53,5 +53,5 @@ class UserController extends Controller
         return to_route('utilisateurs-admin')->with('succes','user bloquer avec succes');
   
     }
-    
+
 }

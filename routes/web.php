@@ -31,7 +31,7 @@ Route::controller(LoginController::class)->group(function(){
 });
 
 // admin
-Route::controller()->middleware(AdminMiddleware::class)->group(function () {
+Route::middleware(AdminMiddleware::class)->group(function () {
 
     Route::resource('produits', ProduitController::class);
     Route::resource('categories', CategorieController::class);
@@ -49,7 +49,7 @@ Route::controller()->middleware(AdminMiddleware::class)->group(function () {
 });
 
 //client  
-Route::controller()->middleware(ClientMiddleware::class)->group(function () {
+Route::middleware(ClientMiddleware::class)->group(function () {
 
     Route::controller(ClientFavoriController::class)->group(function(){
 

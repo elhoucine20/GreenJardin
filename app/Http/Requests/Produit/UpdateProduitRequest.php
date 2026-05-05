@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Produit;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Override;
 
 class UpdateProduitRequest extends FormRequest
 {
@@ -30,4 +31,5 @@ class UpdateProduitRequest extends FormRequest
             'categorie_id' => 'required|integer',
         ];
     }
+
 }
