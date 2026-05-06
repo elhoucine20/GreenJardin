@@ -1,4 +1,4 @@
-name: CI
+name: Laravel CI
 
 on:
   push:
@@ -9,16 +9,32 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+    # 1. clone code from GitHub
     - name: Checkout code
       uses: actions/checkout@v3
 
+    # 2. prepare PHP
     - name: Setup PHP
       uses: shivammathur/setup-php@v2
       with:
-        php-version: '8.2'
+        php-version: '8.3'
+        extensions: mbstring, bcmath, xml, curl, zip
 
-    - name: Install dependencies
-      run: composer install
+    # 3. Cache dependencies (pour la rapidité)
+    - name: Cache Composer dependencies
+      uses: actions/cache@v3
+      with:
+        path: vendor
+        key: ${{ runner.os }}-composer-${{ hashFiles('composer.lock') }}
 
-    - name: Run tests
-      run: php -l *.php
+    # 4. Install dependencies
+    - name: Install Composer dependencies
+      run: composer install --no-interaction --prefer-dist --optimize-autoloader
+
+    # 5. Check Laravel version (basic validation)
+    - name: Check Laravel installation
+      run: php artisan --version
+
+    # 6. Check PHP syntax (optional safety check)
+    - name: PHP Syntax check
+      run: find . -name "*.php" -exec php -l {} \;
