@@ -44,6 +44,9 @@ jobs:
       - name: PHP Syntax check
         run: find . -name "*.php" -exec php -l {} \;
 
+      - name: Run migrations
+        run: php artisan migrate --force
+        
       # 8. Run Laravel tests
       - name: Run tests
         run: php artisan test
